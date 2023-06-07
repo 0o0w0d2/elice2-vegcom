@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer, createContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import * as Api from './api';
 import { loginReducer } from './reducer';
@@ -73,12 +73,12 @@ function App() {
                         </>
                     )}
                     <Routes>
-                        <Route path='/' exact element={<MainPage />} />
-                        <Route path='/login' element={<LoginForm />} />
-                        <Route path='/register' element={<RegisterForm />} />
-                        <Route path='/rank' element={<Rank />} />
-                        <Route path='/story' element={<Story />} />
-                        <Route path='/addpost' element={<AddPost />} />
+                        <Route path="/" exact element={<MainPage />} />
+                        <Route path="/login" element={<LoginForm />} />
+                        <Route path="/register" element={<RegisterForm />} />
+                        <Route path="/rank" element={<Rank />} />
+                        <Route path="/story" element={<Story />} />
+                        <Route path="/addpost" element={<AddPost />} />
                         {/* <Route path="/story/:postId" element={<PostDetail />} /> 
                         <Routh path = "*" element = {<NotFound /> } */}
                     </Routes>
