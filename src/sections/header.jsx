@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserStateContext, DispatchContext } from '../../App';
 
@@ -24,6 +24,20 @@ function Header() {
         navigate('/');
     };
 
+    const [isLogoHovered, setIsLogoHovered] = useState(false);
+
+    const handleLogoMouseEnter = () => {
+        setIsLogoHovered(true);
+    };
+
+    const handleLogoMouseLeave = () => {
+        setIsLogoHovered(false);
+    };
+
+    const getLogoSrc = () => {
+        return isLogoHovered ? '/logolong.png' : '/logoshort.png';
+    };
+
     // const location = useLocation();
     // console.log('useLocation', location);
     // const userState = useContext(UserStateContext);
@@ -44,12 +58,20 @@ function Header() {
 
     return (
         <header
-            className="fixed top-0 left-0 right-0 z-50 p-4 flex justify-center"
+            className="fixed top-0 left-0 right-0 z-50 p-4 flex justify-center grid-cols-3"
             style={{ height: '150px', backgroundColor: 'white' }}>
-            <img src="/logoshort.png" alt="오채완 로고" className="h-fums-centell logo"></img>
-            <div className="justify-center">
+            <div className="col-start-1 " style={{ width: '20vw' }}></div>
+            <div className="col-start-2 items-center justify-center" style={{ width: '60vw' }}>
+                <img
+                    onMouseEnter={handleLogoMouseEnter}
+                    onMouseLeave={handleLogoMouseLeave}
+                    src={getLogoSrc()}
+                    alt="오채완 로고"
+                    className="logo"></img>
+            </div>
+            <div className="col-start-3 justify-center justify-end" style={{ width: '20vh' }}>
                 <Popover className="mr-8">
-                    <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
+                    <Popover.Button className="inline-flex gap-x-1 text-sm font-semibold leading-6 text-gray-900">
                         <span>메뉴</span>
                         <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
                     </Popover.Button>
