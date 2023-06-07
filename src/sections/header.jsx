@@ -44,15 +44,11 @@ function Header() {
 
     return (
         <header
-            className="fixed top-0 left-0 right-0 z-50 p-4 flex items-center justify-between p-4"
+            className="fixed top-0 left-0 right-0 z-50 p-4 flex justify-center"
             style={{ height: '150px', backgroundColor: 'white' }}>
-            <div className="logo">
-                <div className="logo-container flex justify-center items-center">
-                    <img src="/logoshort.png" alt="오채완 로고" className="h-full logo"></img>
-                </div>
-            </div>
-            <div>
-                <Popover className="relative mr-8">
+            <img src="/logoshort.png" alt="오채완 로고" className="h-fums-centell logo"></img>
+            <div className="justify-center">
+                <Popover className="mr-8">
                     <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
                         <span>메뉴</span>
                         <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
