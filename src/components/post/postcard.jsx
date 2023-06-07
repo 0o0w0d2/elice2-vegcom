@@ -23,7 +23,7 @@ function PostCard({ post }) {
                     <div style={{ display: 'flex', verticalAlign: 'middle' }}>{post.userId}</div>
                 </div>
                 <div className="postSection w-full">
-                    <img src={post.postImage} alt="Post Image" className="postImage w-full h-auto mt-5" />
+                    <img src={post.imageUrl} alt="Post Image" className="postImage w-full h-auto mt-5" />
                     <div className="flex mt-3">
                         {post.like == true ? (
                             <SolidStarIcon className="h-7 w-7" fill="#008762" />
@@ -32,7 +32,7 @@ function PostCard({ post }) {
                         )}
                         <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7" onClick={() => handleClick(post)} />
                     </div>
-                    <div className="text-left mt-3">{post.postLikeCount.toLocaleString()} 명이 좋아합니다.</div>
+                    {/* <div className="text-left mt-3">{post.postLikeCount.toLocaleString()} 명이 좋아합니다.</div> */}
                     <div className="flex mt-2 text-md text-left">
                         <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.userId}</span> {post.content}
                     </div>
