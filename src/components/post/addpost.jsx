@@ -5,7 +5,7 @@ import * as Api from '../../../api';
 
 function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment, like, isEditable }) {
     const userState = useContext(UserStateContext);
-    const [imageUrl, setImageUrl] = useState(null);
+    const [imageUrl, setImageUrl] = useState('http://placekitten.com/200/200');
     const [content, setContent] = useState('');
 
     const handleSubmit = async e => {
@@ -15,6 +15,8 @@ function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment,
             imageUrl,
             content,
         });
+
+        navigate('/story');
     };
 
     const handleFileChange = e => {
