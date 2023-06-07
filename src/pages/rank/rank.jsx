@@ -42,7 +42,8 @@ function Rank() {
         try {
             const res = await Api.get('rank/list');
             const ownerData = res.data;
-            setRankList(ownerData);
+            setRankList(ownerData.rankList);
+            
         } catch (err) {
             if (err.response.status === 400) {
                 alert(err.response.data.error);
@@ -63,7 +64,7 @@ function Rank() {
     return (
         <>
             <div>
-                <UserCard user={userState.user} />
+                <UserCard user={userState} />
             </div>
             <div className='w-full'>
                 {rankList.map((user, index) => (
