@@ -4,62 +4,37 @@ import * as Api from '../../../api';
 import PostCard from '../../components/post/postcard';
 import { UserStateContext } from '../../../App';
 import { useNavigate, useParams } from 'react-router-dom';
+import { PlusCircleIcon, MagnifyingGlassCircleIcon } from '@heroicons/react/24/outline';
 
 function Story() {
     const navigate = useNavigate();
     const userState = useContext(UserStateContext);
+    const [post, setPost] = useState([]);
+    const userId = userState.id;
 
-    useEffect(() => {
-        if (!userState.user) {
-            navigate('/');
-            alert('로그인한 유저만 사용할 수 있습니다.');
+    const fetchPost = async userId => {
+        try {
+            const res = await Api.get('post/list');
+            const postData = res.data;
+            setPost(postData);
+        } catch (err) {
+            if (err.response.status === 400) {
+                alert(err.response.data.error);
+            }
+            console.log('DB 불러오기를 실패했습니다.');
         }
-    });
-
-    const [post, setPost] = useState();
-    Api.get('post/list').then(res => setPost(res.data));
+    };
 
     console.log('post: ', post);
 
-    const [posts, setPosts] = useState([
-        {
-            postId: 1,
-            userImage: 'http://placekitten.com/200/200',
-            userId: '안녕하세요',
-            postImage: 'http://placekitten.com/200/201',
-            content: '나는 감자다 푸하하하',
-            like: true,
-            postLikeCount: 2394923,
-        },
-        {
-            postId: 2,
-            userImage: 'http://placekitten.com/200/202',
-            userId: '관악구 불주먹',
-            postImage: 'http://placekitten.com/200/203',
-            content: '나는 채식 안 한다',
-            like: true,
-            postLikeCount: 32,
-        },
-        {
-            postId: 3,
-            userImage: 'http://placekitten.com/200/206',
-            userId: '효천 보안관',
-            postImage: 'http://placekitten.com/200/202',
-            content: '나는 채식 안 한다',
-            like: false,
-            postLikeCount: 918,
-        },
-        {
-            postId: 4,
-            userImage: 'http://placekitten.com/200/205',
-            userId: '네모라이팅 고수',
-            postImage: 'http://placekitten.com/200/202',
-            content: '나는 채식 안 한다',
-            like: false,
-            postLikeCount: 29981,
-        },
-        // Add more users as needed
-    ]);
+    useEffect(() => {
+        if (!userState.user) {
+            navigate('/login');
+            alert('로그인한 유저만 사용할 수 있습니다.');
+            return;
+        }
+        fetchPost({ userId });
+    }, [userState, navigate]);
 
     return (
         <>
@@ -70,9 +45,12 @@ function Story() {
                         함께 실천하는 사람들을 만나 보세요.
                     </h2>
                 </div>
-                <div onClick={() => navigate('/addpost')}>검색 버튼, 추가 버튼</div>
-                {posts.map(post => (
-                    <div key={post.postId}>
+                <div className="flex mb-3" style={{ justifyContent: 'flex-end' }}>
+                    <PlusCircleIcon className="w-7 h-7" onClick={() => navigate('/addpost')} />{' '}
+                    <MagnifyingGlassCircleIcon className="w-7 h-7" />
+                </div>
+                {post?.map(post => (
+                    <div key={post?.postId}>
                         <PostCard post={post} />
                     </div>
                 ))}
