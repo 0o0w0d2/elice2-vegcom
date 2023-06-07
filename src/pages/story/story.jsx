@@ -14,7 +14,7 @@ function Story() {
             navigate('/');
             alert('로그인한 유저만 사용할 수 있습니다.');
         }
-    });
+    }, [userState, navigate]);
 
     const [post, setPost] = useState();
     Api.get('post/list').then(res => setPost(res.data));
