@@ -16,14 +16,12 @@ function Story() {
         try {
             const res = await Api.get('post/list');
             const postData = res.data;
-            setPost(postData);
+            setPost(postData.postList);
         } catch (err) {
             alert('err.response.data.message');
             console.log('DB 불러오기를 실패했습니다.');
         }
     };
-
-    console.log('post: ', post);
 
     useEffect(() => {
         if (!userState.user) {
@@ -32,7 +30,7 @@ function Story() {
             return;
         }
         fetchPost({ userId });
-    }, [userState, navigate]);
+    }, [userState, navigate, post]);
 
     return (
         <>
@@ -47,8 +45,8 @@ function Story() {
                     <PlusCircleIcon className="w-7 h-7" onClick={() => navigate('/addpost')} />{' '}
                     <MagnifyingGlassCircleIcon className="w-7 h-7" />
                 </div>
-                {post?.map(post => (
-                    <div key={post?.postId}>
+                {post.map(post => (
+                    <div key={post.postId}>
                         <PostCard post={post} />
                     </div>
                 ))}
