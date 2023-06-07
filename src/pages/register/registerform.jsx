@@ -48,14 +48,13 @@ function RegisterForm() {
         }
     };
 
-    console.log('state', userState);
-
     //만약 로그인된 상태라면, 기본 페이지로 이동
     useEffect(() => {
         if (userState.user) {
-            navigate('/rank/list');
+            navigate('/rank');
         }
-    }, []);
+        console.log('state', userState);
+    }, [userState, navigate]);
 
     return (
         <div style={{ alignItems: 'center', display: 'center', maxWidth: '700px', width: '75vh' }}>
