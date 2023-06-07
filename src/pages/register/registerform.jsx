@@ -41,18 +41,16 @@ function RegisterForm() {
             // 로그인 페이지로 이동함.
             navigate('/login');
         } catch (err) {
-            if (err.response.status === 400) {
-                alert(err.response.data.error);
-            }
-            console.log('회원가입에 실패하였습니다.', err);
+            alert(err.response.data.message);
+            console.log('회원가입에 실패하였습니다. err: ', err);
         }
     };
 
     //만약 로그인된 상태라면, 기본 페이지로 이동
     useEffect(() => {
         if (userState.user) {
-            navigate('/');
             console.log('state', userState);
+            navigate('/');
         }
     }, [userState, navigate]);
 
