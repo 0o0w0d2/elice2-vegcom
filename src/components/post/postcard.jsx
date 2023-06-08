@@ -4,15 +4,31 @@ import { useNavigate } from 'react-router-dom';
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 import { StarIcon as SolidStarIcon } from '@heroicons/react/24/solid';
 import { StarIcon } from '@heroicons/react/24/outline';
+import * as Api from '../../../api';
+import { formatPostcssSourceMap } from 'vite';
 
 function PostCard({ post }) {
     const userState = useContext(UserStateContext);
-
+    const [comments, setComments] = useState([]);
+    const navigate = useNavigate();
     const handleClick = post => {
         navigate(`/post/${post.postId}`);
     };
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        const fetchComments = async () => {
+            try {
+                const res = await Api.get(`/comment/${post.postId}`);
+                const commentData = res.data.commentList;
+                setComments(commentData);
+            } catch (err) {
+                alert(err.response.data.message);
+                console.log('댓글 불러오기를 실패했습니다.');
+            }
+        };
+
+        fetchComments();
+    }, [post.postId]);
 
     return (
         <div className="postCard rounded-lg mx-auto grid max-w-2xl grid-cols-1 border border-gray-300 pt-5 pl-5 pb-5 pr-5 mb-5">
@@ -37,14 +53,13 @@ function PostCard({ post }) {
                         <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.userId}</span> {post.content}
                     </div>
                 </div>
-                {/* 댓글 3개만 렌더링 하는 코드 
-                    <div className="commentSection">
-                    {comment.slice(0, 3).map(item => (
-                        <div>
-                            {item.userId} {item.content}
+                <div>
+                    {comments.slice(0, 3)?.map(item => (
+                        <div key={item.id}>
+                            {item.nickname}: {item.content}
                         </div>
                     ))}
-                </div> */}
+                </div>
             </article>
         </div>
     );

@@ -10,7 +10,7 @@ import { ChatBubbleLeftRightIcon, TrophyIcon, ArrowLeftOnRectangleIcon } from '@
 function Header() {
     const menus = [
         { name: '스토리', description: '스토리 페이지로 이동', href: '/story', icon: ChatBubbleLeftRightIcon },
-        { name: '랭킹', description: '랭킹 페이지로 이동', href: '/rank/list', icon: TrophyIcon },
+        { name: '랭킹', description: '랭킹 페이지로 이동', href: '/rank', icon: TrophyIcon },
         // {name: '쇼핑'},
     ];
     const menusBelow = [{ name: '로그아웃', href: '/', icon: ArrowLeftOnRectangleIcon }];

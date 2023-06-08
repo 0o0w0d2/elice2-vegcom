@@ -38,10 +38,11 @@ function Rank() {
     //     }
     //     // Add more users as needed
     // ]);
-    const fetchRank = async (ownerId) => {
+    const fetchRank = async ownerId => {
         try {
             const res = await Api.get('rank/list');
-            const ownerData = res.data;
+            const ownerData = res.data.rankList;
+            console.log('rank:', ownerData);
             setRankList(ownerData);
         } catch (err) {
             if (err.response.status === 400) {
@@ -65,7 +66,7 @@ function Rank() {
             <div>
                 <UserCard user={userState.user} />
             </div>
-            <div className='w-full'>
+            <div className="w-full">
                 {rankList.map((user, index) => (
                     <div key={user.userId}>
                         <RankCard user={user} index={index + 1} />
