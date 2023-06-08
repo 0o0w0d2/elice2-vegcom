@@ -14,6 +14,7 @@ import Rank from './src/pages/rank/rank';
 import Story from './src/pages/story/story';
 import AddPost from './src/components/post/addpost';
 import PostDetail from './src/components/post/postdetail';
+import NotFound from './src/pages/notfound';
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -79,7 +80,7 @@ function App() {
                         <Route path="/story" element={<Story />} />
                         <Route path="/addpost" element={<AddPost />} />
                         <Route path="/post/:postId" element={<PostDetail />} />
-                        {/* <Routh path = "*" element = {<NotFound /> } /> */}
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                     {/* <Footer /> */}
                 </Router>
