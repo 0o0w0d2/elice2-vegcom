@@ -13,8 +13,7 @@ import MainPage from './src/pages/mainpage/mainpage.jsx';
 import Rank from './src/pages/rank/rank';
 import Story from './src/pages/story/story';
 import AddPost from './src/components/post/addpost';
-
-// import PostDetail from './src/pages/postdetail/postdetail.jsx';
+import PostDetail from './src/components/post/postdetail';
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -79,8 +78,8 @@ function App() {
                         <Route path="/rank" element={<Rank />} />
                         <Route path="/story" element={<Story />} />
                         <Route path="/addpost" element={<AddPost />} />
-                        {/* <Route path="/story/:postId" element={<PostDetail />} /> 
-                        <Routh path = "*" element = {<NotFound /> } */}
+                        <Route path="/story/:postId" element={<PostDetail />} />
+                        {/* <Routh path = "*" element = {<NotFound /> } */}
                     </Routes>
                     {/* <Footer /> */}
                 </Router>
