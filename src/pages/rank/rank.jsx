@@ -6,6 +6,7 @@ import RankCard from '../../components/rankcard/rankcard';
 import UserCard from '../../components/usercard/usercard';
 import { UserStateContext } from '../../../App';
 import { useNavigate, useParams } from 'react-router-dom';
+import PointBar from '../../components/pointbar/pointbar';
 
 function Rank() {
     const navigate = useNavigate();
@@ -14,30 +15,19 @@ function Rank() {
     const [rankList, setRankList] = useState([]);
     const userId = userState.id;
 
-    // const [users, setUsers] = useState([
-    //     {
-    //         id: 1,
-    //         image: "http://placekitten.com/200/200",
-    //         ranking: 1,
-    //         feedCount: 10,
-    //         co2Decre: 20,
-    //     },
-    //     {
-    //         id: 2,
-    //         image: "http://placekitten.com/200/200",
-    //         ranking: 2,
-    //         feedCount: 5,
-    //         co2Decre: 10,
-    //     },
-    //     {
-    //         id: 3,
-    //         image: "http://placekitten.com/200/200",
-    //         ranking: 2,
-    //         feedCount: 5,
-    //         co2Decre: 10,
-    //     }
-    //     // Add more users as needed
-    // ]);
+    const [owner, setOwner] = useState(
+        {
+            id: 1,
+            image: "http://placekitten.com/200/200",
+            nickname : "애호박",
+            accPoint: 2000
+        }
+        // Add more users as needed
+    );
+
+    const [point, setPoint] = useState(200);
+    const pointMax = 1000;
+    
     const fetchRank = async (ownerId) => {
         try {
             const res = await Api.get('rank/list');
@@ -64,7 +54,10 @@ function Rank() {
     return (
         <>
             <div>
-                <UserCard user={userState} />
+                <PointBar point={point} pointMax={pointMax} />
+            </div>
+            <div>
+                <UserCard owner={owner} />
             </div>
             <div className='w-full'>
                 {rankList.map((user, index) => (
