@@ -18,7 +18,7 @@ function Story() {
             const postData = res.data;
             setPost(postData.postList);
         } catch (err) {
-            alert('err.response.data.message');
+            alert(err.response.data.message);
             console.log('DB 불러오기를 실패했습니다.');
         }
     };
