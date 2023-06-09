@@ -31,6 +31,7 @@ function RegisterForm() {
 
     const handleSubmit = async e => {
         try {
+            console.log(imageUrl);
             const res = await Api.post('user/register', {
                 email,
                 password,
