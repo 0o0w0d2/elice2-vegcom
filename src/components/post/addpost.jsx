@@ -9,14 +9,13 @@ function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment,
     const [content, setContent] = useState('');
 
     const handleSubmit = async e => {
-        console.log('post: ', imageUrl, content);
+        const formData = new FormData();
+        console.log('formData 전송 전:', formData);
+        formData.append('ImageUrl', userImage);
+        formData.append('content', content);
+        await Api.post('/post', formData);
 
-        await Api.post('/post', {
-            imageUrl,
-            content,
-        });
-
-        navigate('/story');
+        console.log('formData 전송 후:', formData);
     };
 
     const handleFileChange = e => {
@@ -69,7 +68,7 @@ function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment,
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                     </div>
-                    <input id="dropzone-file" type="file" onChange={handleFileChange} className="hidden" />
+                    <input id="dropzone-file" type="file" onChange={e => setImageUrl(e.target.files[0])} className="hidden" />
                     {!!imageUrl && <p>업데이트 완료!</p>}
                 </label>
             </div>
