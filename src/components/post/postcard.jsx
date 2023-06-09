@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 import { StarIcon as SolidStarIcon } from '@heroicons/react/24/solid';
 import { StarIcon } from '@heroicons/react/24/outline';
+import * as Api from '../../../api';
+import { formatPostcssSourceMap } from 'vite';
 
 function PostCard({ post }) {
     const userState = useContext(UserStateContext);
@@ -43,7 +45,6 @@ function PostCard({ post }) {
     }, [post.postId]);
 
     return (
-        // 좋아요 버튼 만들고 댓글도 렌더링해야함..
         <div className="postCard rounded-lg mx-auto grid max-w-2xl grid-cols-1 border border-gray-300 pt-5 pl-5 pb-5 pr-5 mb-5">
             <article key={post.postId} className="flex max-w-xl flex-col items-start justify-between">
                 <div className="profileSection relative flex items-center gap-x-4">
@@ -53,6 +54,7 @@ function PostCard({ post }) {
                 <div className="postSection w-full">
                     <img src={post.imageUrl} alt="Post Image" className="postImage w-full h-auto mt-5" />
                     <div className="flex mt-3">
+                        {/* 눌렀을 때 좋아요 상태 변경하는 코드 추가하기 */}
                         {post.like == true ? (
                             <SolidStarIcon className="h-7 w-7" fill="#008762" />
                         ) : (
@@ -65,13 +67,13 @@ function PostCard({ post }) {
                         <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.userId}</span> {post.content}
                     </div>
                 </div>
-                {/* <div className="commentSection">
-                    {comment.slice(0, 3).map(item => (
-                        <div>
-                            {item.userId} {item.content}
+                <div>
+                    {comments.slice(0, 3)?.map(item => (
+                        <div key={item.id}>
+                            {item.nickname}: {item.content}
                         </div>
                     ))}
-                </div> */}
+                </div>
             </article>
         </div>
     );
