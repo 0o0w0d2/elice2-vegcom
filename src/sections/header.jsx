@@ -22,7 +22,7 @@ function Header() {
     const navigate = useNavigate();
 
     const logout = () => {
-        localStorage.removeItem('userToken');
+        sessionStorage.removeItem('userToken');
         dispatch({ type: 'LOGOUT' });
         navigate('/');
     };
@@ -54,7 +54,7 @@ function Header() {
 
     // // 기본 페이지로 돌아가기
     // const logout = () => {
-    //     localStorage.removeItem('userToken');
+    //     sessionStorage.removeItem('userToken');
     //     dispatch({ type: 'LOGOUT' });
     //     navigate('/');
     // };

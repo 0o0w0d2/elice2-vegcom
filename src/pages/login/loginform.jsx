@@ -35,7 +35,7 @@ function LoginForm() {
             });
             const user = res.data;
             const jwtToken = user.token;
-            localStorage.setItem('userToken', jwtToken);
+            sessionStorage.setItem('userToken', jwtToken);
             dispatch({
                 type: 'LOGIN_SUCCESS',
                 payload: user,
