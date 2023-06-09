@@ -6,7 +6,7 @@ const PointBar = ({ point, pointMax }) => {
   return (
     <div className="w-full h-4 bg-gray-200 rounded-full">
       <div
-        className="h-full text-xs text-white bg-green-500 rounded-full"
+        className="h-full text-xs text-white bg-green-700 rounded-full"
         style={{ width: `${percentage}%` }}
       ></div>
     </div>

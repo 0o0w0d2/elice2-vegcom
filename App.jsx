@@ -72,16 +72,19 @@ function App() {
                             <Header />
                         </>
                     )}
-                    <Routes>
-                        <Route path="/" exact element={<MainPage />} />
-                        <Route path="/login" element={<LoginForm />} />
-                        <Route path="/register" element={<RegisterForm />} />
-                        <Route path="/rank" element={<Rank />} />
-                        <Route path="/story" element={<Story />} />
-                        <Route path="/addpost" element={<AddPost />} />
-                        {/* <Route path="/story/:postId" element={<PostDetail />} /> 
-                        <Routh path = "*" element = {<NotFound /> } */}
-                    </Routes>
+                    <div style={{ marginTop: '150px' }}>
+                        <Routes>
+                            <Route path="/" exact element={<MainPage />} />
+                            <Route path="/login" element={<LoginForm />} />
+                            <Route path="/register" element={<RegisterForm />} />
+                            <Route path="/rank" element={<Rank />} />
+                            <Route path="/story" element={<Story />} />
+                            <Route path="/addpost" element={<AddPost />} />
+                            {/* <Route path="/story/:postId" element={<PostDetail />} /> 
+                            <Routh path = "*" element = {<NotFound /> } */}
+                        </Routes>
+                    </div>
+
                     {/* <Footer /> */}
                 </Router>
             </UserStateContext.Provider>
