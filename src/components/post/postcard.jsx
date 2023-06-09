@@ -9,7 +9,7 @@ function PostCard({ post }) {
     const userState = useContext(UserStateContext);
 
     const handleClick = post => {
-        navigate(`/story/${post.postId}`);
+        navigate(`/post/${post.postId}`);
     };
 
     const navigate = useNavigate();
