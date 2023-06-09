@@ -7,9 +7,9 @@ axios.defaults.baseURL = 'http://localhost:5001/';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.put['Content-Type'] = 'application/json';
 
-// 토큰 불러오기(로그인 시 localStorage에 저장된 Token값을 불러오기)
+// 토큰 불러오기(로그인 시 sessionStorage에 저장된 Token값을 불러오기)
 const getToken = () => {
-    return localStorage.getItem('userToken');
+    return sessionStorage.getItem('userToken');
 };
 
 // GET (경로는 'baseURL/path'가 된다.)
