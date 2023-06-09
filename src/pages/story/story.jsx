@@ -12,7 +12,7 @@ function Story() {
     const [post, setPost] = useState([]);
     const userId = userState.id;
 
-    const fetchPost = async userId => {
+    const fetchPost = async () => {
         try {
             const res = await Api.get('post/list');
             const postData = res.data;
@@ -30,7 +30,7 @@ function Story() {
             return;
         }
         fetchPost({ userId });
-    }, [userState, navigate, post]);
+    }, [userState, post]);
 
     return (
         <>

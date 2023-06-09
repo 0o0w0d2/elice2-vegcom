@@ -22,5 +22,8 @@
         "@heroicons/react": "^2.0.18",
         "axios": "^1.4.0",
         "react-router-dom": "^6.11.2"
+    },
+    "optionalDependencies": {
+        "fsevents": false
     }
 }

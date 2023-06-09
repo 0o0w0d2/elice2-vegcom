@@ -7,12 +7,40 @@ import { StarIcon } from '@heroicons/react/24/outline';
 
 function PostCard({ post }) {
     const userState = useContext(UserStateContext);
+    const [comments, setComments] = useState([]);
+    const navigate = useNavigate();
+    console.log(post);
 
     const handleClick = post => {
         navigate(`/post/${post.postId}`);
     };
 
-    const navigate = useNavigate();
+    const fetchComments = async () => {
+        try {
+            const res = await Api.get(`/comment/${post.postId}`);
+            const commentData = res.data.commentList;
+            setComments(commentData);
+        } catch (err) {
+            alert(err.response.data.message);
+            console.log('댓글 불러오기를 실패했습니다');
+        }
+    };
+
+    // const fetchLikes = async () => {
+    //     try {
+    //         const res = await Api.get(`like/${post.postId}`);
+    //         const likesData = res.data;
+    //         console.log(res);
+    //     } catch (err) {
+    //         alert('err.rseponse.data.message');
+    //         console.log('좋아요 불러오기를 실패했습니다.');
+    //     }
+    // };
+
+    useEffect(() => {
+        // fetchLikes(post);
+        fetchComments(post);
+    }, [post.postId]);
 
     return (
         // 좋아요 버튼 만들고 댓글도 렌더링해야함..
