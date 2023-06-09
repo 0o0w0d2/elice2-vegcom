@@ -2,20 +2,38 @@ import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserStateContext, DispatchContext } from '../../../App';
 import { UserCircleIcon } from '@heroicons/react/24/solid';
+import * as Api from '../../../api';
+
 function UserEdit() {
     const userState = useContext(UserStateContext);
     const navigate = useNavigate();
+    // console.log(userState.user);
+    const userId = userState.user.userId;
 
-    const user = userState.user;
-    console.log('user:', user);
-    //유저 이미지userImage, 자기소개description
-    // userState.user
+    const [nickname, setNickname] = useState('');
+    const [userImage, setUserImage] = useState('');
+
+    const fetchUserData = async userId => {
+        try {
+            const res = await Api.get(`user/${userId}`);
+            console.log(res);
+            if (!res.data.userInfo.userImage) {
+                setUserImage('http://placekitten.com/200/200');
+            } else {
+                setUserImage(res.data.userInfo.userImage);
+            }
+            setNickname(res.data.userInfo.nickname);
+        } catch (err) {
+            alert('err.response.data.message');
+            console.log('DB 불러오기를 실패했습니다.');
+        }
+    };
+
+    // 유저 이미지userImage, 자기소개description
     // {id, description, userImage, nickname}
 
-    // let des = user.description ?? null;
+    // let des = userData.description ?? null;
     // const [description, setDescription] = useState(des);
-    const [nickname, setNickname] = useState(user.nickname);
-    const [userImage, setUserImage] = useState('');
 
     const goBack = () => {
         navigate(-1);
@@ -24,17 +42,21 @@ function UserEdit() {
     const handleSubmit = async e => {
         try {
             const formData = new FormData();
-            formData.append('userImage', userImage);
+            formData.append('image', userImage);
             formData.append('nickname', nickname);
             // formData.append('description', description);
 
-            const res = await Api.put(`/user/${user.id}`);
-            console.log(res);
+            const res = await Api.put(`/user/${user.id}`, formData);
+            console.log('수정 요청 후:', res);
         } catch (err) {
-            alert(err.response.data.message);
-            console.log('DB 불러오기를 실패했습니다.');
+            alert('err.response.data.message');
+            console.log('DB 수정 요청을 실패했습니다.');
         }
     };
+
+    useEffect(() => {
+        fetchUserData(userId);
+    }, [userId]);
 
     return (
         <div className="userEditForm">
@@ -47,11 +69,10 @@ function UserEdit() {
                     <div className="w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                         <input
                             type="text"
-                            name="username"
-                            id="username"
-                            autoComplete="username"
                             className="w-60 block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm"
-                            placeholder="janesmith"
+                            placeholder={nickname}
+                            value={nickname}
+                            onChange={e => setNickname(e.target.value)}
                         />
                     </div>
                     {/* 글자수 제한 코드 추가하기 */}
@@ -63,11 +84,11 @@ function UserEdit() {
                 <div className="imageSection grid-cols-2">
                     <div className="mt-2 flex items-center gap-x-3">
                         <UserCircleIcon className="h-12 w-12 text-gray-300" aria-hidden="true" />
-                        <button
-                            type="button"
-                            className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                            파일 선택
-                        </button>
+                        <input
+                            onChange={e => setUserImage(e.target.files[0])}
+                            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                            type="file"
+                            multiple></input>
                     </div>
                 </div>
                 <label htmlFor="about" className="text-left mt-7 block text-sm font-medium text-gray-900">
@@ -75,11 +96,10 @@ function UserEdit() {
                 </label>
                 <div className="w-full mt-2">
                     <textarea
-                        id="about"
-                        name="about"
-                        rows={3}
+                        // autoComplete = {description}
+                        // value = {description}
+                        // onChange = { e => setDescription(e.target.value)}
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm "
-                        defaultValue={''}
                     />
                 </div>
                 <div className="buttonSection mt-5 justify-center">
