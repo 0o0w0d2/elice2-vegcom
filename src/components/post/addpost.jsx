@@ -24,11 +24,6 @@ function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment,
         }
     };
 
-    const handleFileChange = e => {
-        const file = e.target.files[0];
-        setImageUrl(file);
-    };
-
     const navigate = useNavigate();
 
     // useEffect(() => {
