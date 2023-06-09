@@ -13,10 +13,6 @@ function Header() {
         { name: '랭킹', description: '랭킹 페이지로 이동', href: '/rank', icon: TrophyIcon },
         // {name: '쇼핑'},
     ];
-    const menusBelow = [
-        { name: '정보 수정', href: '/useredit', icon: UserIcon },
-        { name: '로그아웃', href: '/', icon: ArrowLeftOnRectangleIcon },
-    ];
 
     const dispatch = useContext(DispatchContext);
     const navigate = useNavigate();
@@ -114,18 +110,21 @@ function Header() {
                                     ))}
                                 </div>
                                 <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                                    {menusBelow.map(item => (
-                                        <div
-                                            key={item.name}
-                                            onClick={item => {
-                                                item.name === '로그아웃' ? logout : navigate('/useredit');
-                                            }}
-                                            href={item.href}
-                                            className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100">
-                                            <item.icon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-                                            {item.name}
-                                        </div>
-                                    ))}
+                                    <div
+                                        onClick={() => navigate('/useredit')}
+                                        className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100">
+                                        <UserIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
+                                        정보 수정
+                                    </div>
+                                    <div
+                                        onClick={() => logout()}
+                                        className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100">
+                                        <ArrowLeftOnRectangleIcon
+                                            className="h-5 w-5 flex-none text-gray-400"
+                                            aria-hidden="true"
+                                        />
+                                        로그아웃
+                                    </div>
                                 </div>
                             </div>
                         </Popover.Panel>
