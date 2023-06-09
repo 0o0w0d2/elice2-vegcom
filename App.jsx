@@ -79,7 +79,7 @@ function App() {
                         <Route path="/rank" element={<Rank />} />
                         <Route path="/story" element={<Story />} />
                         <Route path="/addpost" element={<AddPost />} />
-                        <Route path="/story/:postId" element={<PostDetail />} />
+                        <Route path="/post/:postId" element={<PostDetail />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                     {/* <Footer /> */}
