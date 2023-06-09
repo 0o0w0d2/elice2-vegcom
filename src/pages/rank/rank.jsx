@@ -3,7 +3,7 @@ import * as Api from '../../../api';
 // import Navigator from '../../sections/navigator';
 import Header from '../../sections/header';
 import RankCard from '../../components/rankcard/rankcard';
-import UserCard from '../../components/usercard/usercard';
+import UserCard from '../../components/user/usercard';
 import { UserStateContext } from '../../../App';
 import { useNavigate, useParams } from 'react-router-dom';
 
