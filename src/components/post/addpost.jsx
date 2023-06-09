@@ -5,23 +5,23 @@ import * as Api from '../../../api';
 
 function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment, like, isEditable }) {
     const userState = useContext(UserStateContext);
-    const [imageUrl, setImageUrl] = useState('http://placekitten.com/200/200');
+    const [imageUrl, setImageUrl] = useState('');
     const [content, setContent] = useState('');
 
     const handleSubmit = async e => {
-        console.log('post: ', imageUrl, content);
+        try {
+            const formData = new FormData();
+            console.log('formData 전송 전:', formData);
+            formData.append('image', imageUrl);
+            formData.append('content', content);
 
-        await Api.post('/post', {
-            imageUrl,
-            content,
-        });
-
-        navigate('/story');
-    };
-
-    const handleFileChange = e => {
-        const file = e.target.files[0];
-        setImageUrl(file);
+            await Api.post('/post', formData);
+            console.log('formData 전송 후:', formData);
+            navigate('/story');
+        } catch (err) {
+            alert(err.response.mesasge);
+            console.log('게시물 등록을 실패했습니다.');
+        }
     };
 
     const navigate = useNavigate();
@@ -67,10 +67,10 @@ function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment,
                         <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                             <span className="font-semibold">사진 파일을 선택해 주세요.</span> drag&drop으로도 올릴 수 있습니다.
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">PNG of JPG</p>
                     </div>
-                    <input id="dropzone-file" type="file" onChange={handleFileChange} className="hidden" />
-                    {imageUrl && <p>업데이트 완료!</p>}
+                    <input id="dropzone-file" type="file" onChange={e => setImageUrl(e.target.files[0])} className="hidden" />
+                    {!!imageUrl && <p>업데이트 완료!</p>}
                 </label>
             </div>
             <input
@@ -90,7 +90,7 @@ function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment,
                     취소
                 </button>
                 <button
-                    onClick={() => handleSubmit(post)}
+                    onClick={() => handleSubmit()}
                     type="submit"
                     className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     올리기

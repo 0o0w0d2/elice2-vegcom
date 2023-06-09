@@ -5,7 +5,7 @@ import { UserStateContext, DispatchContext } from '../../App';
 import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { ChatBubbleLeftRightIcon, TrophyIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
+import { ChatBubbleLeftRightIcon, UserIcon, TrophyIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
 
 function Header() {
     const menus = [
@@ -13,13 +13,12 @@ function Header() {
         { name: '랭킹', description: '랭킹 페이지로 이동', href: '/rank', icon: TrophyIcon },
         // {name: '쇼핑'},
     ];
-    const menusBelow = [{ name: '로그아웃', href: '/', icon: ArrowLeftOnRectangleIcon }];
 
     const dispatch = useContext(DispatchContext);
     const navigate = useNavigate();
 
     const logout = () => {
-        localStorage.removeItem('userToken');
+        sessionStorage.removeItem('userToken');
         dispatch({ type: 'LOGOUT' });
         navigate('/');
     };
@@ -51,7 +50,7 @@ function Header() {
 
     // // 기본 페이지로 돌아가기
     // const logout = () => {
-    //     localStorage.removeItem('userToken');
+    //     sessionStorage.removeItem('userToken');
     //     dispatch({ type: 'LOGOUT' });
     //     navigate('/');
     // };
@@ -63,6 +62,7 @@ function Header() {
             <div className="col-start-1 " style={{ width: '20vw' }}></div>
             <div className="col-start-2 items-center justify-center" style={{ width: '60vw' }}>
                 <img
+                    onClick={() => navigate('/rank')}
                     onMouseEnter={handleLogoMouseEnter}
                     onMouseLeave={handleLogoMouseLeave}
                     src={getLogoSrc()}
@@ -83,8 +83,10 @@ function Header() {
                         leave="transition ease-in duration-150"
                         leaveFrom="opacity-100 translate-y-0"
                         leaveTo="opacity-0 translate-y-1">
-                        <Popover.Panel className="absolute left-1/2 z-10 mt-5 flex w-screen max-w-max -translate-x-1/2 px-4">
-                            <div className="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
+                        <Popover.Panel
+                            className="relative left-1/2 z-10 mt-5 flex w-screen -translate-x-1/2 px-4"
+                            style={{ maxWidth: '300px' }}>
+                            <div className="w-screen max-w-full flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
                                 <div className="p-4">
                                     {menus.map(item => (
                                         <div
@@ -108,16 +110,21 @@ function Header() {
                                     ))}
                                 </div>
                                 <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                                    {menusBelow.map(item => (
-                                        <div
-                                            key={item.name}
-                                            onClick={item.name === '로그아웃' ? logout : null}
-                                            href={item.href}
-                                            className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100">
-                                            <item.icon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-                                            {item.name}
-                                        </div>
-                                    ))}
+                                    <div
+                                        onClick={() => navigate('/useredit')}
+                                        className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100">
+                                        <UserIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
+                                        정보 수정
+                                    </div>
+                                    <div
+                                        onClick={() => logout()}
+                                        className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100">
+                                        <ArrowLeftOnRectangleIcon
+                                            className="h-5 w-5 flex-none text-gray-400"
+                                            aria-hidden="true"
+                                        />
+                                        로그아웃
+                                    </div>
                                 </div>
                             </div>
                         </Popover.Panel>

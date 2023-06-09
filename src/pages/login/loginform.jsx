@@ -35,12 +35,12 @@ function LoginForm() {
             });
             const user = res.data;
             const jwtToken = user.token;
-            localStorage.setItem('userToken', jwtToken);
+            sessionStorage.setItem('userToken', jwtToken);
             dispatch({
                 type: 'LOGIN_SUCCESS',
                 payload: user,
             });
-
+            console.log('토큰: ', jwtToken);
             navigate('/rank', { replace: true });
         } catch (err) {
             if (err.response && err.response.status === 400) {

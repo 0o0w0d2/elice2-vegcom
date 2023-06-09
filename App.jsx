@@ -14,6 +14,7 @@ import Rank from './src/pages/rank/rank';
 import Story from './src/pages/story/story';
 import AddPost from './src/components/post/addpost';
 import PostDetail from './src/components/post/postdetail';
+import UserEdit from './src/components/user/useredit';
 import NotFound from './src/pages/notfound';
 
 export const UserStateContext = createContext(null);
@@ -41,9 +42,9 @@ function App() {
                 payload: currentUser,
             });
 
-            console.log('%c localStorage에 토큰 있음.', 'color: #d93d1a;');
+            console.log('%c sessionStorage에 토큰 있음.', 'color: #d93d1a;');
         } catch (err) {
-            console.log('%c localStorage에 토큰 없음.', 'color: #d93d1a;');
+            console.log('%c sessionStorage에 토큰 없음.', 'color: #d93d1a;');
         }
         // fetchCurrentUser 과정이 끝났으므로, isFetchCompleted 상태를 true로 바꿔줌
         setIsFetchCompleted(true);
@@ -79,7 +80,9 @@ function App() {
                         <Route path="/rank" element={<Rank />} />
                         <Route path="/story" element={<Story />} />
                         <Route path="/addpost" element={<AddPost />} />
+                        <Route path="/useredit" element={<UserEdit />} />
                         <Route path="/post/:postId" element={<PostDetail />} />
+
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                     {/* <Footer /> */}
