@@ -1,16 +1,13 @@
 import React from 'react';
 
 const PointBar = ({ point, pointMax }) => {
-  const percentage = (point / pointMax) * 100;
+    const percentage = (point / pointMax) * 100;
 
-  return (
-    <div className="w-full h-4 bg-gray-200 rounded-full">
-      <div
-        className="h-full text-xs text-white bg-green-700 rounded-full"
-        style={{ width: `${percentage}%` }}
-      ></div>
-    </div>
-  );
+    return (
+        <div className="w-full h-4 bg-gray-200 rounded-full">
+            <div className="h-full text-xs text-white bg-green-700 rounded-full" style={{ width: `${percentage}%` }}></div>
+        </div>
+    );
 };
 
 export default PointBar;
