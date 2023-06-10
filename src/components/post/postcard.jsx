@@ -11,11 +11,14 @@ function PostCard({ post }) {
     const userState = useContext(UserStateContext);
     const [comments, setComments] = useState([]);
     const navigate = useNavigate();
-    console.log(post);
+    // console.log(post);
 
     const handleClick = post => {
         navigate(`/post/${post.postId}`);
     };
+
+    res = Api.get(`/like/${post.postId}`);
+    console.log(res);
 
     const fetchComments = async () => {
         try {
@@ -25,6 +28,19 @@ function PostCard({ post }) {
         } catch (err) {
             alert(err.response.data.message);
             console.log('댓글 불러오기를 실패했습니다');
+        }
+    };
+
+    const handleLike = (postId, userId) => {
+        try {
+            Api.post(`/like/${postId}`, {
+                // 좋아요 누르는 버튼 구현하기
+                postId,
+                userId,
+            });
+        } catch (err) {
+            alert('err.response.data.message');
+            console.log('좋아요 누르기 실패!');
         }
     };
 
@@ -55,11 +71,12 @@ function PostCard({ post }) {
                     <img src={post.imageUrl} alt="Post Image" className="postImage w-full h-auto mt-5" />
                     <div className="flex mt-3">
                         {/* 눌렀을 때 좋아요 상태 변경하는 코드 추가하기 */}
-                        {post.like == true ? (
+                        <StarIcon className="h-7 w-7" onClick={() => handleLike(post)} />
+                        {/* {post.like == true ? (
                             <SolidStarIcon className="h-7 w-7" fill="#008762" />
                         ) : (
                             <StarIcon className="h-7 w-7" />
-                        )}
+                        )} */}
                         <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7" onClick={() => handleClick(post)} />
                     </div>
                     {/* <div className="text-left mt-3">{post.postLikeCount.toLocaleString()} 명이 좋아합니다.</div> */}
@@ -68,11 +85,11 @@ function PostCard({ post }) {
                     </div>
                 </div>
                 <div>
-                    {comments.slice(0, 3)?.map(item => (
+                    {/* {comments.slice(0, 3)?.map(item => (
                         <div key={item.id}>
                             {item.nickname}: {item.content}
                         </div>
-                    ))}
+                    ))} */}
                 </div>
             </article>
         </div>
