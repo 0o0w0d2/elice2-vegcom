@@ -35,18 +35,14 @@ function UserEdit() {
     // let des = userData.description ?? null;
     // const [description, setDescription] = useState(des);
 
-    const goBack = () => {
-        navigate(-1);
-    };
-
-    const handleSubmit = async e => {
+    const handleSubmit = async userId => {
         try {
             const formData = new FormData();
             formData.append('image', userImage);
             formData.append('nickname', nickname);
             // formData.append('description', description);
 
-            const res = await Api.put(`/user/${user.id}`, formData);
+            const res = await Api.put(`/user/${userId}`, formData);
             console.log('수정 요청 후:', res);
         } catch (err) {
             alert('err.response.data.message');
