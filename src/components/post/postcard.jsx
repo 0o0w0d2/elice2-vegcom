@@ -11,7 +11,10 @@ function PostCard({ post }) {
     const userState = useContext(UserStateContext);
     const [comments, setComments] = useState([]);
     const navigate = useNavigate();
+<<<<<<< HEAD
     // console.log(post);
+=======
+>>>>>>> b374d586b9c89e18874a6c5c85c6b839cea7e7a9
 
     const handleClick = post => {
         navigate(`/post/${post.postId}`);
@@ -64,11 +67,19 @@ function PostCard({ post }) {
         <div className="postCard rounded-lg mx-auto grid max-w-2xl grid-cols-1 border border-gray-300 pt-5 pl-5 pb-5 pr-5 mb-5">
             <article key={post.postId} className="flex max-w-xl flex-col items-start justify-between">
                 <div className="profileSection relative flex items-center gap-x-4">
-                    <img src={post.userImage} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+                    <img
+                        src={`https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${post.userImage}`}
+                        alt=""
+                        className="h-10 w-10 rounded-full bg-gray-50"
+                    />
                     <div style={{ display: 'flex', verticalAlign: 'middle' }}>{post.userId}</div>
                 </div>
                 <div className="postSection w-full">
-                    <img src={post.imageUrl} alt="Post Image" className="postImage w-full h-auto mt-5" />
+                    <img
+                        src={`https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${post.imageUrl}`}
+                        alt="Post Image"
+                        className="postImage w-full h-auto mt-5"
+                    />
                     <div className="flex mt-3">
                         {/* 눌렀을 때 좋아요 상태 변경하는 코드 추가하기 */}
                         <StarIcon className="h-7 w-7" onClick={() => handleLike(post)} />
