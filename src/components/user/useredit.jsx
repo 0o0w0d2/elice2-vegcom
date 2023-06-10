@@ -22,6 +22,8 @@ function UserEdit() {
 
             const res = await Api.put(`/user/${userId}`, formData);
             navigate(-1);
+
+            navigate(-1);
         } catch (err) {
             console.log(err);
             // alert(err.response.data.message);

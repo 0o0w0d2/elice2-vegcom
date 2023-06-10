@@ -5,6 +5,7 @@ import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 import { StarIcon as SolidStarIcon } from '@heroicons/react/24/solid';
 import { StarIcon } from '@heroicons/react/24/outline';
 import * as Api from '../../../api';
+import { comment } from 'postcss';
 // import { formatPostcssSourceMap } from 'vite';
 
 function PostCard({ post }) {
@@ -20,13 +21,25 @@ function PostCard({ post }) {
         navigate(`/post/${post.postId}`);
     };
 
+<<<<<<< HEAD
     res = Api.get(`/like/${post.postId}`);
     console.log(res);
+=======
+    const getImageSrc = imageUrl => {
+        if (imageUrl.startsWith('http')) {
+            return imageUrl;
+        } else {
+            imageUrl = `https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${imageUrl}`;
+            return imageUrl;
+        }
+    };
+>>>>>>> dbaf60ef2029b61a165e43125bee853cc56fe7a0
 
     const fetchComments = async () => {
         try {
             const res = await Api.get(`/comment/${post.postId}`);
             const commentData = res.data.commentList;
+            console.log(commentData);
             setComments(commentData);
         } catch (err) {
             alert(err.response.data.message);
@@ -67,19 +80,11 @@ function PostCard({ post }) {
         <div className="postCard rounded-lg mx-auto grid max-w-2xl grid-cols-1 border border-gray-300 pt-5 pl-5 pb-5 pr-5 mb-5">
             <article key={post.postId} className="flex max-w-xl flex-col items-start justify-between">
                 <div className="profileSection relative flex items-center gap-x-4">
-                    <img
-                        src={`https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${post.userImage}`}
-                        alt=""
-                        className="h-10 w-10 rounded-full bg-gray-50"
-                    />
+                    <img src={getImageSrc(post.userImage)} alt="User Image" className="h-10 w-10 rounded-full bg-gray-50" />
                     <div style={{ display: 'flex', verticalAlign: 'middle' }}>{post.userId}</div>
                 </div>
                 <div className="postSection w-full">
-                    <img
-                        src={`https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${post.imageUrl}`}
-                        alt="Post Image"
-                        className="postImage w-full h-auto mt-5"
-                    />
+                    <img src={getImageSrc(post.imageUrl)} alt="Post Image" className="postImage w-full h-auto mt-5" />
                     <div className="flex mt-3">
                         {/* 눌렀을 때 좋아요 상태 변경하는 코드 추가하기 */}
                         <StarIcon className="h-7 w-7" onClick={() => handleLike(post)} />
@@ -96,11 +101,11 @@ function PostCard({ post }) {
                     </div>
                 </div>
                 <div>
-                    {/* {comments.slice(0, 3)?.map(item => (
+                    {comments.slice(0, 3)?.map(item => (
                         <div key={item.id}>
                             {item.nickname}: {item.content}
                         </div>
-                    ))} */}
+                    ))}
                 </div>
             </article>
         </div>

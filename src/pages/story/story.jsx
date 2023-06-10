@@ -9,7 +9,7 @@ import { PlusCircleIcon, MagnifyingGlassCircleIcon } from '@heroicons/react/24/o
 function Story() {
     const navigate = useNavigate();
     const userState = useContext(UserStateContext);
-    const [post, setPost] = useState([]);
+    const [postList, setPostList] = useState([]);
     const userId = userState.id;
 
     const fetchPost = async () => {
@@ -17,7 +17,7 @@ function Story() {
             const res = await Api.get('post/list');
             const postData = res.data;
 
-            setPost(postData.postList);
+            setPostList(postData.postList);
         } catch (err) {
             alert('err.response.data.message');
             console.log('DB 불러오기를 실패했습니다.');
@@ -46,7 +46,7 @@ function Story() {
                     <PlusCircleIcon className="w-7 h-7" onClick={() => navigate('/addpost')} />{' '}
                     <MagnifyingGlassCircleIcon className="w-7 h-7" />
                 </div>
-                {post.map(post => (
+                {postList.map(post => (
                     <div key={post.postId}>
                         <PostCard post={post} />
                     </div>
