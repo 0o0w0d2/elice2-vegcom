@@ -42,8 +42,8 @@ function LoginForm() {
                 type: 'LOGIN_SUCCESS',
                 payload: user,
             });
-
-            navigate('/rank', { replace: true });
+            console.log(user);
+            navigate('/rank', { userId: user.id });
         } catch (err) {
             if (err.response && err.response.status === 400) {
                 alert('비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.');
