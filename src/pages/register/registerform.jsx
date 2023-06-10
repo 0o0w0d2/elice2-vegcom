@@ -11,6 +11,7 @@ function RegisterForm() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [nickname, setNickname] = useState('');
+    const [imageUrl, setImageUrl] = useState('http://placekitten.com/200/200');
 
     const validateEmail = email => {
         return email
@@ -30,10 +31,12 @@ function RegisterForm() {
 
     const handleSubmit = async e => {
         try {
+            console.log(imageUrl);
             const res = await Api.post('user/register', {
                 email,
                 password,
                 nickname,
+                imageUrl,
             });
 
             alert('회원가입에 성공하였습니다.');

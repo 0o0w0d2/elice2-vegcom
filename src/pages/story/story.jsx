@@ -12,10 +12,11 @@ function Story() {
     const [post, setPost] = useState([]);
     const userId = userState.id;
 
-    const fetchPost = async userId => {
+    const fetchPost = async () => {
         try {
             const res = await Api.get('post/list');
             const postData = res.data;
+
             setPost(postData.postList);
         } catch (err) {
             alert('err.response.data.message');
@@ -29,8 +30,8 @@ function Story() {
             alert('로그인한 유저만 사용할 수 있습니다.');
             return;
         }
-        fetchPost({ userId });
-    }, [userState, navigate, post]);
+        fetchPost();
+    }, [userState, navigate]);
 
     return (
         <>
