@@ -38,8 +38,8 @@ function RegisterForm() {
                 nickname,
                 imageUrl,
             });
-
-            alert('회원가입에 성공하였습니다.');
+            console.log(res);
+            alert(res.data);
 
             // 로그인 페이지로 이동함.
             navigate('/login');
