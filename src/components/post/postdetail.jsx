@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { UserStateContext } from '../../../App';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
@@ -15,48 +15,64 @@ function PostDetail() {
     const postId = location.pathname.match(/\/post\/(\d+)/)[1];
     const [content, setContent] = useState('');
     const [comments, setComments] = useState([]);
+    const [postImage, setPostImage] = useState('');
+    const [userImage, setUserImage] = useState('');
+    const [isSave, setIsSave] = useState(false);
 
     const path = location.pathname;
-    console.log('postId: ', postId);
-    console.log('location: ', location);
 
-    const handleSubmit = async e => {
-        console.log('content: ', content, postId);
+    const handleSubmit = async () => {
         await Api.post('/comment', {
             parentId: 0,
             content,
             postId,
         });
+
+        setContent('');
+
+        setIsSave(true);
     };
 
     const fetchPostDetail = async postId => {
         try {
             const res = await Api.get(path);
-            // console.log(res);
-            // console.log(res.data);
+
             const postData = res.data.post;
             setPost(postData);
+
+            if (postData.imageUrl.startsWith('https')) {
+                setPostImage(postData.imageUrl);
+            } else {
+                setPostImage(`https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${postData.imageUrl}`);
+            }
+
+            if (postData.userImage.startsWith('https')) {
+                setUserImage(postData.userImage);
+            } else {
+                setUserImage(`https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${postData.userImage}`);
+            }
         } catch (err) {
             alert(err.response.data.message);
             console.log('DB 불러오기를 실패했습니다.');
         }
     };
 
-    const fetchComments = async postId => {
-        try {
-            const res = await Api.get(`/comment/${postId}`);
-            console.log(res);
-            const commentData = res.data.CommentList;
+    const fetchComments = useCallback(
+        async postId => {
+            try {
+                const res = await Api.get(`/comment/${postId}`);
+                console.log(res);
+                const commentData = res.data.commentList;
 
-            setComments(commentData);
-        } catch (err) {
-            alert(err.response.data.mesasge);
-            console.log('DB 불러오기를 실패했습니다.');
-        }
-    };
-
-    console.log('comments:', comments);
-    console.log('post:', post);
+                setComments(commentData);
+                setIsSave(false);
+            } catch (err) {
+                alert(err.response.data.mesasge);
+                console.log('DB 불러오기를 실패했습니다.');
+            }
+        },
+        [postId, isSave],
+    );
 
     useEffect(() => {
         if (!userState.user) {
@@ -66,19 +82,19 @@ function PostDetail() {
         }
         fetchPostDetail(postId);
         fetchComments(postId);
-    }, [userState, postId]);
+    }, [userState, fetchComments]);
 
     return (
         <>
             <div className="headerSection" style={{ height: '150px' }}></div>
             <div className="w-full pt-5 pl-5 pb-5 pr-5 mb-5">
-                <article key={post.postId} className="flex-col justify-between" style={{ width: '30vw' }}>
+                <article key={postId} className="flex-col justify-between" style={{ width: '30vw' }}>
                     <div className="profileSection flex items-center gap-x-4">
-                        <img src={post.userImage} alt="유저 프로필" className="h-10 w-10 rounded-full bg-gray-50" />
+                        <img src={userImage} alt="유저 프로필" className="h-10 w-10 rounded-full bg-gray-50" />
                         <div style={{ display: 'flex', verticalAlign: 'middle' }}>{post.userId}</div>
                     </div>
                     <div className="postSection w-full">
-                        <img src={post.imageUrl} alt="Post Image" className="postImage w-full h-auto mt-5" />
+                        <img src={postImage} alt="Post Image" className="postImage w-full h-auto mt-5" />
                         <div className="flex mt-3">
                             {/* {like == true ? <SolidStarIcon className="h-7 w-7" fill="#008762" /> : <StarIcon className="h-7 w-7" />} */}
                             <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7" onClick={() => handleClick(post)} />
