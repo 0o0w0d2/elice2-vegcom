@@ -12,13 +12,16 @@ function PostDetail() {
     const navigate = useNavigate();
     const location = useLocation();
     const [post, setPost] = useState([]);
+    const userId = userState.user.userId;
     const postId = location.pathname.match(/\/post\/(\d+)/)[1];
     const [content, setContent] = useState('');
     const [comments, setComments] = useState([]);
     const [postImage, setPostImage] = useState('');
     const [userImage, setUserImage] = useState('');
     const [isSave, setIsSave] = useState(false);
-
+    const [disabled, setDisabled] = useState(false);
+    const [likeCount, setLikeCount] = useState(0);
+    const [liked, setLiked] = useState(false);
     const path = location.pathname;
 
     const handleSubmit = async () => {
@@ -31,6 +34,46 @@ function PostDetail() {
         setContent('');
 
         setIsSave(true);
+    };
+
+    const handleLike = (postId, userId) => {
+        try {
+            if (disabled === true) {
+                return;
+            }
+            setDisabled(true);
+            if (liked === false) {
+                Api.post(`/like/${postId}`, {
+                    // 좋아요 누르는 버튼 구현하기
+                    postId,
+                    userId,
+                });
+                setLiked(true);
+                setLikeCount(likeCount + 1);
+            } else {
+                Api.del(`/like/${postId}`);
+                setLiked(false);
+                setLikeCount(likeCount - 1);
+            }
+        } catch (err) {
+            alert(err.message);
+            console.log('좋아요 누르기 실패!');
+        } finally {
+            setDisabled(false);
+        }
+    };
+
+    const fetchLikes = async postId => {
+        try {
+            const res = await Api.get(`like/${postId}`);
+            console.log('like: ', res.data);
+            const likesData = res.data;
+            setLikeCount(likesData.likecount);
+            setLiked(likesData.likeuser);
+        } catch (err) {
+            alert('err.rseponse.data.message');
+            console.log('좋아요 불러오기를 실패했습니다.');
+        }
     };
 
     const fetchPostDetail = async postId => {
@@ -82,6 +125,7 @@ function PostDetail() {
         }
         fetchPostDetail(postId);
         fetchComments(postId);
+        fetchLikes(postId);
     }, [userState, fetchComments]);
 
     return (
@@ -96,10 +140,22 @@ function PostDetail() {
                     <div className="postSection w-full">
                         <img src={postImage} alt="Post Image" className="postImage w-full h-auto mt-5" />
                         <div className="flex mt-3">
-                            {/* {like == true ? <SolidStarIcon className="h-7 w-7" fill="#008762" /> : <StarIcon className="h-7 w-7" />} */}
-                            <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7" onClick={() => handleClick(post)} />
+                            {liked == true ? (
+                                <SolidStarIcon
+                                    disabled={disabled}
+                                    onClick={() => handleLike(postId, userId)}
+                                    className="h-7 w-7"
+                                    fill="#008762"
+                                />
+                            ) : (
+                                <StarIcon disabled={disabled} onClick={() => handleLike(postId, userId)} className="h-7 w-7" />
+                            )}
+                            <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7" />
                         </div>
-                        {/* <div className="text-left mt-3">{post.postLikeCount.toLocaleString()} 명이 좋아합니다.</div> */}
+
+                        <div className="text-left mt-3">
+                            <span style={{ fontWeight: 'blod' }}>{likeCount.toLocaleString()} 명</span>이 좋아합니다.
+                        </div>
                         <div className="flex mt-2 text-md text-left">
                             <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.userId}</span> {post.content}
                         </div>
@@ -107,7 +163,7 @@ function PostDetail() {
                     <div className="commentSection text-left">
                         {comments?.map(item => (
                             <div key={item.id}>
-                                {item.nickname}: {item.content}
+                                <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
                             </div>
                         ))}
                         <div className="flex mt-4 ">
