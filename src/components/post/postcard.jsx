@@ -85,11 +85,11 @@ function PostCard({ post }) {
         <div className="postCard rounded-lg mx-auto grid max-w-2xl grid-cols-1 border border-gray-300 pt-5 pl-5 pb-5 pr-5 mb-5">
             <article key={post.postId} className="flex max-w-xl flex-col items-start justify-between">
                 <div className="profileSection relative flex items-center gap-x-4">
-                    <img src={post.userImage} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+                    <img src={getImageSrc(post.userImage)} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
                     <div style={{ display: 'flex', verticalAlign: 'middle' }}>{post.userId}</div>
                 </div>
                 <div className="postSection w-full">
-                    <img src={post.imageUrl} alt="Post Image" className="postImage w-full h-auto mt-5" />
+                    <img src={getImageSrc(post.imageUrl)} alt="Post Image" className="postImage w-full h-auto mt-5" />
                     <div className="flex mt-3">
                         {/* 눌렀을 때 좋아요 상태 변경하는 코드 추가하기 */}
                         {/* <StarIcon className="h-7 w-7" onClick={() => handleLike(post)} /> */}
