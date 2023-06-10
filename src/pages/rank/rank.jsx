@@ -6,7 +6,7 @@ import RankCard from '../../components/rankcard/rankcard';
 import UserCard from '../../components/user/usercard';
 import RankPageSentence from '../../components/rankpagesentence/rankpagesentence';
 import { UserStateContext } from '../../../App';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PointBar from '../../components/pointbar/pointbar';
 
 function Rank() {
@@ -14,14 +14,7 @@ function Rank() {
     const userState = useContext(UserStateContext);
     // const [users, setUsers] = useState([])
     const [rankList, setRankList] = useState([]);
-    const [user, setUser] = useState(
-        {
-            id: userState.user.userId,
-            image: userState.user.userImage,
-            nickname: userState.user.nickname,
-        },
-        // Add more users as needed
-    );
+    // console.log(userState);
     // const [rankListUser, setRankListUser] = useState([]);
 
     const [point, setPoint] = useState();
@@ -29,13 +22,12 @@ function Rank() {
 
     const fetchRank = async () => {
         try {
-            const point = await Api.get('user/point');
-            setPoint(point.data.userPoint.accuPoint);
-
             const res = await Api.get('rank/list');
             const ownerData = res.data;
-
             setRankList(ownerData.rankList);
+
+            const point = await Api.get('user/point');
+            setPoint(point.data.userPoint.accuPoint);
         } catch (err) {
             if (err.response.status === 400) {
                 alert(err.response.data.error);
@@ -51,7 +43,7 @@ function Rank() {
             return;
         }
         fetchRank();
-    }, [userState, navigate]);
+    }, [userState]);
 
     return (
         <div>
@@ -62,9 +54,7 @@ function Rank() {
             <div>
                 <PointBar point={point} pointMax={pointMax} />
             </div>
-            <div>
-                <UserCard owner={user} point={point} />
-            </div>
+            <div>{/* <UserCard user={user} point={point} /> */}</div>
             <div className="headerSection" style={{ height: '50px' }}></div>
             <p>랭킹</p>
             <div className="w-full">

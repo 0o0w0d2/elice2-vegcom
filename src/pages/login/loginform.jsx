@@ -27,26 +27,28 @@ function LoginForm() {
     const isPasswordValid = password.length >= 4;
     const isFormValid = isEmailValid && isPasswordValid;
 
-    const handleSubmit = async e => {
+    const handleSubmit = async () => {
         try {
             const res = await Api.post('user/login', {
                 email,
                 password,
             });
+            console.log(res);
             const user = res.data;
             const jwtToken = user.token;
+            console.log('토큰: ', jwtToken);
             sessionStorage.setItem('userToken', jwtToken);
             dispatch({
                 type: 'LOGIN_SUCCESS',
                 payload: user,
             });
-            console.log('토큰: ', jwtToken);
+
             navigate('/rank', { replace: true });
         } catch (err) {
             if (err.response && err.response.status === 400) {
                 alert('비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.');
             } else {
-                alert('로그인에 실패하였습니다.');
+                alert('로그인에 실패하였습니다.', err);
             }
         }
     };
