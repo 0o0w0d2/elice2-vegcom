@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import BarGraph from './data/bargraph';
+import LineGraph from './data/linegraph';
 
 function MainPage() {
     return (
@@ -6,7 +8,7 @@ function MainPage() {
             <div className="p-4 ">
                 <div className="items-center justify-center text-3xl font-sans font-bold">
                     <div className="flex items-center justify-center">
-                        <img src="/public/logolong.png" alt="오채완 로고" className="logo"></img>
+                        <img src="/logolong.png" alt="오채완 로고" className="logo"></img>
                     </div>
                     에서 함께
                     <span className="text-green-700"> 탄소 배출 감축</span>을 실현해요!
@@ -29,6 +31,10 @@ function MainPage() {
                         </a>
                     </li>
                 </ul>
+            </div>
+            {/* <BarGraph /> */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <LineGraph />
             </div>
         </div>
     );
