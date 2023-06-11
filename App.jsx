@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer, createContext } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useNavigate, BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 import * as Api from './api';
 import { loginReducer } from './reducer';
@@ -21,6 +21,8 @@ export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
 
 function App() {
+    const navigate = useNavigate();
+    const location = useLocation();
     // useReducer 훅을 통해 userState 상태와 dispatch함수를 생성함.
     const [userState, dispatch] = useReducer(loginReducer, {
         user: null,
@@ -55,14 +57,24 @@ function App() {
         fetchCurrentUser();
     }, []);
 
-    // const location = useLocation();
-    // console.log('user location', location);
-    const isLogin = !!userState.user;
-    console.log('login status', isLogin);
-
     if (!isFetchCompleted) {
         return 'loading...';
     }
+
+    const isLogin = !!userState.user;
+    console.log('login status', isLogin);
+
+    // useEffect(() => {
+    //     const path = location.pathname;
+    //     console.log(path);
+    //     if (isLogin && (path === '/login' || path === 'register')) {
+    //         navigate('/rank');
+    //     }
+    //     if (!isLogin && path != '/login' && path != '/register' && path != '/') {
+    //         navigate('/login');
+    //         alert('로그인한 유저만 접근할 수 있습니다.');
+    //     }
+    // }, [isLogin, location.pathname, navigate]);
 
     return (
         <DispatchContext.Provider value={dispatch}>

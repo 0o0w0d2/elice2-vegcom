@@ -25,13 +25,13 @@ function Story() {
     };
 
     useEffect(() => {
-        if (!userState.user) {
-            navigate('/login');
-            alert('로그인한 유저만 사용할 수 있습니다.');
-            return;
-        }
+        // if (!userState.user) {
+        //     navigate('/login');
+        //     alert('로그인한 유저만 사용할 수 있습니다.');
+        //     return;
+        // }
         fetchPost();
-    }, [userState, navigate]);
+    }, [navigate]);
 
     return (
         <>

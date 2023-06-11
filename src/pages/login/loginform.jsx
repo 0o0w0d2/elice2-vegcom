@@ -6,7 +6,7 @@ import { UserStateContext, DispatchContext } from '../../../App';
 function LoginForm() {
     const navigate = useNavigate();
     const dispatch = useContext(DispatchContext);
-    const userState = useContext(UserStateContext);
+    // const userState = useContext(UserStateContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -47,12 +47,12 @@ function LoginForm() {
         }
     };
     //만약 로그인된 상태라면, 기본 페이지로 이동
-    useEffect(() => {
-        if (userState.user) {
-            navigate('/rank');
-            return;
-        }
-    }, [userState, navigate]);
+    // useEffect(() => {
+    //     if (userState.user) {
+    //         navigate('/rank');
+    //         return;
+    //     }
+    // }, [userState, navigate]);
 
     return (
         <div className="login-page">
