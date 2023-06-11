@@ -22,8 +22,6 @@ function UserEdit() {
 
             const res = await Api.put(`/user/${userId}`, formData);
             navigate(-1);
-
-            navigate(-1);
         } catch (err) {
             console.log(err);
             alert(err.response.data.message);
@@ -75,7 +73,10 @@ function UserEdit() {
                     />
                 </div>
                 <div className="buttonSection mt-5 justify-center">
-                    <button onClick={goBack} type="button" className=" shadow-sm text-sm font-semibold leading-6 text-gray-900">
+                    <button
+                        onClick={() => navigate(-1)}
+                        type="button"
+                        className=" shadow-sm text-sm font-semibold leading-6 text-gray-900">
                         취소
                     </button>
                     <button
