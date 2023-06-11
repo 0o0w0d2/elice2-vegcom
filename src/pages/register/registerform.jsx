@@ -27,9 +27,10 @@ function RegisterForm() {
     const isNicknameValid = useMemo(() => nickname.length >= 2, [nickname]);
 
     // 위 4개 조건이 모두 동시에 만족되는지 여부를 확인함.
-    const isFormValid = (useMemo =
-        (() => isEmailValid && isPasswordValid && isPasswordSame && isNicknameValid,
-        [isEmailValid, isPasswordValid, isPasswordSame, isNicknameValid]));
+    const isFormValid = useMemo(
+        () => isEmailValid && isPasswordValid && isPasswordSame && isNicknameValid,
+        [isEmailValid, isPasswordValid, isPasswordSame, isNicknameValid],
+    );
 
     const handleSubmit = async e => {
         try {
