@@ -67,26 +67,24 @@ function App() {
     return (
         <DispatchContext.Provider value={dispatch}>
             <UserStateContext.Provider value={userState}>
-                <Router>
-                    {isLogin && (
-                        <>
-                            <Header />
-                        </>
-                    )}
-                    <Routes>
-                        <Route path="/" exact element={<MainPage />} />
-                        <Route path="/login" element={<LoginForm />} />
-                        <Route path="/register" element={<RegisterForm />} />
-                        <Route path="/rank" element={<Rank />} />
-                        <Route path="/story" element={<Story />} />
-                        <Route path="/addpost" element={<AddPost />} />
-                        <Route path="/useredit" element={<UserEdit />} />
-                        <Route path="/post/:postId" element={<PostDetail />} />
-
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
-                    {/* <Footer /> */}
-                </Router>
+                {isLogin && (
+                    <>
+                        <Header />
+                    </>
+                )}
+                {/* <MainPage /> */}
+                <Routes>
+                    <Route path="/" exact element={<MainPage />} />
+                    <Route path="/login" element={<LoginForm />} />
+                    <Route path="/register" element={<RegisterForm />} />
+                    <Route path="/rank" element={<Rank />} />
+                    <Route path="/story" element={<Story />} />
+                    <Route path="/addpost" element={<AddPost />} />
+                    <Route path="/useredit" element={<UserEdit />} />
+                    <Route path="/post/:postId" element={<PostDetail />} />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+                {/* <Footer /> */}
             </UserStateContext.Provider>
         </DispatchContext.Provider>
     );
