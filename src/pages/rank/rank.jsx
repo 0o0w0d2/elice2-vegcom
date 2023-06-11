@@ -6,13 +6,13 @@ import RankCard from '../../components/rankcard/rankcard';
 import UserCard from '../../components/user/usercard';
 import RankPageSentence from '../../components/rankpagesentence/rankpagesentence';
 import { UserStateContext } from '../../../App';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import PointBar from '../../components/pointbar/pointbar';
 
 function Rank() {
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
 
+    const [user, setUser] = useState(null);
     const [rankList, setRankList] = useState([]);
     const [point, setPoint] = useState();
     const [isFetchCompleted, setIsFetchCompleted] = useState(false);
