@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer, createContext } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import * as Api from './api';
 import { loginReducer } from './reducer';
@@ -50,15 +50,12 @@ function App() {
         setIsFetchCompleted(true);
     };
 
+    const isLogin = localStorage.getItem('userToken');
+
     // useEffect함수를 통해 fetchCurrentUser 함수를 실행함.
     useEffect(() => {
         fetchCurrentUser();
     }, []);
-
-    // const location = useLocation();
-    // console.log('user location', location);
-    const isLogin = !!userState.user;
-    console.log('login status', isLogin);
 
     if (!isFetchCompleted) {
         return 'loading...';
@@ -68,23 +65,27 @@ function App() {
         <DispatchContext.Provider value={dispatch}>
             <UserStateContext.Provider value={userState}>
                 <Router>
-                    {isLogin && (
-                        <>
-                            <Header />
-                        </>
-                    )}
+                    {isLogin && <Header />}
+
                     <Routes>
                         <Route path="/" exact element={<MainPage />} />
                         <Route path="/login" element={<LoginForm />} />
-                        <Route path="/register" element={<RegisterForm />} />
-                        <Route path="/rank" element={<Rank />} />
-                        <Route path="/story" element={<Story />} />
-                        <Route path="/addpost" element={<AddPost />} />
-                        <Route path="/useredit" element={<UserEdit />} />
-                        <Route path="/post/:postId" element={<PostDetail />} />
+                        {isLogin ? (
+                            <>
+                                <Route path="/register" element={<RegisterForm />} />
+                                <Route path="/rank" element={<Rank />} />
+                                <Route path="/story" element={<Story />} />
+                                <Route path="/addpost" element={<AddPost />} />
+                                <Route path="/useredit" element={<UserEdit />} />
+                                <Route path="/post/:postId" element={<PostDetail />} />
 
-                        <Route path="*" element={<NotFound />} />
+                                <Route path="*" element={<NotFound />} />
+                            </>
+                        ) : (
+                            <Route path="*" element={<Navigate to="/login" replace />} />
+                        )}
                     </Routes>
+
                     {/* <Footer /> */}
                 </Router>
             </UserStateContext.Provider>
