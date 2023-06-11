@@ -19,26 +19,12 @@ function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment,
             console.log('formData 전송 후:', formData);
             navigate('/story');
         } catch (err) {
-            alert(err.response.mesasge);
+            alert(err.data.response.mesasge);
             console.log('게시물 등록을 실패했습니다.');
         }
     };
 
     const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     if (!userState.user) {
-    //         navigate('/');
-    //     }
-    // }, []);
-
-    // useEffect(() => {
-    //     if (!userState.user) {
-    //         navigate('/login');
-    //         alert('로그인한 유저만 사용할 수 있습니다.');
-    //         return;
-    //     }
-    // }, [userState, navigate]);
 
     return (
         <>

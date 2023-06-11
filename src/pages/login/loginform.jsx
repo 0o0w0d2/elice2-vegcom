@@ -43,7 +43,7 @@ function LoginForm() {
             console.log('토큰: ', jwtToken);
             navigate('/rank', { replace: true });
         } catch (err) {
-            alert(err.message);
+            alert(err.response.data.message);
         }
     };
     //만약 로그인된 상태라면, 기본 페이지로 이동

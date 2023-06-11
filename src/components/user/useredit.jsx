@@ -26,8 +26,8 @@ function UserEdit() {
             navigate(-1);
         } catch (err) {
             console.log(err);
-            // alert(err.response.data.message);
-            console.log('DB 수정 요청을 실패했습니다.'); // 이거는 나중에 err안에 있는 message로 바꿔주세요. alert도 띄우고 콘솔도 띄우고
+            alert(err.response.data.message);
+            console.log(err.response.data.message); // 이거는 나중에 err안에 있는 message로 바꿔주세요. alert도 띄우고 콘솔도 띄우고
         }
     };
     return (

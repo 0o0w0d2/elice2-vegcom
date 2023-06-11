@@ -37,10 +37,8 @@ function Rank() {
 
             setRankList(ownerData.rankList);
         } catch (err) {
-            if (err.response.status === 400) {
-                alert(err.response.data.error);
-            }
-            console.log('DB 불러오기를 실패하였습니다.', err);
+            alert(err.response.data.error);
+            console.log(err.data.response.message);
         }
     };
 

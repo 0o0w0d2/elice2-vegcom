@@ -56,8 +56,8 @@ function PostDetail() {
                 setLikeCount(likeCount - 1);
             }
         } catch (err) {
-            alert(err.message);
-            console.log('좋아요 누르기 실패!');
+            alert(err.response.data.message);
+            console.log(err.data.response.message);
         } finally {
             setDisabled(false);
         }
@@ -71,8 +71,8 @@ function PostDetail() {
             setLikeCount(likesData.likecount);
             setLiked(likesData.likeuser);
         } catch (err) {
-            alert('err.rseponse.data.message');
-            console.log('좋아요 불러오기를 실패했습니다.');
+            alert(err.data.response.message);
+            console.log(err.data.response.message);
         }
     };
 
@@ -96,7 +96,7 @@ function PostDetail() {
             }
         } catch (err) {
             alert(err.response.data.message);
-            console.log('DB 불러오기를 실패했습니다.');
+            console.log(err.data.response.message);
         }
     };
 
@@ -111,7 +111,7 @@ function PostDetail() {
                 setIsSave(false);
             } catch (err) {
                 alert(err.response.data.mesasge);
-                console.log('DB 불러오기를 실패했습니다.');
+                console.log(err.data.response.message);
             }
         },
         [postId, isSave],

@@ -39,8 +39,8 @@ function PostCard({ post }) {
             setLikeCount(likesData.likecount);
             setLiked(likesData.likeuser);
         } catch (err) {
-            alert('err.rseponse.data.message');
-            console.log('좋아요 불러오기를 실패했습니다.');
+            alert(err.data.response.message);
+            console.log(err.data.response.message);
         }
     };
 
@@ -52,7 +52,7 @@ function PostCard({ post }) {
             setComments(commentData);
         } catch (err) {
             alert(err.response.data.message);
-            console.log('댓글 불러오기를 실패했습니다');
+            console.log(err.data.response.message);
         }
     };
 
@@ -76,8 +76,8 @@ function PostCard({ post }) {
                 setLikeCount(likeCount - 1);
             }
         } catch (err) {
-            alert(err.message);
-            console.log('좋아요 누르기 실패!');
+            alert(err.response.data.message);
+            console.log(err.data.response.message);
         } finally {
             setDisabled(false);
         }

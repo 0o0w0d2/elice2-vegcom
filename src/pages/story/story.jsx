@@ -19,8 +19,8 @@ function Story() {
 
             setPostList(postData.postList);
         } catch (err) {
-            alert('err.response.data.message');
-            console.log('DB 불러오기를 실패했습니다.');
+            alert(err.data.response.message);
+            console.log(err.data.response.message);
         }
     };
 
