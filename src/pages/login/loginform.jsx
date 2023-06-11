@@ -27,20 +27,24 @@ function LoginForm() {
     const isPasswordValid = password.length >= 4;
     const isFormValid = isEmailValid && isPasswordValid;
 
-    const handleSubmit = async e => {
+    const handleSubmit = async () => {
         try {
             const res = await Api.post('user/login', {
                 email,
                 password,
             });
+
             const user = res.data;
             const jwtToken = user.token;
-            sessionStorage.setItem('userToken', jwtToken);
+            console.log('토큰: ', jwtToken);
+            localStorage.setItem('userToken', jwtToken);
+
             dispatch({
                 type: 'LOGIN_SUCCESS',
                 payload: user,
             });
-            console.log('토큰: ', jwtToken);
+
+            console.log(user);
             navigate('/rank', { replace: true });
         } catch (err) {
             alert(err.response.data.message);
