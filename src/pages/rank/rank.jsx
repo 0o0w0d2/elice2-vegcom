@@ -13,6 +13,7 @@ function Rank() {
     const [point, setPoint] = useState();
     const [isFetchCompleted, setIsFetchCompleted] = useState(false);
     const userState = useContext(UserStateContext);
+    const [count, setCount] = useState([])
 
     const pointMax = 1000;
 
@@ -45,6 +46,11 @@ function Rank() {
 
             const point = await getApi('user/point');
             setPoint(point.data.userPoint.accuPoint);
+
+            const countRes = await getApi('post/count');
+            setCount(countRes.data)
+            console.log(countRes.data)
+
         } catch (err) {
             alert(err.response.data.error);
             console.log(err.data.response.message);
@@ -64,7 +70,7 @@ function Rank() {
         <div>
             <div className="headerSection" style={{ height: '150px' }}></div>
             <div>
-                <RankPageSentence />
+                <RankPageSentence users={count.userCount} posts={count.postCount}/>
             </div>
             <div>
                 <PointBar point={point} pointMax={pointMax} />

@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import BarGraph from './data/bargraph';
-import LineGraph from './data/linegraph';
+import BarGraph from '../../components/datagraph/bargraph';
+import LineGraph from '../../components/datagraph/linegraph';
+import CO2BarGraph from '../../components/datagraph/co2bargraph';
+import PieGraph from '../../components/datagraph/piegraph';
 
 function MainPage() {
     return (
         <div>
             <div className="p-4 ">
+            <div className="headerSection" style={{ height: '100px' }}></div>
                 <div className="items-center justify-center text-3xl font-sans font-bold">
                     <div className="flex items-center justify-center">
                         <img src="/logolong.png" alt="오채완 로고" className="logo"></img>
@@ -35,6 +38,12 @@ function MainPage() {
             {/* <BarGraph /> */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <LineGraph />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <PieGraph />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <CO2BarGraph />
             </div>
         </div>
     );
