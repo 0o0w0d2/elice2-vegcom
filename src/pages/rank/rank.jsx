@@ -69,8 +69,11 @@ function Rank() {
             <div>
                 <PointBar point={point} pointMax={pointMax} />
             </div>
-            <div>
+            {/* <div>
                 <UserCard user={user.userInfo} point={point} />
+            </div> */}
+            <div>
+                <UserCard point={point} />
             </div>
             <div className="headerSection" style={{ height: '50px' }}></div>
             <p>랭킹</p>

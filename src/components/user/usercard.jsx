@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserStateContext } from '../../../App';
 
-const UserCard = ({ user, point }) => {
+const UserCard = ({ point }) => {
+    const {
+        user: { userImage = 'test.com', nickname = '', id = '' },
+    } = useContext(UserStateContext);
+
     const getImageSrc = () => {
-        if (user.userImage.startsWith('http')) {
-            return user.userImage;
+        if (userImage.startsWith('http')) {
+            return userImage;
         } else {
-            user.userImage = `https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${user.userImage}`;
-            return user.userImage;
+            return `https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${userImage}`;
         }
     };
 
@@ -16,8 +20,8 @@ const UserCard = ({ user, point }) => {
             style={{ width: '60vh', height: '60vh' }}>
             <div className="flex flex-col justify-center items-center text-center">
                 {' '}
-                <img className="w-20 h-20 object-cover rounded-full mb-2" src={getImageSrc()} alt={user.id} />
-                <h2 className="text-lg font-bold">{user.nickname}</h2>
+                <img className="w-20 h-20 object-cover rounded-full mb-2" src={getImageSrc()} alt={id} />
+                <h2 className="text-lg font-bold">{nickname}</h2>
                 <p className="text-sm text-gray-500">{point}</p>
             </div>
         </div>

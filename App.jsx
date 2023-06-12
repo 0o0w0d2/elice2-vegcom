@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, createContext } from 'react';
+import React, { useState, useEffect, useReducer, createContext, useContext } from 'react';
 import { useNavigate, BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 import * as Api from './api';
@@ -18,6 +18,13 @@ import UserEdit from './src/components/user/useredit';
 import NotFound from './src/pages/notfound';
 
 export const UserStateContext = createContext(null);
+export const useUserStateContext = () => {
+    const context = useContext(UserStateContext);
+    if (!context) {
+        throw new Error('현재 context를 호출하는 범위가 유효하지 않습니다.');
+    }
+    return context;
+};
 export const DispatchContext = createContext(null);
 
 function App() {
