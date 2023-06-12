@@ -39,7 +39,9 @@ function LoginForm() {
             const user = res.data;
             const jwtToken = user.token;
             // console.log('토큰: ', jwtToken);
+            console.log(user.userId);
             localStorage.setItem('userToken', jwtToken);
+            localStorage.setItem('userId', user.userId);
 
             dispatch({
                 type: 'LOGIN_SUCCESS',

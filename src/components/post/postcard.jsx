@@ -10,15 +10,16 @@ import * as Api from '../../../api';
 // import { formatPostcssSourceMap } from 'vite';
 
 function PostCard({ post }) {
-    const userState = useContext(UserStateContext);
-    const [comments, setComments] = useState([]);
+    const navigate = useNavigate();
+
+    const [commentsZero, setCommentsZero] = useState([]);
+    const [commentsOther, setCommentsOther] = useState([]);
     const [likeCount, setLikeCount] = useState(0);
     const [liked, setLiked] = useState(false);
-    const navigate = useNavigate();
-    const userId = userState.user.userId;
     const [disabled, setDisabled] = useState(false);
-    const isEditable = userId === post.userId;
-    console.log(isEditable);
+
+    const userId = localStorage.getItem('userId');
+    // console.log(post);
 
     const handleClick = useCallback(
         post => {
@@ -56,9 +57,11 @@ function PostCard({ post }) {
         async post => {
             try {
                 const res = await Api.get(`/comment/${post.postId}`);
-                const commentData = res.data.commentList;
-                // console.log(commentData);
-                setComments(commentData);
+                const commentDataZero = res.data.commentListZero;
+                const commentDataOther = res.data.commentListOther;
+
+                setCommentsZero(commentDataZero);
+                setCommentsOther(commentDataOther);
             } catch (err) {
                 alert(err.response.data.message);
                 console.log('댓글 불러오기를 실패했습니다');
@@ -165,7 +168,7 @@ function PostCard({ post }) {
                     </div>
                 </div>
                 <div className="commentSection mt-1">
-                    {comments.slice(0, 3)?.map(item => (
+                    {commentsZero.slice(0, 3)?.map(item => (
                         <div className="flex w-full" key={item.id}>
                             <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
                             {(userId === item.userId || isEditable) && (
