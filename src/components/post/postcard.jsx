@@ -16,7 +16,7 @@ function PostCard({ post }) {
     const [likeCount, setLikeCount] = useState(0);
     const [liked, setLiked] = useState(false);
     const navigate = useNavigate();
-    const userId = userState.user.userId;
+    const userId = localStorage.getItem('userId');
     const [disabled, setDisabled] = useState(false);
     // console.log(post);
 
