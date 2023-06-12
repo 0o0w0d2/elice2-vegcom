@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Api from '../../../api';
 import { UserStateContext, DispatchContext } from '../../../App';
@@ -12,20 +12,23 @@ function LoginForm() {
     const [password, setPassword] = useState('');
 
     //이메일이 abc@example.com 형태인지 regex를 이용해 확인함.
-    const validateEmail = email => {
-        if (email === '') {
-            return false;
-        }
-        return email
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            );
-    };
+    const validateEmail = useCallback(
+        email => {
+            if (email === '') {
+                return false;
+            }
+            return email
+                .toLowerCase()
+                .match(
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                );
+        },
+        [email],
+    );
 
-    const isEmailValid = validateEmail(email);
-    const isPasswordValid = password.length >= 4;
-    const isFormValid = isEmailValid && isPasswordValid;
+    const isEmailValid = useMemo(() => validateEmail(email), [email]);
+    const isPasswordValid = useMemo(() => password.length >= 4, [password]);
+    const isFormValid = useMemo(() => isEmailValid && isPasswordValid, [isEmailValid, isPasswordValid]);
 
     const handleSubmit = async () => {
         try {
@@ -36,7 +39,7 @@ function LoginForm() {
 
             const user = res.data;
             const jwtToken = user.token;
-            console.log('토큰: ', jwtToken);
+            // console.log('토큰: ', jwtToken);
             localStorage.setItem('userToken', jwtToken);
 
             dispatch({
@@ -44,7 +47,6 @@ function LoginForm() {
                 payload: user,
             });
 
-            console.log(user);
             navigate('/rank', { replace: true });
         } catch (err) {
             if (err.response && err.response.status === 400) {
