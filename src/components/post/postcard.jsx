@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { UserStateContext } from '../../../App';
 import { useNavigate } from 'react-router-dom';
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
@@ -17,9 +17,12 @@ function PostCard({ post }) {
     const userId = userState.user.userId;
     // console.log(post);
 
-    const handleClick = post => {
-        navigate(`/post/${post.postId}`);
-    };
+    const handleClick = useCallback(
+        post => {
+            navigate(`/post/${post.postId}`);
+        },
+        [post],
+    );
 
     const getImageSrc = imageUrl => {
         if (imageUrl.startsWith('http')) {
