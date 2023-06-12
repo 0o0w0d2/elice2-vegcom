@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as Api from '../../../api';
+import { post as postApi } from '../../../api';
 import { DispatchContext } from '../../../App';
 
 function LoginForm() {
@@ -31,7 +31,7 @@ function LoginForm() {
 
     const handleSubmit = async () => {
         try {
-            const res = await Api.post('user/login', {
+            const res = await postApi('user/login', {
                 email,
                 password,
             });

@@ -5,7 +5,8 @@ import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 import { StarIcon as SolidStarIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { StarIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
-import * as Api from '../../../api';
+import { get as getApi, post as postApi, del as delApi } from '../../../api';
+import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 
 function PostDetail() {
     // post/:postId 로 받아와서 구현
@@ -26,7 +27,7 @@ function PostDetail() {
     const path = location.pathname;
 
     const handleSubmit = async () => {
-        await Api.post('/comment', {
+        await postApi('/comment', {
             parentId: 0,
             content,
             postId,
@@ -42,7 +43,7 @@ function PostDetail() {
 
     const fetchPostDetail = useCallback(async () => {
         try {
-            const res = await Api.get(path);
+            const res = await getApi(path);
 
             const postData = res.data.post;
             setPost(postData);
@@ -50,13 +51,13 @@ function PostDetail() {
             if (postData.imageUrl.startsWith('http')) {
                 setPostImage(postData.imageUrl);
             } else {
-                setPostImage(`https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${postData.imageUrl}`);
+                setPostImage(`${BUCKET_BASE_URL}${postData.imageUrl}`);
             }
 
             if (postData.userImage.startsWith('http')) {
                 setUserImage(postData.userImage);
             } else {
-                setUserImage(`https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${postData.userImage}`);
+                setUserImage(`${BUCKET_BASE_URL}${postData.userImage}`);
             }
         } catch (err) {
             alert(err.response.data.message);
@@ -67,7 +68,7 @@ function PostDetail() {
     const fetchComments = useCallback(
         async postId => {
             try {
-                const res = await Api.get(`/comment/${postId}`);
+                const res = await getApi(`/comment/${postId}`);
                 console.log(res);
                 const commentDataZero = res.data.commentListZero;
                 const commentDataOther = res.data.commentListOther;
@@ -90,14 +91,14 @@ function PostDetail() {
             setDisabled(true);
 
             if (liked === false) {
-                Api.post(`/like/${postId}`, {
+                postApi(`/like/${postId}`, {
                     postId,
                     userId,
                 });
                 setLiked(true);
                 setLikeCount(likeCount + 1);
             } else {
-                Api.del(`/like/${postId}`);
+                delApi(`/like/${postId}`);
                 setLiked(false);
                 setLikeCount(likeCount - 1);
             }

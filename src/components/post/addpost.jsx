@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as Api from '../../../api';
+import { post as postApi } from '../../../api';
 
 function AddPost() {
     const [imageUrl, setImageUrl] = useState('');
@@ -13,7 +13,7 @@ function AddPost() {
             formData.append('image', imageUrl);
             formData.append('content', content);
 
-            await Api.post('/post', formData);
+            await postApi('/post', formData);
             console.log('formData 전송 후:', formData);
             navigate('/story');
         } catch (err) {

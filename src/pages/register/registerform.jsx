@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as Api from '../../../api';
+import { post as postApi } from '../../../api';
 
 function RegisterForm() {
     const navigate = useNavigate();
@@ -11,13 +11,16 @@ function RegisterForm() {
     const [nickname, setNickname] = useState('');
     const [imageUrl, setImageUrl] = useState('http://placekitten.com/200/200');
 
-    const validateEmail = email => {
-        return email
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            );
-    };
+    const validateEmail = useCallback(
+        email => {
+            return email
+                .toLowerCase()
+                .match(
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                );
+        },
+        [email],
+    );
 
     const isEmailValid = useMemo(() => validateEmail(email), [email]);
     const isPasswordValid = useMemo(() => password.length >= 10, [password]);
@@ -33,7 +36,7 @@ function RegisterForm() {
     const handleSubmit = async e => {
         try {
             console.log(imageUrl);
-            const res = await Api.post('user/register', {
+            const res = await postApi('user/register', {
                 email,
                 password,
                 nickname,

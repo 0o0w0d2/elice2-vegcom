@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import * as Api from '../../../api';
+import { get as getApi } from '../../../api';
 import PostCard from '../../components/post/postcard';
 import { useNavigate } from 'react-router-dom';
 import { PlusCircleIcon, MagnifyingGlassCircleIcon } from '@heroicons/react/24/outline';
@@ -10,7 +10,7 @@ function Story() {
 
     const fetchPost = useCallback(async () => {
         try {
-            const res = await Api.get('post/list');
+            const res = await getApi('post/list');
             const postData = res.data;
 
             setPostList(postData.postList);

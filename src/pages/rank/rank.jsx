@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import * as Api from '../../../api';
+import { get as getApi } from '../../../api';
 import RankCard from '../../components/rankcard/rankcard';
 import UserCard from '../../components/user/usercard';
 import RankPageSentence from '../../components/rankpagesentence/rankpagesentence';
@@ -20,7 +20,7 @@ function Rank() {
         async ownerId => {
             try {
                 // 유저 id를 가지고 "/user/유저id" 엔드포인트로 요청해 사용자 정보를 불러옴.
-                const res = await Api.get(`user/${ownerId}`);
+                const res = await getApi(`user/${ownerId}`);
                 // 사용자 정보는 response의 data임.
                 const ownerData = res.data;
                 // portfolioOwner을 해당 사용자 정보로 세팅함.
@@ -39,11 +39,11 @@ function Rank() {
 
     const fetchRank = useCallback(async () => {
         try {
-            const res = await Api.get('rank/list');
+            const res = await getApi('rank/list');
             const ownerData = res.data;
             setRankList(ownerData.rankList);
 
-            const point = await Api.get('user/point');
+            const point = await getApi('user/point');
             setPoint(point.data.userPoint.accuPoint);
         } catch (err) {
             alert(err.response.data.error);

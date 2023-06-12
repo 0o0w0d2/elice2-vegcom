@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserStateContext, DispatchContext } from '../../../App';
 import { UserCircleIcon } from '@heroicons/react/24/solid';
-import * as Api from '../../../api';
+import { put as putApi } from '../../../api';
 
 function UserEdit() {
     const userState = useContext(UserStateContext);
@@ -20,7 +20,7 @@ function UserEdit() {
             formData.append('nickname', nickname);
             formData.append('description', description);
 
-            const res = await Api.put(`/user/${userId}`, formData);
+            const res = await putApi(`/user/${userId}`, formData);
             navigate(-1);
         } catch (err) {
             console.log(err);

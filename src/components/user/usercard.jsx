@@ -1,18 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import { UserStateContext } from '../../../App';
+import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 
 const UserCard = ({ point }) => {
     const {
-        user: { userImage = 'test.com', nickname = '', id = '' },
+        user: { userImage = 'http://placekitten.com/200/200', nickname = '', id = '' },
     } = useContext(UserStateContext);
 
-    const getImageSrc = () => {
+    const getImageSrc = useCallback(() => {
         if (userImage.startsWith('http')) {
             return userImage;
         } else {
-            return `https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${userImage}`;
+            return `${BUCKET_BASE_URL}${userImage}`;
         }
-    };
+    }, [userImage]);
 
     return (
         <div

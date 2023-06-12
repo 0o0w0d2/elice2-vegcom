@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer, createContext, useContext } from 'react';
 import { useNavigate, BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
-import * as Api from './api';
+import { get as getApi } from './api';
 import { loginReducer } from './reducer';
 
 import Header from './src/sections/header';
@@ -46,7 +46,7 @@ function App() {
     const fetchCurrentUser = async () => {
         try {
             // 이전에 발급받은 토큰이 있다면, 이를 가지고 유저 정보를 받아옴.
-            const res = await Api.get('user/isLogin');
+            const res = await getApi('user/isLogin');
             const currentUser = res.data;
 
             // dispatch 함수를 통해 로그인 성공 상태로 만듦.
@@ -58,6 +58,7 @@ function App() {
             console.log('%c localStorage에 토큰 있음.', 'color: #d93d1a;');
         } catch (err) {
             console.log('%c localStorage에 토큰 없음.', 'color: #d93d1a;');
+            navigate('/login');
         }
         // fetchCurrentUser 과정이 끝났으므로, isFetchCompleted 상태를 true로 바꿔줌
         setIsFetchCompleted(true);

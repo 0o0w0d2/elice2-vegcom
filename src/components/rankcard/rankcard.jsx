@@ -1,4 +1,5 @@
 import React from 'react';
+import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 
 const RankCard = ({ user, index }) => {
     const getImageSrc = () => {
@@ -6,7 +7,7 @@ const RankCard = ({ user, index }) => {
             user.userImage = user.userImage;
             return user.userImage;
         } else {
-            user.userImage = `https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${user.userImage}`;
+            user.userImage = `${BUCKET_BASE_URL}${user.userImage}`;
             return user.userImage;
         }
     };

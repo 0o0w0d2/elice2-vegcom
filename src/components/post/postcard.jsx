@@ -5,7 +5,8 @@ import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 import { StarIcon as SolidStarIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { StarIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
-import * as Api from '../../../api';
+import { get as getApi, post as postApi, del as delApi } from '../../../api';
+import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 // import { comment } from 'postcss';
 // import { formatPostcssSourceMap } from 'vite';
 
@@ -34,7 +35,7 @@ function PostCard({ post }) {
         if (imageUrl.startsWith('http')) {
             return imageUrl;
         } else {
-            imageUrl = `https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${imageUrl}`;
+            imageUrl = `${BUCKET_BASE_URL}${imageUrl}`;
             return imageUrl;
         }
     };
@@ -42,7 +43,7 @@ function PostCard({ post }) {
     const fetchLikes = useCallback(
         async post => {
             try {
-                const res = await Api.get(`like/${post.postId}`);
+                const res = await getApi(`like/${post.postId}`);
                 // console.log('like: ', res.data);
                 const likesData = res.data;
                 setLikeCount(likesData.likecount);
@@ -58,7 +59,7 @@ function PostCard({ post }) {
     const fetchComments = useCallback(
         async post => {
             try {
-                const res = await Api.get(`/comment/${post.postId}`);
+                const res = await getApi(`/comment/${post.postId}`);
                 const commentDataZero = res.data.commentListZero;
                 const commentDataOther = res.data.commentListOther;
 
@@ -72,7 +73,7 @@ function PostCard({ post }) {
         [post],
     );
 
-    const handleLike = (postId, userId) => {
+    const handleLike = async (postId, userId) => {
         try {
             if (disabled === true) {
                 return;
@@ -80,7 +81,7 @@ function PostCard({ post }) {
             setDisabled(true);
 
             if (liked === false) {
-                Api.post(`/like/${postId}`, {
+                postApi(`/like/${postId}`, {
                     // 좋아요 누르는 버튼 구현하기
                     postId,
                     userId,
@@ -88,7 +89,7 @@ function PostCard({ post }) {
                 setLiked(true);
                 setLikeCount(likeCount + 1);
             } else {
-                Api.del(`/like/${postId}`);
+                delApi(`/like/${postId}`);
                 setLiked(false);
                 setLikeCount(likeCount - 1);
             }
