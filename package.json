@@ -23,6 +23,7 @@
         "@nivo/bar": "^0.83.0",
         "@nivo/line": "^0.83.0",
         "axios": "^1.4.0",
+        "react-router": "^6.12.1",
         "react-router-dom": "^6.11.2"
     },
     "optionalDependencies": {

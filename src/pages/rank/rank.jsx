@@ -47,17 +47,17 @@ function Rank() {
             const point = await Api.get('user/point');
             setPoint(point.data.userPoint.accuPoint);
         } catch (err) {
-            alert(err.response.data.error);
-            console.log(err.data.response.message);
+            alert(err.response.data.message);
+            console.log('DB 불러오기를 실패하였습니다.', err);
         }
     };
 
     useEffect(() => {
-        if (!userState.user) {
-            navigate('/login');
-            alert('로그인한 유저만 사용할 수 있습니다.');
-            return;
-        }
+        // if (!userState.user) {
+        //     navigate('/login');
+        //     alert('로그인한 유저만 사용할 수 있습니다.');
+        //     return;
+        // }
         fetchRank();
         fetchOwner(userState.user.userId);
     }, [userState]);

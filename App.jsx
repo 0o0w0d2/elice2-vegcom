@@ -61,7 +61,7 @@ function App() {
         return 'loading...';
     }
 
-    const isLogin = !!userState.user;
+    const isLogin = localStorage.getItem('userToken');
     console.log('login status', isLogin);
 
     // useEffect(() => {
