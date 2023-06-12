@@ -12,7 +12,7 @@ function PostDetail() {
     const userState = useContext(UserStateContext);
     const location = useLocation();
     const [post, setPost] = useState([]);
-    const userId = localStorage.getItem('userId');
+    const userId = Number(localStorage.getItem('userId'));
     const postId = location.pathname.match(/\/post\/(\d+)/)[1];
     const [content, setContent] = useState('');
     const [commentsZero, setCommentsZero] = useState([]);
@@ -36,7 +36,7 @@ function PostDetail() {
         setIsSave(true);
     };
 
-    const isEditable = Number(userId) === post.userId;
+    const isEditable = userId === post.userId;
     console.log('userId', userId, 'post', post);
     console.log('내건가', isEditable);
 
@@ -118,7 +118,7 @@ function PostDetail() {
         <>
             <div className="headerSection" style={{ height: '150px' }}></div>
             <div className="w-full pt-5 pl-5 pb-5 pr-5 mb-5">
-                <article key={postId} className="flex-col justify-between" style={{ width: '30vw' }}>
+                <article key={postId} className="flex-col justify-between" style={{ width: '40vw' }}>
                     <div className="profileSection flex items-center gap-x-4">
                         <img src={userImage} alt="유저 프로필" className="h-10 w-10 rounded-full bg-gray-50" />
                         <div style={{ display: 'flex', verticalAlign: 'middle' }}>{post.nickname}</div>
@@ -181,34 +181,35 @@ function PostDetail() {
                             <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.nickname}</span> {post.content}
                         </div>
                     </div>
-                    <div className="commentSection mt-1">
+                    <div className="commentSection w-full mt-1 mb-3">
                         {/* .. parentId === item.id  */}
-                        {commentsZero?.map(item => (
+                        {commentsZero.slice(0, 3)?.map(item => (
                             <div className="flex w-full" key={item.id}>
                                 <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
-                                {(userId === item.userId || isEditable) && (
-                                    <div className="flex flex-grow justify-end items-center">
-                                        <PencilSquareIcon className="w-5 h-5" />
-                                        <TrashIcon className="w-5 h-5" />
-                                    </div>
-                                )}
+                                <div className="flex flex-grow justify-end items-center">
+                                    {userId === item.userId && <PencilSquareIcon className="w-5 h-5" />}
+                                    {(isEditable || userId === item.userId) && <TrashIcon className="w-5 h-5" />}
+                                </div>
                             </div>
                         ))}
-                        <div className="flex mt-4 ">
-                            <input
-                                type="comment"
-                                className="w-full flex-grow block rounded-lg border-0 py-1.5 pl-3 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                                placeholder="댓글을 입력하세요."
-                                value={content}
-                                onChange={e => setContent(e.target.value)}
-                            />
-                            <div className="flex items-center ml-2">
-                                <button
-                                    type="submit"
-                                    className=" w-16 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                                    onClick={() => handleSubmit()}>
-                                    등록
-                                </button>
+                        <div className="pl-2 pb-3 fixed bottom-0 w-full bg-white" style={{ width: '40vw' }}>
+                            <div className="flex mt-4">
+                                <input
+                                    type="text"
+                                    style={{ width: '35vw' }}
+                                    className="block rounded-lg border-0 py-1 pl-3 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                    placeholder="댓글을 입력하세요."
+                                    value={content}
+                                    onChange={e => setContent(e.target.value)}
+                                />
+                                <div className="flex items-center ml-2">
+                                    <button
+                                        type="submit"
+                                        className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                        onClick={() => handleSubmit()}>
+                                        등록
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
