@@ -82,6 +82,33 @@ function PostDetail() {
         [postId, isSave],
     );
 
+    const handleLike = (postId, userId) => {
+        try {
+            if (disabled === true) {
+                return;
+            }
+            setDisabled(true);
+
+            if (liked === false) {
+                Api.post(`/like/${postId}`, {
+                    postId,
+                    userId,
+                });
+                setLiked(true);
+                setLikeCount(likeCount + 1);
+            } else {
+                Api.del(`/like/${postId}`);
+                setLiked(false);
+                setLikeCount(likeCount - 1);
+            }
+        } catch (err) {
+            alert(err.response.data.message);
+            console.log(err.response.data.message);
+        } finally {
+            setDisabled(false);
+        }
+    };
+
     useEffect(() => {
         fetchPostDetail();
         fetchComments(postId);
