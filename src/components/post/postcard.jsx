@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { UserStateContext } from '../../../App';
 import { useNavigate } from 'react-router-dom';
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 import { StarIcon as SolidStarIcon } from '@heroicons/react/24/solid';
@@ -9,14 +8,15 @@ import * as Api from '../../../api';
 // import { formatPostcssSourceMap } from 'vite';
 
 function PostCard({ post }) {
-    const userState = useContext(UserStateContext);
+    const navigate = useNavigate();
+
     const [commentsZero, setCommentsZero] = useState([]);
     const [commentsOther, setCommentsOther] = useState([]);
     const [likeCount, setLikeCount] = useState(0);
     const [liked, setLiked] = useState(false);
-    const navigate = useNavigate();
-    const userId = userState.user.userId;
     const [disabled, setDisabled] = useState(false);
+
+    const userId = localStorage.getItem('userId');
     // console.log(post);
 
     const handleClick = useCallback(
