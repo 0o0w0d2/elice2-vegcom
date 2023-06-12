@@ -17,6 +17,7 @@ function PostCard({ post }) {
     const [liked, setLiked] = useState(false);
     const navigate = useNavigate();
     const userId = userState.user.userId;
+    const [disabled, setDisabled] = useState(false);
     // console.log(post);
 
     const isEditable = userId === post.userId;
@@ -73,6 +74,11 @@ function PostCard({ post }) {
 
     const handleLike = (postId, userId) => {
         try {
+            if (disabled === true) {
+                return;
+            }
+            setDisabled(true);
+
             if (liked === false) {
                 Api.post(`/like/${postId}`, {
                     // 좋아요 누르는 버튼 구현하기
@@ -88,8 +94,10 @@ function PostCard({ post }) {
             }
             console.log('like 누르기 이후', liked);
         } catch (err) {
-            alert(err.message);
-            console.log('좋아요 누르기 실패!');
+            alert(err.response.data.message);
+            console.log(err.response.data.message);
+        } finally {
+            setDisabled(false);
         }
     };
 
@@ -146,9 +154,14 @@ function PostCard({ post }) {
                         {/* 눌렀을 때 좋아요 상태 변경하는 코드 추가하기 */}
                         {/* <StarIcon className="h-7 w-7" onClick={() => handleLike(post)} /> */}
                         {liked == true ? (
-                            <SolidStarIcon onClick={() => handleLike(post.postId, userId)} className="h-7 w-7" fill="#008762" />
+                            <SolidStarIcon
+                                disabled={disabled}
+                                onClick={() => handleLike(post.postId, userId)}
+                                className="h-7 w-7"
+                                fill="#008762"
+                            />
                         ) : (
-                            <StarIcon onClick={() => handleLike(post.postId, userId)} className="h-7 w-7" />
+                            <StarIcon disabled={disabled} onClick={() => handleLike(post.postId, userId)} className="h-7 w-7" />
                         )}
                         <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7" onClick={() => handleClick(post)} />
                     </div>
