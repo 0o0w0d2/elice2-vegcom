@@ -5,7 +5,7 @@ import * as Api from '../../../api';
 
 function RegisterForm() {
     const navigate = useNavigate();
-    const userState = useContext(UserStateContext);
+    // const userState = useContext(UserStateContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -49,13 +49,13 @@ function RegisterForm() {
         }
     };
 
-    //만약 로그인된 상태라면, 기본 페이지로 이동
-    useEffect(() => {
-        if (userState.user) {
-            console.log('state', userState);
-            navigate('/');
-        }
-    }, [userState, navigate]);
+    // //만약 로그인된 상태라면, 기본 페이지로 이동
+    // useEffect(() => {
+    //     if (userState.user) {
+    //         console.log('state', userState);
+    //         navigate('/');
+    //     }
+    // }, [userState, navigate]);
 
     return (
         <div style={{ alignItems: 'center', display: 'center', maxWidth: '700px', width: '75vh' }}>

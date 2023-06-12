@@ -19,19 +19,19 @@ function Story() {
 
             setPostList(postData.postList);
         } catch (err) {
-            alert('err.response.data.message');
-            console.log('DB 불러오기를 실패했습니다.');
+            alert(err.data.response.message);
+            console.log(err.data.response.message);
         }
     };
 
     useEffect(() => {
-        if (!userState.user) {
-            navigate('/login');
-            alert('로그인한 유저만 사용할 수 있습니다.');
-            return;
-        }
+        // if (!userState.user) {
+        //     navigate('/login');
+        //     alert('로그인한 유저만 사용할 수 있습니다.');
+        //     return;
+        // }
         fetchPost();
-    }, [userState, navigate]);
+    }, [navigate]);
 
     return (
         <>

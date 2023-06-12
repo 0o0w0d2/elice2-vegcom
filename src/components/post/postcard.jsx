@@ -15,6 +15,7 @@ function PostCard({ post }) {
     const [liked, setLiked] = useState(false);
     const navigate = useNavigate();
     const userId = userState.user.userId;
+    const [disabled, setDisabled] = useState(false);
     // console.log(post);
 
     const handleClick = post => {
@@ -38,8 +39,8 @@ function PostCard({ post }) {
             setLikeCount(likesData.likecount);
             setLiked(likesData.likeuser);
         } catch (err) {
-            alert('err.rseponse.data.message');
-            console.log('좋아요 불러오기를 실패했습니다.');
+            alert(err.data.response.message);
+            console.log(err.data.response.message);
         }
     };
 
@@ -51,12 +52,16 @@ function PostCard({ post }) {
             setComments(commentData);
         } catch (err) {
             alert(err.response.data.message);
-            console.log('댓글 불러오기를 실패했습니다');
+            console.log(err.data.response.message);
         }
     };
 
     const handleLike = (postId, userId) => {
         try {
+            if (disabled === true) {
+                return;
+            }
+            setDisabled(true);
             if (liked === false) {
                 Api.post(`/like/${postId}`, {
                     // 좋아요 누르는 버튼 구현하기
@@ -64,14 +69,17 @@ function PostCard({ post }) {
                     userId,
                 });
                 setLiked(true);
+                setLikeCount(likeCount + 1);
             } else {
                 Api.del(`/like/${postId}`);
                 setLiked(false);
+                setLikeCount(likeCount - 1);
             }
-            console.log('like 누르기 이후', liked);
         } catch (err) {
-            alert(err.message);
-            console.log('좋아요 누르기 실패!');
+            alert(err.response.data.message);
+            console.log(err.data.response.message);
+        } finally {
+            setDisabled(false);
         }
     };
 
@@ -92,11 +100,15 @@ function PostCard({ post }) {
                     <img src={getImageSrc(post.imageUrl)} alt="Post Image" className="postImage w-full h-auto mt-5" />
                     <div className="flex mt-3">
                         {/* 눌렀을 때 좋아요 상태 변경하는 코드 추가하기 */}
-                        {/* <StarIcon className="h-7 w-7" onClick={() => handleLike(post)} /> */}
                         {liked == true ? (
-                            <SolidStarIcon onClick={() => handleLike(post.postId, userId)} className="h-7 w-7" fill="#008762" />
+                            <SolidStarIcon
+                                disabled={disabled}
+                                onClick={() => handleLike(post.postId, userId)}
+                                className="h-7 w-7"
+                                fill="#008762"
+                            />
                         ) : (
-                            <StarIcon onClick={() => handleLike(post.postId, userId)} className="h-7 w-7" />
+                            <StarIcon disabled={disabled} onClick={() => handleLike(post.postId, userId)} className="h-7 w-7" />
                         )}
                         <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7" onClick={() => handleClick(post)} />
                     </div>
@@ -105,12 +117,12 @@ function PostCard({ post }) {
                         <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.userId}</span> {post.content}
                     </div>
                 </div>
-                <div>
-                    {/* {comments.slice(0, 3)?.map(item => (
-                        <div key={item.id}>
-                            {item.nickname}: {item.content}
+                <div className="mt-1">
+                    {comments.slice(0, 3)?.map(item => (
+                        <div className="text-left" key={item.id}>
+                            <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
                         </div>
-                    ))} */}
+                    ))}
                 </div>
             </article>
         </div>

@@ -6,7 +6,7 @@ import { UserStateContext, DispatchContext } from '../../../App';
 function LoginForm() {
     const navigate = useNavigate();
     const dispatch = useContext(DispatchContext);
-    const userState = useContext(UserStateContext);
+    // const userState = useContext(UserStateContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -45,20 +45,16 @@ function LoginForm() {
             console.log(user);
             navigate('/rank', { userId: user.id });
         } catch (err) {
-            if (err.response && err.response.status === 400) {
-                alert('비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.');
-            } else {
-                alert('로그인에 실패하였습니다.', err);
-            }
+            alert(err.response.data.message);
         }
     };
     //만약 로그인된 상태라면, 기본 페이지로 이동
-    useEffect(() => {
-        if (userState.user) {
-            navigate('/rank');
-            return;
-        }
-    }, [userState, navigate]);
+    // useEffect(() => {
+    //     if (userState.user) {
+    //         navigate('/rank');
+    //         return;
+    //     }
+    // }, [userState, navigate]);
 
     return (
         <div className="login-page">

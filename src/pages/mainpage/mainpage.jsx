@@ -1,33 +1,18 @@
 import React, { useState } from 'react';
+import BarGraph from './data/bargraph';
+import LineGraph from './data/linegraph';
 
 function MainPage() {
-    const [isLogoHovered, setIsLogoHovered] = useState(false);
-
-    const handleLogoMouseEnter = () => {
-        setIsLogoHovered(true);
-    };
-
-    const handleLogoMouseLeave = () => {
-        setIsLogoHovered(false);
-    };
-
-    const getLogoSrc = () => {
-        return isLogoHovered ? '/logolong.png' : '/logoshort.png';
-    };
-
     return (
         <div>
             <div className="p-4 ">
-                <p className="text-3xl font-sans font-bold">
-                    <img
-                        onMouseEnter={handleLogoMouseEnter}
-                        onMouseLeave={handleLogoMouseLeave}
-                        src={getLogoSrc()}
-                        alt="오채완 로고"
-                        className="logo"></img>
+                <div className="items-center justify-center text-3xl font-sans font-bold">
+                    <div className="flex items-center justify-center">
+                        <img src="/logolong.png" alt="오채완 로고" className="logo"></img>
+                    </div>
                     에서 함께
-                    <span className="text-green-700">탄소 배출 감축</span>을 실현해요!
-                </p>
+                    <span className="text-green-700"> 탄소 배출 감축</span>을 실현해요!
+                </div>
             </div>
             <div className="hidden w-full md:block md:w-auto" id="navbar-default">
                 <ul className="font-medium flex flex-col items-center justify-center p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
@@ -46,6 +31,10 @@ function MainPage() {
                         </a>
                     </li>
                 </ul>
+            </div>
+            {/* <BarGraph /> */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <LineGraph />
             </div>
         </div>
     );
