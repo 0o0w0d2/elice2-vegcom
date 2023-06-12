@@ -18,7 +18,7 @@ function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment,
             navigate('/story');
         } catch (err) {
             alert(err.data.response.mesasge);
-            console.log(err.data.response.message);
+            console.log('게시물 등록을 실패했습니다.');
         }
     };
 

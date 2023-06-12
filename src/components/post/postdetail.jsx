@@ -1,9 +1,10 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, { Fragment, useContext, useState, useEffect, useCallback } from 'react';
 import { UserStateContext } from '../../../App';
 import { useLocation } from 'react-router-dom';
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
-import { StarIcon as SolidStarIcon } from '@heroicons/react/24/solid';
+import { StarIcon as SolidStarIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { StarIcon } from '@heroicons/react/24/outline';
+import { Menu, Transition } from '@headlessui/react';
 import * as Api from '../../../api';
 
 function PostDetail() {
@@ -31,9 +32,9 @@ function PostDetail() {
         });
 
         setContent('');
-
         setIsSave(true);
     };
+    const isEditable = userId === post.userId;
 
     const fetchPostDetail = useCallback(async () => {
         try {
@@ -88,7 +89,42 @@ function PostDetail() {
                 <article key={postId} className="flex-col justify-between" style={{ width: '30vw' }}>
                     <div className="profileSection flex items-center gap-x-4">
                         <img src={userImage} alt="유저 프로필" className="h-10 w-10 rounded-full bg-gray-50" />
-                        <div style={{ display: 'flex', verticalAlign: 'middle' }}>{post.userId}</div>
+                        <div style={{ display: 'flex', verticalAlign: 'middle' }}>{post.nickname}</div>
+                        {isEditable && (
+                            <div className="flex flex-grow justify-end">
+                                <Menu as="div" className="relative inline-block text-left">
+                                    <div>
+                                        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 bg-white px-3 py-2 text-sm font-semibold text-gray-900">
+                                            <EllipsisVerticalIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                        </Menu.Button>
+                                    </div>
+
+                                    <Transition
+                                        as={Fragment}
+                                        enter="transition ease-out duration-100"
+                                        enterFrom="transform opacity-0 scale-95"
+                                        enterTo="transform opacity-100 scale-100"
+                                        leave="transition ease-in duration-75"
+                                        leaveFrom="transform opacity-100 scale-100"
+                                        leaveTo="transform opacity-0 scale-95">
+                                        <Menu.Items className="text-center absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                            <div className="py-1">
+                                                <div
+                                                    className="text-gray-700 block px-4 py-2 text-md"
+                                                    onClick={() => navigate('/rank')}>
+                                                    수정
+                                                </div>
+                                                <div
+                                                    className="text-gray-700 block px-4 py-2 text-md"
+                                                    onClick={() => navigate('/rank')}>
+                                                    삭제
+                                                </div>
+                                            </div>
+                                        </Menu.Items>
+                                    </Transition>
+                                </Menu>
+                            </div>
+                        )}
                     </div>
                     <div className="postSection w-full">
                         <img src={postImage} alt="Post Image" className="postImage w-full h-auto mt-5" />
@@ -107,16 +143,23 @@ function PostDetail() {
                         </div>
 
                         <div className="text-left mt-3">
-                            <span style={{ fontWeight: 'blod' }}>{likeCount.toLocaleString()} 명</span>이 좋아합니다.
+                            <span style={{ fontWeight: 'bold' }}>{likeCount.toLocaleString()} 명</span>이 좋아합니다.
                         </div>
                         <div className="flex mt-2 text-md text-left">
-                            <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.userId}</span> {post.content}
+                            <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.nickname}</span> {post.content}
                         </div>
                     </div>
-                    <div className="commentSection text-left">
+                    <div className="commentSection mt-1">
+                        {/* .. parentId === item.id  */}
                         {comments?.map(item => (
-                            <div key={item.id}>
+                            <div className="flex w-full" key={item.id}>
                                 <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
+                                {(userId === item.userId || isEditable) && (
+                                    <div className="flex flex-grow justify-end items-center">
+                                        <PencilSquareIcon className="w-5 h-5" />
+                                        <TrashIcon className="w-5 h-5" />
+                                    </div>
+                                )}
                             </div>
                         ))}
                         <div className="flex mt-4 ">
