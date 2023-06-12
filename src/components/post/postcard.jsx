@@ -80,9 +80,11 @@ function PostCard({ post }) {
                     userId,
                 });
                 setLiked(true);
+                setLikeCount(likeCount + 1);
             } else {
                 Api.del(`/like/${postId}`);
                 setLiked(false);
+                setLikeCount(likeCount - 1);
             }
             console.log('like 누르기 이후', liked);
         } catch (err) {
