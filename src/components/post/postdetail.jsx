@@ -12,7 +12,7 @@ function PostDetail() {
     const userState = useContext(UserStateContext);
     const location = useLocation();
     const [post, setPost] = useState([]);
-    const userId = userState.user.userId;
+    const userId = localStorage.getItem('userId');
     const postId = location.pathname.match(/\/post\/(\d+)/)[1];
     const [content, setContent] = useState('');
     const [comments, setComments] = useState([]);
