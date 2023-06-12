@@ -15,7 +15,8 @@ function PostDetail() {
     const userId = localStorage.getItem('userId');
     const postId = location.pathname.match(/\/post\/(\d+)/)[1];
     const [content, setContent] = useState('');
-    const [comments, setComments] = useState([]);
+    const [commentsZero, setCommentsZero] = useState([]);
+    const [commentsOther, setCommentsOther] = useState([]);
     const [postImage, setPostImage] = useState('');
     const [userImage, setUserImage] = useState('');
     const [isSave, setIsSave] = useState(false);
@@ -34,7 +35,10 @@ function PostDetail() {
         setContent('');
         setIsSave(true);
     };
-    const isEditable = userId === post.userId;
+
+    const isEditable = Number(userId) === post.userId;
+    console.log('userId', userId, 'post', post);
+    console.log('내건가', isEditable);
 
     const fetchPostDetail = useCallback(async () => {
         try {
@@ -43,13 +47,13 @@ function PostDetail() {
             const postData = res.data.post;
             setPost(postData);
 
-            if (postData.imageUrl.startsWith('https')) {
+            if (postData.imageUrl.startsWith('http')) {
                 setPostImage(postData.imageUrl);
             } else {
                 setPostImage(`https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${postData.imageUrl}`);
             }
 
-            if (postData.userImage.startsWith('https')) {
+            if (postData.userImage.startsWith('http')) {
                 setUserImage(postData.userImage);
             } else {
                 setUserImage(`https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${postData.userImage}`);
@@ -64,10 +68,11 @@ function PostDetail() {
         async postId => {
             try {
                 const res = await Api.get(`/comment/${postId}`);
-                // console.log(res);
-                const commentData = res.data.commentList;
-
-                setComments(commentData);
+                console.log(res);
+                const commentDataZero = res.data.commentListZero;
+                const commentDataOther = res.data.commentListOther;
+                setCommentsZero(commentDataZero);
+                setCommentsOther(commentDataOther);
                 setIsSave(false);
             } catch (err) {
                 alert(err.response.data.mesasge);
@@ -151,7 +156,7 @@ function PostDetail() {
                     </div>
                     <div className="commentSection mt-1">
                         {/* .. parentId === item.id  */}
-                        {comments?.map(item => (
+                        {commentsZero?.map(item => (
                             <div className="flex w-full" key={item.id}>
                                 <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
                                 {(userId === item.userId || isEditable) && (

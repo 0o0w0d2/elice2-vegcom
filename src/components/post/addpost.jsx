@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Api from '../../../api';
 
-function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment, like, isEditable }) {
+function AddPost() {
     const [imageUrl, setImageUrl] = useState('');
     const [content, setContent] = useState('');
 
@@ -17,8 +17,8 @@ function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment,
             console.log('formData 전송 후:', formData);
             navigate('/story');
         } catch (err) {
-            alert(err.data.response.mesasge);
-            console.log('게시물 등록을 실패했습니다.');
+            alert(err.response.data.mesasge);
+            console.log(err.response.data.message);
         }
     };
 
@@ -27,7 +27,7 @@ function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment,
     return (
         <>
             <div>
-                <h2 className="h-auto mb-3 text-bold">식단 기록하기</h2>
+                <h1 className="h-auto mb-7 text-bold">식단 기록하기</h1>
             </div>
             <h2 className="text-left">파일 선택</h2>
             <div className="flex items-center justify-center w-full">
@@ -49,7 +49,7 @@ function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment,
                                 d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                         </svg>
                         <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                            <span className="font-semibold">사진 파일을 선택해 주세요.</span> drag&drop으로도 올릴 수 있습니다.
+                            <span className="font-semibold">사진 파일을 선택해 주세요.</span>
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">PNG of JPG</p>
                     </div>
