@@ -10,7 +10,8 @@ import * as Api from '../../../api';
 
 function PostCard({ post }) {
     const userState = useContext(UserStateContext);
-    const [comments, setComments] = useState([]);
+    const [commentsZero, setCommentsZero] = useState([]);
+    const [commentsOther, setCommentsOther] = useState([]);
     const [likeCount, setLikeCount] = useState(0);
     const [liked, setLiked] = useState(false);
     const navigate = useNavigate();
@@ -53,9 +54,11 @@ function PostCard({ post }) {
         async post => {
             try {
                 const res = await Api.get(`/comment/${post.postId}`);
-                const commentData = res.data.commentList;
-                // console.log(commentData);
-                setComments(commentData);
+                const commentDataZero = res.data.commentListZero;
+                const commentDataOther = res.data.commentListOther;
+
+                setCommentsZero(commentDataZero);
+                setCommentsOther(commentDataOther);
             } catch (err) {
                 alert(err.response.data.message);
                 console.log('댓글 불러오기를 실패했습니다');
@@ -114,11 +117,11 @@ function PostCard({ post }) {
                     </div>
                 </div>
                 <div>
-                    {/* {comments.slice(0, 3)?.map(item => (
+                    {commentsZero?.slice(0, 3)?.map(item => (
                         <div key={item.id}>
                             {item.nickname}: {item.content}
                         </div>
-                    ))} */}
+                    ))}
                 </div>
             </article>
         </div>
