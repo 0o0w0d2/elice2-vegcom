@@ -1,18 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import * as Api from '../../../api';
-// import Navigator from '../../sections/navigator';
 import PostCard from '../../components/post/postcard';
-import { UserStateContext } from '../../../App';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PlusCircleIcon, MagnifyingGlassCircleIcon } from '@heroicons/react/24/outline';
 
 function Story() {
     const navigate = useNavigate();
-    const userState = useContext(UserStateContext);
     const [postList, setPostList] = useState([]);
-    const userId = userState.id;
 
-    const fetchPost = async () => {
+    const fetchPost = useCallback(async () => {
         try {
             const res = await Api.get('post/list');
             const postData = res.data;
@@ -22,16 +18,11 @@ function Story() {
             alert(err.data.response.message);
             console.log(err.data.response.message);
         }
-    };
+    }, []);
 
     useEffect(() => {
-        // if (!userState.user) {
-        //     navigate('/login');
-        //     alert('로그인한 유저만 사용할 수 있습니다.');
-        //     return;
-        // }
         fetchPost();
-    }, [navigate]);
+    }, [fetchPost]);
 
     return (
         <>

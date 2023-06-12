@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { UserStateContext } from '../../../App';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 import { StarIcon as SolidStarIcon } from '@heroicons/react/24/solid';
 import { StarIcon } from '@heroicons/react/24/outline';
@@ -9,7 +9,6 @@ import * as Api from '../../../api';
 function PostDetail() {
     // post/:postId 로 받아와서 구현
     const userState = useContext(UserStateContext);
-    const navigate = useNavigate();
     const location = useLocation();
     const [post, setPost] = useState([]);
     const userId = userState.user.userId;
@@ -36,47 +35,7 @@ function PostDetail() {
         setIsSave(true);
     };
 
-    const handleLike = (postId, userId) => {
-        try {
-            if (disabled === true) {
-                return;
-            }
-            setDisabled(true);
-            if (liked === false) {
-                Api.post(`/like/${postId}`, {
-                    // 좋아요 누르는 버튼 구현하기
-                    postId,
-                    userId,
-                });
-                setLiked(true);
-                setLikeCount(likeCount + 1);
-            } else {
-                Api.del(`/like/${postId}`);
-                setLiked(false);
-                setLikeCount(likeCount - 1);
-            }
-        } catch (err) {
-            alert(err.response.data.message);
-            console.log(err.data.response.message);
-        } finally {
-            setDisabled(false);
-        }
-    };
-
-    const fetchLikes = async postId => {
-        try {
-            const res = await Api.get(`like/${postId}`);
-            console.log('like: ', res.data);
-            const likesData = res.data;
-            setLikeCount(likesData.likecount);
-            setLiked(likesData.likeuser);
-        } catch (err) {
-            alert(err.data.response.message);
-            console.log(err.data.response.message);
-        }
-    };
-
-    const fetchPostDetail = async postId => {
+    const fetchPostDetail = useCallback(async () => {
         try {
             const res = await Api.get(path);
 
@@ -98,13 +57,13 @@ function PostDetail() {
             alert(err.response.data.message);
             console.log(err.data.response.message);
         }
-    };
+    }, [path]);
 
     const fetchComments = useCallback(
         async postId => {
             try {
                 const res = await Api.get(`/comment/${postId}`);
-                console.log(res);
+                // console.log(res);
                 const commentData = res.data.commentList;
 
                 setComments(commentData);
@@ -118,15 +77,9 @@ function PostDetail() {
     );
 
     useEffect(() => {
-        // if (!userState.user) {
-        //     navigate('/login');
-        //     alert('로그인한 유저만 사용할 수 있습니다.');
-        //     return;
-        // }
-        fetchPostDetail(postId);
+        fetchPostDetail();
         fetchComments(postId);
-        fetchLikes(postId);
-    }, [fetchComments]);
+    }, [fetchPostDetail, fetchComments]);
 
     return (
         <>
