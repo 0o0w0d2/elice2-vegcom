@@ -38,7 +38,7 @@ function Rank() {
                 console.log('유저 정보를 불러오는데 실패하였습니다.', err);
             }
         },
-        [ownerId],
+        [userState.user.userId],
     );
 
     const fetchRank = useCallback(async () => {
