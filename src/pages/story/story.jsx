@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import * as Api from '../../../api';
 // import Navigator from '../../sections/navigator';
 import PostCard from '../../components/post/postcard';
@@ -12,7 +12,7 @@ function Story() {
     const [postList, setPostList] = useState([]);
     const userId = userState.id;
 
-    const fetchPost = async () => {
+    const fetchPost = useCallback(async () => {
         try {
             const res = await Api.get('post/list');
             const postData = res.data;
@@ -22,7 +22,7 @@ function Story() {
             alert(err.data.response.message);
             console.log(err.data.response.message);
         }
-    };
+    }, []);
 
     useEffect(() => {
         // if (!userState.user) {
@@ -31,7 +31,7 @@ function Story() {
         //     return;
         // }
         fetchPost();
-    }, [navigate]);
+    }, [fetchPost]);
 
     return (
         <>
