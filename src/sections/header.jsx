@@ -5,12 +5,20 @@ import { DispatchContext } from '../../App';
 import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { ChatBubbleLeftRightIcon, UserIcon, TrophyIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
+import {
+    UserCircleIcon,
+    ChatBubbleLeftRightIcon,
+    UserIcon,
+    TrophyIcon,
+    ArrowLeftOnRectangleIcon,
+} from '@heroicons/react/24/outline';
 
 function Header() {
+    const userId = localStorage.getItem('userId');
     const menus = [
-        { name: '스토리', description: '스토리 페이지로 이동', href: '/story', icon: ChatBubbleLeftRightIcon },
-        { name: '랭킹', description: '랭킹 페이지로 이동', href: '/rank', icon: TrophyIcon },
+        { name: '스토리', description: '스토리 페이지', href: '/story', icon: ChatBubbleLeftRightIcon },
+        { name: '랭킹', description: '랭킹 페이지', href: '/rank', icon: TrophyIcon },
+        { name: '마이페이지', description: '마이페이지', href: `/mypage/${userId}`, icon: UserCircleIcon },
         // {name: '쇼핑'},
     ];
 

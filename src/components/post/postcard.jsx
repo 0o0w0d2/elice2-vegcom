@@ -16,7 +16,7 @@ function PostCard({ post }) {
     const [likeCount, setLikeCount] = useState(0);
     const [liked, setLiked] = useState(false);
     const navigate = useNavigate();
-    const userId = userState.user.userId;
+    const userId = localStorage.getItem('userId');
     const [disabled, setDisabled] = useState(false);
     // console.log(post);
 
@@ -177,12 +177,10 @@ function PostCard({ post }) {
                     {commentsZero.slice(0, 3)?.map(item => (
                         <div className="flex w-full" key={item.id}>
                             <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
-                            {(userId === item.userId || isEditable) && (
-                                <div className="flex flex-grow justify-end items-center">
-                                    <PencilSquareIcon className="w-5 h-5" />
-                                    <TrashIcon className="w-5 h-5" />
-                                </div>
-                            )}
+                            <div className="flex flex-grow justify-end items-center">
+                                {userId === item.userId && <PencilSquareIcon className="w-5 h-5" />}
+                                {(isEditable || userId === item.userId) && <TrashIcon className="w-5 h-5" />}
+                            </div>
                         </div>
                     ))}
                 </div>
