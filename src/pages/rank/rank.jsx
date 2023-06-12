@@ -1,7 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import * as Api from '../../../api';
-// import Navigator from '../../sections/navigator';
-import Header from '../../sections/header';
 import RankCard from '../../components/rankcard/rankcard';
 import UserCard from '../../components/user/usercard';
 import RankPageSentence from '../../components/rankpagesentence/rankpagesentence';
@@ -10,8 +8,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import PointBar from '../../components/pointbar/pointbar';
 
 function Rank() {
-    const navigate = useNavigate();
-
     const [user, setUser] = useState(null);
     const [rankList, setRankList] = useState([]);
     const [point, setPoint] = useState();
@@ -56,11 +52,6 @@ function Rank() {
     }, []);
 
     useEffect(() => {
-        // if (!userState.user) {
-        //     navigate('/login');
-        //     alert('로그인한 유저만 사용할 수 있습니다.');
-        //     return;
-        // }
         fetchRank();
         fetchOwner(userState.user.userId);
     }, [fetchRank, fetchOwner]);
@@ -86,7 +77,7 @@ function Rank() {
             <div className="w-full">
                 {rankList.map((owner, index) => (
                     <div key={owner.userId}>
-                        <RankCard user={owner} point={point} index={index + 1} />
+                        <RankCard user={owner} index={index + 1} />
                     </div>
                 ))}
             </div>

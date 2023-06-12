@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { UserStateContext } from '../../../App';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 import { StarIcon as SolidStarIcon } from '@heroicons/react/24/solid';
 import { StarIcon } from '@heroicons/react/24/outline';
@@ -8,8 +8,7 @@ import * as Api from '../../../api';
 
 function PostDetail() {
     // post/:postId 로 받아와서 구현
-    // const userState = useContext(UserStateContext);
-    // const navigate = useNavigate();
+    const userState = useContext(UserStateContext);
     const location = useLocation();
     const [post, setPost] = useState([]);
     const userId = userState.user.userId;
@@ -78,11 +77,6 @@ function PostDetail() {
     );
 
     useEffect(() => {
-        // if (!userState.user) {
-        //     navigate('/login');
-        //     alert('로그인한 유저만 사용할 수 있습니다.');
-        //     return;
-        // }
         fetchPostDetail();
         fetchComments(postId);
     }, [fetchPostDetail, fetchComments]);

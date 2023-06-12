@@ -1,10 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { UserStateContext } from '../../../App';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Api from '../../../api';
 
 function AddPost({ post, postImage, userImage, postLike, postLikeCount, comment, like, isEditable }) {
-    const userState = useContext(UserStateContext);
     const [imageUrl, setImageUrl] = useState('');
     const [content, setContent] = useState('');
 

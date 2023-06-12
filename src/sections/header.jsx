@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserStateContext, DispatchContext } from '../../App';
+import { DispatchContext } from '../../App';
 
 import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
@@ -36,24 +36,6 @@ function Header() {
     const getLogoSrc = () => {
         return isLogoHovered ? '/logolong.png' : '/logoshort.png';
     };
-
-    // const location = useLocation();
-    // console.log('useLocation', location);
-    // const userState = useContext(UserStateContext);
-    // console.log('state', userState);
-
-    // const navigate = useNavigate();
-
-    // const dispatch = useContext(DispatchContext);
-
-    // const isLogin = !!userState.user;
-
-    // // 기본 페이지로 돌아가기
-    // const logout = () => {
-    //     localStorage.removeItem('userToken');
-    //     dispatch({ type: 'LOGOUT' });
-    //     navigate('/');
-    // };
 
     return (
         <header
@@ -106,10 +88,10 @@ function Header() {
                                         </div>
                                     ))}
                                 </div>
-                                <div
-                                    onClick={() => navigate('/useredit')}
-                                    className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                                    <div className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100">
+                                <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
+                                    <div
+                                        onClick={() => navigate('/useredit')}
+                                        className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100">
                                         <UserIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
                                         정보 수정
                                     </div>

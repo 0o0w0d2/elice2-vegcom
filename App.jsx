@@ -23,6 +23,10 @@ export const DispatchContext = createContext(null);
 function App() {
     const navigate = useNavigate();
     const location = useLocation();
+    const isLogin = localStorage.getItem('userToken');
+
+    const path = location.pathname;
+    console.log(path);
     // useReducer 훅을 통해 userState 상태와 dispatch함수를 생성함.
     const [userState, dispatch] = useReducer(loginReducer, {
         user: null,
@@ -52,28 +56,22 @@ function App() {
         setIsFetchCompleted(true);
     };
 
-    const isLogin = localStorage.getItem('userToken');
-
     // useEffect함수를 통해 fetchCurrentUser 함수를 실행함.
     useEffect(() => {
         fetchCurrentUser();
+
+        if (isLogin && (path === '/login' || path === 'register')) {
+            navigate('/rank');
+        }
+        if (!isLogin && path != '/login' && path != '/register' && path != '/') {
+            navigate('/login');
+            alert('로그인한 유저만 접근할 수 있습니다.');
+        }
     }, []);
 
     if (!isFetchCompleted) {
         return 'loading...';
     }
-
-    // useEffect(() => {
-    //     const path = location.pathname;
-    //     console.log(path);
-    //     if (isLogin && (path === '/login' || path === 'register')) {
-    //         navigate('/rank');
-    //     }
-    //     if (!isLogin && path != '/login' && path != '/register' && path != '/') {
-    //         navigate('/login');
-    //         alert('로그인한 유저만 접근할 수 있습니다.');
-    //     }
-    // }, [isLogin, location.pathname, navigate]);
 
     return (
         <DispatchContext.Provider value={dispatch}>

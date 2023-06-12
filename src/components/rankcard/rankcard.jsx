@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RankCard = ({ user, point, index }) => {
+const RankCard = ({ user, index }) => {
     const getImageSrc = () => {
         if (user.userImage.startsWith('http')) {
             user.userImage = user.userImage;
