@@ -106,10 +106,10 @@ function Header() {
                                         </div>
                                     ))}
                                 </div>
-                                <div
-                                    onClick={() => navigate('/useredit')}
-                                    className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                                    <div className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100">
+                                <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
+                                    <div
+                                        onClick={() => navigate('/useredit')}
+                                        className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100">
                                         <UserIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
                                         정보 수정
                                     </div>
