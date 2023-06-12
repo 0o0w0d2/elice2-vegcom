@@ -33,30 +33,36 @@ function PostCard({ post }) {
         }
     };
     //likecount, likeuser
-    const fetchLikes = async post => {
-        try {
-            const res = await Api.get(`like/${post.postId}`);
-            console.log('like: ', res.data);
-            const likesData = res.data;
-            setLikeCount(likesData.likecount);
-            setLiked(likesData.likeuser);
-        } catch (err) {
-            alert('err.rseponse.data.message');
-            console.log('좋아요 불러오기를 실패했습니다.');
-        }
-    };
+    const fetchLikes = useCallback(
+        async post => {
+            try {
+                const res = await Api.get(`like/${post.postId}`);
+                // console.log('like: ', res.data);
+                const likesData = res.data;
+                setLikeCount(likesData.likecount);
+                setLiked(likesData.likeuser);
+            } catch (err) {
+                alert(err.rseponse.data.message);
+                console.log('좋아요 불러오기를 실패했습니다.');
+            }
+        },
+        [post],
+    );
 
-    const fetchComments = async post => {
-        try {
-            const res = await Api.get(`/comment/${post.postId}`);
-            const commentData = res.data.commentList;
-            console.log(commentData);
-            setComments(commentData);
-        } catch (err) {
-            alert(err.response.data.message);
-            console.log('댓글 불러오기를 실패했습니다');
-        }
-    };
+    const fetchComments = useCallback(
+        async post => {
+            try {
+                const res = await Api.get(`/comment/${post.postId}`);
+                const commentData = res.data.commentList;
+                // console.log(commentData);
+                setComments(commentData);
+            } catch (err) {
+                alert(err.response.data.message);
+                console.log('댓글 불러오기를 실패했습니다');
+            }
+        },
+        [post],
+    );
 
     const handleLike = (postId, userId) => {
         try {
@@ -79,10 +85,9 @@ function PostCard({ post }) {
     };
 
     useEffect(() => {
-        // fetchLikes(post);
-        fetchComments(post);
         fetchLikes(post);
-    }, [post.postId]);
+        fetchComments(post);
+    }, [fetchLikes, fetchComments]);
 
     return (
         <div className="postCard rounded-lg mx-auto grid max-w-2xl grid-cols-1 border border-gray-300 pt-5 pl-5 pb-5 pr-5 mb-5">

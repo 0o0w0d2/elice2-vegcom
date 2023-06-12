@@ -20,25 +20,28 @@ function Rank() {
 
     const pointMax = 1000;
 
-    const fetchOwner = async ownerId => {
-        try {
-            // 유저 id를 가지고 "/user/유저id" 엔드포인트로 요청해 사용자 정보를 불러옴.
-            const res = await Api.get(`user/${ownerId}`);
-            // 사용자 정보는 response의 data임.
-            const ownerData = res.data;
-            // portfolioOwner을 해당 사용자 정보로 세팅함.
-            setUser(ownerData);
-            // fetchOwner 과정이 끝났으므로, isFetchCompleted를 true로 바꿈.
-            setIsFetchCompleted(true);
-        } catch (err) {
-            if (err.response.status === 400) {
-                alert('유저 정보를 불러오는데 실패하였습니다.');
+    const fetchOwner = useCallback(
+        async ownerId => {
+            try {
+                // 유저 id를 가지고 "/user/유저id" 엔드포인트로 요청해 사용자 정보를 불러옴.
+                const res = await Api.get(`user/${ownerId}`);
+                // 사용자 정보는 response의 data임.
+                const ownerData = res.data;
+                // portfolioOwner을 해당 사용자 정보로 세팅함.
+                setUser(ownerData);
+                // fetchOwner 과정이 끝났으므로, isFetchCompleted를 true로 바꿈.
+                setIsFetchCompleted(true);
+            } catch (err) {
+                if (err.response.status === 400) {
+                    alert('유저 정보를 불러오는데 실패하였습니다.');
+                }
+                console.log('유저 정보를 불러오는데 실패하였습니다.', err);
             }
-            console.log('유저 정보를 불러오는데 실패하였습니다.', err);
-        }
-    };
+        },
+        [ownerId],
+    );
 
-    const fetchRank = async () => {
+    const fetchRank = useCallback(async () => {
         try {
             const res = await Api.get('rank/list');
             const ownerData = res.data;
@@ -52,7 +55,7 @@ function Rank() {
             // }
             console.log('DB 불러오기를 실패하였습니다.', err);
         }
-    };
+    }, []);
 
     useEffect(() => {
         // if (!userState.user) {
@@ -62,7 +65,7 @@ function Rank() {
         // }
         fetchRank();
         fetchOwner(userState.user.userId);
-    }, [userState]);
+    }, [fetchRank, fetchOwner]);
 
     if (!isFetchCompleted) {
         return 'loading...';

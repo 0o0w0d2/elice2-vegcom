@@ -8,8 +8,8 @@ import * as Api from '../../../api';
 
 function PostDetail() {
     // post/:postId 로 받아와서 구현
-    const userState = useContext(UserStateContext);
-    const navigate = useNavigate();
+    // const userState = useContext(UserStateContext);
+    // const navigate = useNavigate();
     const location = useLocation();
     const [post, setPost] = useState([]);
     const postId = location.pathname.match(/\/post\/(\d+)/)[1];
@@ -33,7 +33,7 @@ function PostDetail() {
         setIsSave(true);
     };
 
-    const fetchPostDetail = async postId => {
+    const fetchPostDetail = useCallback(async () => {
         try {
             const res = await Api.get(path);
 
@@ -55,13 +55,13 @@ function PostDetail() {
             alert(err.response.data.message);
             console.log('DB 불러오기를 실패했습니다.');
         }
-    };
+    }, [path]);
 
     const fetchComments = useCallback(
         async postId => {
             try {
                 const res = await Api.get(`/comment/${postId}`);
-                console.log(res);
+                // console.log(res);
                 const commentData = res.data.commentList;
 
                 setComments(commentData);
@@ -75,14 +75,14 @@ function PostDetail() {
     );
 
     useEffect(() => {
-        if (!userState.user) {
-            navigate('/login');
-            alert('로그인한 유저만 사용할 수 있습니다.');
-            return;
-        }
-        fetchPostDetail(postId);
+        // if (!userState.user) {
+        //     navigate('/login');
+        //     alert('로그인한 유저만 사용할 수 있습니다.');
+        //     return;
+        // }
+        fetchPostDetail();
         fetchComments(postId);
-    }, [userState, fetchComments]);
+    }, [fetchPostDetail, fetchComments]);
 
     return (
         <>

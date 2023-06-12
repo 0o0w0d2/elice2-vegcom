@@ -12,7 +12,7 @@ function Story() {
     const [postList, setPostList] = useState([]);
     const userId = userState.id;
 
-    const fetchPost = async () => {
+    const fetchPost = useCallback(async () => {
         try {
             const res = await Api.get('post/list');
             const postData = res.data;
@@ -22,16 +22,16 @@ function Story() {
             alert('err.response.data.message');
             console.log('DB 불러오기를 실패했습니다.');
         }
-    };
+    }, []);
 
     useEffect(() => {
-        if (!userState.user) {
-            navigate('/login');
-            alert('로그인한 유저만 사용할 수 있습니다.');
-            return;
-        }
+        // if (!userState.user) {
+        //     navigate('/login');
+        //     alert('로그인한 유저만 사용할 수 있습니다.');
+        //     return;
+        // }
         fetchPost();
-    }, [userState, navigate]);
+    }, [fetchPost]);
 
     return (
         <>
