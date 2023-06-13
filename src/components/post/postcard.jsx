@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState, useEffect, useCallback } from 'react';
+import React, { Fragment, useMemo, useState, useEffect, useCallback } from 'react';
 import { UserStateContext } from '../../../App';
 import { useNavigate } from 'react-router-dom';
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
@@ -10,17 +10,16 @@ import * as Api from '../../../api';
 // import { formatPostcssSourceMap } from 'vite';
 
 function PostCard({ post }) {
-    const userState = useContext(UserStateContext);
     const [commentsZero, setCommentsZero] = useState([]);
     const [commentsOther, setCommentsOther] = useState([]);
     const [likeCount, setLikeCount] = useState(0);
     const [liked, setLiked] = useState(false);
     const navigate = useNavigate();
-    const userId = localStorage.getItem('userId');
+    const userId = Number(localStorage.getItem('userId'));
     const [disabled, setDisabled] = useState(false);
     // console.log(post);
 
-    const isEditable = userId === post.userId;
+    const isEditable = useMemo(() => userId === post.userId, [userId, post.userId]);
 
     const handleClick = useCallback(
         post => {

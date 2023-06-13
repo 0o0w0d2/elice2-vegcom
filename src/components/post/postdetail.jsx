@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState, useEffect, useCallback } from 'react';
+import React, { Fragment, useMemo, useState, useEffect, useCallback } from 'react';
 import { UserStateContext } from '../../../App';
 import { useLocation } from 'react-router-dom';
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
@@ -9,7 +9,6 @@ import * as Api from '../../../api';
 
 function PostDetail() {
     // post/:postId 로 받아와서 구현
-    const userState = useContext(UserStateContext);
     const location = useLocation();
     const [post, setPost] = useState([]);
     const userId = Number(localStorage.getItem('userId'));
@@ -39,7 +38,7 @@ function PostDetail() {
         setIsSave(true);
     };
 
-    const isEditable = userId === post.userId;
+    const isEditable = useMemo(() => userId === post.userId, [userId, post.userId]);
     // console.log('userId', userId, 'post', post);
     // console.log('내건가', isEditable);
 
