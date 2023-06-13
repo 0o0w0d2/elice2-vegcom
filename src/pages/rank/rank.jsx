@@ -34,6 +34,8 @@ function Rank() {
         [userId],
     );
 
+    console.log(user);
+
     const fetchRank = useCallback(async () => {
         try {
             const res = await getApi('rank/list');
@@ -41,6 +43,7 @@ function Rank() {
             setRankList(ownerData.rankList);
 
             const point = await getApi('user/point');
+            console.log(point);
             setPoint(point.data.userPoint.accuPoint);
         } catch (err) {
             alert(err.response.data.error);
