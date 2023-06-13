@@ -1,6 +1,8 @@
 import React from 'react';
 
-const PointBar = ({ point, pointMax }) => {
+const PointBar = ({ point }) => {
+    const pointMax = 14000;
+
     const percentage = (point / pointMax) * 100;
 
     return (
