@@ -21,7 +21,6 @@ function PostCard({ post }) {
     // console.log(post);
 
     const isEditable = userId === post.userId;
-    console.log(isEditable);
 
     const handleClick = useCallback(
         post => {
@@ -64,7 +63,6 @@ function PostCard({ post }) {
 
                 setCommentsZero(commentDataZero);
                 setCommentsOther(commentDataOther);
-                console.log('댓글: ', commentDataZero);
             } catch (err) {
                 alert(err.response.data.message);
                 console.log('댓글 불러오기를 실패했습니다');

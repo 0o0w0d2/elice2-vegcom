@@ -19,9 +19,8 @@ function Story() {
                     return;
                 }
                 setIsLoading(true);
-                console.log('요청 후 nextCursor:', cursor);
+
                 const res = await Api.get(`post/list/${cursor}`);
-                console.log('res:', res);
 
                 const postData = res.data;
 
@@ -43,39 +42,26 @@ function Story() {
 
                 setPostList(newPostList);
 
-                console.log('newpostList', newPostList);
-                console.log('postData', postData.postList, postData.postList[postData.postList.length - 1].postId);
-
-                console.log('set 후 nextCursor', nextCursor); // 0
-                console.log('postData', postData);
                 setIsReached(false);
             } catch (err) {
                 alert(err.message);
-                console.log(err.message);
             } finally {
                 setIsLoading(false);
-                console.log('finally nextCursor:', nextCursor); // 0
             }
         },
         [isReached],
     );
 
-    console.log('fetch 후 nextCursor', nextCursor); // 61
-
     const handleScroll = useCallback(() => {
         const scrollHeight = document.documentElement.scrollHeight;
         const scrollTop = document.documentElement.scrollTop;
         const clientHeight = document.documentElement.clientHeight;
-        // console.log('height:', scrollHeight, 'top:', scrollTop, 'clientHeight:', clientHeight);
-        // console.log('top+height=', scrollTop + clientHeight);
 
         if (scrollTop + clientHeight >= scrollHeight) {
             setIsReached(true);
-            console.log('isreached', isReached);
         }
     }, []);
 
-    console.log('isreached', isReached);
     useEffect(() => {
         // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
         fetchPost(nextCursor);
@@ -86,10 +72,6 @@ function Story() {
             window.removeEventListener('scroll', handleScroll);
         };
     }, [fetchPost]);
-
-    // useEffect(() => {
-    //     fetchPost(0);
-    // }, []);
 
     return (
         <>
