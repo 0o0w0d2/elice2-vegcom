@@ -70,18 +70,22 @@ function PostDetail() {
     const fetchComments = useCallback(
         async (postId, cursor) => {
             try {
+                if (cursor === -1) {
+                    setIsLoading(false);
+                    return;
+                }
                 setIsLoading(true);
                 const res = await Api.get(`/comment?postId=${postId}&cursor=${cursor}`);
                 console.log('res:', res);
 
-                const commentDataOther = res.data.commentListOther;
-                setCommentsOther(commentDataOther);
-
                 const commentDataZero = res.data.commentListZero;
+                const commentDataOther = res.data.commentListOther;
+
+                console.log(commentDataZero);
                 if (commentDataZero?.length < 10) {
                     setNextCursor(-1);
                 } else {
-                    setNextCursor(commentDataZero[commentDataZero.length - 1].commentId);
+                    setNextCursor(commentDataZero[commentDataZero.length - 1].id);
                 }
 
                 let newCommentsZero;
@@ -93,13 +97,17 @@ function PostDetail() {
                 } else if (commentDataZero.length === 0) {
                     newCommentsZero = [...commentsZero];
                 }
-                setCommentsZero(newCommentsZero);
-                console.log(commentsZero);
 
-                setIsSave(false);
+                setCommentsZero(newCommentsZero);
+                setCommentsOther(commentDataOther);
+
+                if (cursor != -1) {
+                    setIsReached(false);
+                    setIsSave(false);
+                }
             } catch (err) {
-                alert(err.response.data.mesasge);
-                console.log(err.response.data.message);
+                // alert(err.response.data.mesasge);
+                console.log(err);
             } finally {
                 setIsLoading(false);
             }
@@ -111,6 +119,7 @@ function PostDetail() {
         const scrollHeight = document.documentElement.scrollHeight;
         const scrollTop = document.documentElement.scrollTop;
         const clientHeight = document.documentElement.clientHeight;
+
         if (scrollTop + clientHeight >= scrollHeight) {
             setIsReached(true);
             console.log('isreached', isReached);
@@ -118,17 +127,6 @@ function PostDetail() {
     }, []);
 
     console.log('isreached', isReached);
-
-    useEffect(() => {
-        // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
-        fetchComments(postId, nextCursor);
-        // 스크롤 이벤트 핸들러 등록 및 해제
-        window.addEventListener('scroll', handleScroll);
-        // console.log('nextCursor', nextCursor);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [fetchComments]);
 
     const handleLike = (postId, userId) => {
         try {
@@ -158,9 +156,16 @@ function PostDetail() {
     };
 
     useEffect(() => {
-        fetchPostDetail();
-        fetchComments(postId);
-    }, [fetchPostDetail, fetchComments]);
+        // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
+        fetchComments(postId, nextCursor);
+        fetchPostDetail(postId);
+        // 스크롤 이벤트 핸들러 등록 및 해제
+        window.addEventListener('scroll', handleScroll);
+        // console.log('nextCursor', nextCursor);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [fetchComments, fetchPostDetail]);
 
     return (
         <>

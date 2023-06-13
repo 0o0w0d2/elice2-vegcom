@@ -14,6 +14,10 @@ function Story() {
     const fetchPost = useCallback(
         async cursor => {
             try {
+                if (cursor === -1) {
+                    setIsLoading(false);
+                    return;
+                }
                 setIsLoading(true);
                 console.log('요청 후 nextCursor:', cursor);
                 const res = await Api.get(`post/list/${cursor}`);
