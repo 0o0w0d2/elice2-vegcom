@@ -9,7 +9,6 @@ import { StarIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
 import { get as getApi } from '../../../api';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
-import { chunkArray } from '../../utils/conts/chunkArray';
 
 function UserDetail() {
     // post/:postId 로 받아와서 구현
