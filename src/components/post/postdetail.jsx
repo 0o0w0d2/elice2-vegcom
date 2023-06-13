@@ -1,7 +1,7 @@
-import React, { Fragment, useContext, useState, useEffect, useCallback } from 'react';
+import React, { Fragment, useMemo, useState, useEffect, useCallback } from 'react';
 import { UserStateContext } from '../../../App';
 import { useLocation } from 'react-router-dom';
-import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
+import { ChatBubbleBottomCenterTextIcon as CommentIcon, ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 import { StarIcon as SolidStarIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { StarIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
@@ -10,12 +10,14 @@ import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 
 function PostDetail() {
     // post/:postId 로 받아와서 구현
-    const userState = useContext(UserStateContext);
     const location = useLocation();
     const [post, setPost] = useState([]);
     const userId = Number(localStorage.getItem('userId'));
     const postId = location.pathname.match(/\/post\/(\d+)/)[1];
     const [content, setContent] = useState('');
+    const [reContent, setReContent] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [parentId, setParentId] = useState(0);
     const [commentsZero, setCommentsZero] = useState([]);
     const [commentsOther, setCommentsOther] = useState([]);
     const [postImage, setPostImage] = useState('');
@@ -25,6 +27,9 @@ function PostDetail() {
     const [likeCount, setLikeCount] = useState(0);
     const [liked, setLiked] = useState(false);
     const path = location.pathname;
+    const [isLoading, setIsLoading] = useState(false);
+    const [isReached, setIsReached] = useState(false);
+    const [nextCursor, setNextCursor] = useState(0);
 
     const handleSubmit = async () => {
         await postApi('/comment', {
@@ -36,10 +41,19 @@ function PostDetail() {
         setContent('');
         setIsSave(true);
     };
+    const handleReSubmit = async () => {
+        await Api.post('/comment', {
+            parentId: parentId,
+            content: reContent,
+            postId,
+        });
+        setReContent('');
+        setIsSave(true);
+    };
 
-    const isEditable = userId === post.userId;
-    console.log('userId', userId, 'post', post);
-    console.log('내건가', isEditable);
+    const isEditable = useMemo(() => userId === post.userId, [userId, post.userId]);
+    // console.log('userId', userId, 'post', post);
+    // console.log('내건가', isEditable);
 
     const fetchPostDetail = useCallback(async () => {
         try {
@@ -66,22 +80,66 @@ function PostDetail() {
     }, [path]);
 
     const fetchComments = useCallback(
-        async postId => {
+        async (postId, cursor) => {
             try {
-                const res = await getApi(`/comment/${postId}`);
-                console.log(res);
+                if (cursor === -1) {
+                    setIsLoading(false);
+                    return;
+                }
+                setIsLoading(true);
+                const res = await Api.get(`/comment?postId=${postId}&cursor=${cursor}`);
+                console.log('res:', res);
+
                 const commentDataZero = res.data.commentListZero;
                 const commentDataOther = res.data.commentListOther;
-                setCommentsZero(commentDataZero);
+
+                console.log('답글', commentDataOther);
+                if (commentDataZero?.length < 10) {
+                    setNextCursor(-1);
+                } else {
+                    setNextCursor(commentDataZero[commentDataZero.length - 1].id);
+                }
+
+                let newCommentsZero;
+
+                if (cursor == 0) {
+                    newCommentsZero = res.data.commentListZero;
+                } else if (cursor > 0 && commentDataZero.length > 0) {
+                    newCommentsZero = [...commentsZero, ...commentDataZero];
+                } else if (commentDataZero.length === 0) {
+                    newCommentsZero = [...commentsZero];
+                }
+
+                setCommentsZero(newCommentsZero);
                 setCommentsOther(commentDataOther);
-                setIsSave(false);
+
+                if (cursor != -1) {
+                    setIsReached(false);
+                    setIsSave(false);
+                }
             } catch (err) {
-                alert(err.response.data.mesasge);
-                console.log(err.data.response.message);
+                // alert(err.response.data.mesasge);
+                console.log(err);
+            } finally {
+                setIsLoading(false);
             }
         },
-        [postId, isSave],
+        [isSave, isReached],
     );
+
+    console.log('댓글:', commentsZero);
+    console.log('답글:', commentsOther);
+    const handleScroll = useCallback(() => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollTop = document.documentElement.scrollTop;
+        const clientHeight = document.documentElement.clientHeight;
+
+        if (scrollTop + clientHeight >= scrollHeight) {
+            setIsReached(true);
+        }
+    }, []);
+
+    console.log('isreached', isReached);
 
     const handleLike = (postId, userId) => {
         try {
@@ -111,9 +169,16 @@ function PostDetail() {
     };
 
     useEffect(() => {
-        fetchPostDetail();
-        fetchComments(postId);
-    }, [fetchPostDetail, fetchComments]);
+        // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
+        fetchComments(postId, nextCursor);
+        fetchPostDetail(postId);
+        // 스크롤 이벤트 핸들러 등록 및 해제
+        window.addEventListener('scroll', handleScroll);
+        // console.log('nextCursor', nextCursor);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [fetchComments, fetchPostDetail]);
 
     return (
         <>
@@ -184,25 +249,76 @@ function PostDetail() {
                     </div>
                     <div className="commentSection w-full mt-1 mb-3">
                         {/* .. parentId === item.id  */}
-                        {commentsZero.slice(0, 3)?.map(item => (
-                            <div className="flex w-full" key={item.id}>
-                                <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
-                                <div className="flex flex-grow justify-end items-center">
-                                    {userId === item.userId && <PencilSquareIcon className="w-5 h-5" />}
-                                    {(isEditable || userId === item.userId) && <TrashIcon className="w-5 h-5" />}
+                        {commentsZero?.map(item => (
+                            <div>
+                                <div className="pt-1 mt-1 pb-1 flex w-full" key={item.id}>
+                                    <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span>{' '}
+                                    {item.content}
+                                    <div className="flex flex-grow justify-end items-center">
+                                        <CommentIcon
+                                            onClick={() => {
+                                                setIsEditing(!isEditing);
+                                                parentId == 0 ? setParentId(item.id) : setParentId(0);
+                                            }}
+                                            className="h-5 w-5"
+                                        />
+                                        {userId === item.userId && <PencilSquareIcon className="w-5 h-5" />}
+                                        {(isEditable || userId === item.userId) && <TrashIcon className="w-5 h-5" />}
+                                    </div>
                                 </div>
+
+                                {commentsOther
+                                    .filter(comment => comment.parentId === item.id)
+                                    .map((comment, index) => (
+                                        <div
+                                            className="pt-1  pb-1 mt-1 flex w-full"
+                                            style={{ backgroundColor: '#dedede' }}
+                                            key={index}>
+                                            <span style={{ fontWeight: 'bold', marginRight: '0.4rem', marginLeft: '10px' }}>
+                                                {comment.nickname}
+                                            </span>
+                                            {comment.content}
+                                            <div className="flex flex-grow justify-end items-center">
+                                                {userId === comment.userId && <PencilSquareIcon className="w-5 h-5" />}
+                                                {(isEditable || userId === comment.userId) && <TrashIcon className="w-5 h-5" />}
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                {isEditing && parentId === item.id && (
+                                    <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
+                                        <div className="flex mt-4">
+                                            <textarea
+                                                style={{ width: '35vw' }}
+                                                className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                                placeholder="답글을 입력하세요."
+                                                value={reContent}
+                                                onChange={e => setReContent(e.target.value)}></textarea>
+                                            <div className="flex items-center ml-2">
+                                                <button
+                                                    type="submit"
+                                                    className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                                    onClick={() => handleReSubmit()}>
+                                                    등록
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         ))}
+                        {isLoading && <p>Loading...</p>}
+                        {nextCursor === -1 && <p>데이터 로딩 완료!</p>}
                         <div className="pl-2 pb-3 fixed bottom-0 w-full bg-white" style={{ width: '40vw' }}>
                             <div className="flex mt-4">
-                                <input
-                                    type="text"
+                                <textarea
                                     style={{ width: '35vw' }}
-                                    className="block rounded-lg border-0 py-1 pl-3 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                    className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                                     placeholder="댓글을 입력하세요."
                                     value={content}
-                                    onChange={e => setContent(e.target.value)}
-                                />
+                                    onChange={e => setContent(e.target.value)}>
+                                    {' '}
+                                </textarea>
                                 <div className="flex items-center ml-2">
                                     <button
                                         type="submit"

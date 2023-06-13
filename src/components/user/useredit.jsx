@@ -37,13 +37,12 @@ function UserEdit() {
                 </label>
                 <div className="userNickname w-full mt-2">
                     <div className="w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
-                        <input
+                        <textarea
                             type="text"
                             className="w-60 block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm"
                             placeholder={nickname}
                             value={nickname}
-                            onChange={e => setNickname(e.target.value)}
-                        />
+                            onChange={e => setNickname(e.target.value)}></textarea>
                     </div>
                     {/* 글자수 제한 코드 추가하기 */}
                 </div>
@@ -69,8 +68,7 @@ function UserEdit() {
                         autoComplete={description}
                         value={description}
                         onChange={e => setDescription(e.target.value)}
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm "
-                    />
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm "></textarea>
                 </div>
                 <div className="buttonSection mt-5 justify-center">
                     <button

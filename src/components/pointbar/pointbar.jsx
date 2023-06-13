@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 
-const PointBar = ({ point, pointMax }) => {
-    const percentage = useMemo(() => (point / pointMax) * 100, [point, pointMax]);
+const PointBar = ({ point }) => {
+    const pointMax = 14000;
+
+    const percentage = (point / pointMax) * 100;
 
     return (
         <div className="w-full h-4 bg-gray-200 rounded-full">

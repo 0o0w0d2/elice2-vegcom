@@ -47,8 +47,8 @@ function Header() {
 
     return (
         <header
-            className="fixed top-0 left-0 right-0 z-50 p-4 flex justify-center grid-cols-3"
-            style={{ height: '150px', backgroundColor: 'white' }}>
+            className="fixed top-0 left-0 right-0 z-50 p-4 flex  shadow-md justify-center grid-cols-3"
+            style={{ height: '120px', backgroundColor: 'white' }}>
             <div className="col-start-1 " style={{ width: '20vw' }}></div>
             <div className="col-start-2 items-center justify-center" style={{ width: '60vw' }}>
                 <img
