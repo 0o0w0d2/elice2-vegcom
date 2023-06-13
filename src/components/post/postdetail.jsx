@@ -24,6 +24,9 @@ function PostDetail() {
     const [likeCount, setLikeCount] = useState(0);
     const [liked, setLiked] = useState(false);
     const path = location.pathname;
+    const [isLoading, setIsLoading] = useState(false);
+    const [isReached, setIsReached] = useState(false);
+    const [nextCursor, setNextCursor] = useState(0);
 
     const handleSubmit = async () => {
         await Api.post('/comment', {
@@ -37,8 +40,8 @@ function PostDetail() {
     };
 
     const isEditable = userId === post.userId;
-    console.log('userId', userId, 'post', post);
-    console.log('내건가', isEditable);
+    // console.log('userId', userId, 'post', post);
+    // console.log('내건가', isEditable);
 
     const fetchPostDetail = useCallback(async () => {
         try {
@@ -65,22 +68,67 @@ function PostDetail() {
     }, [path]);
 
     const fetchComments = useCallback(
-        async postId => {
+        async (postId, cursor) => {
             try {
-                const res = await Api.get(`/comment/${postId}`);
-                console.log(res);
-                const commentDataZero = res.data.commentListZero;
+                setIsLoading(true);
+                const res = await Api.get(`/comment?postId=${postId}&cursor=${cursor}`);
+                console.log('res:', res);
+
                 const commentDataOther = res.data.commentListOther;
-                setCommentsZero(commentDataZero);
                 setCommentsOther(commentDataOther);
+
+                const commentDataZero = res.data.commentListZero;
+                if (commentDataZero?.length < 10) {
+                    setNextCursor(-1);
+                } else {
+                    setNextCursor(commentDataZero[commentDataZero.length - 1].commentId);
+                }
+
+                let newCommentsZero;
+
+                if (cursor == 0) {
+                    newCommentsZero = res.data.commentListZero;
+                } else if (cursor > 0 && commentDataZero.length > 0) {
+                    newCommentsZero = [...commentsZero, ...commentDataZero];
+                } else if (commentDataZero.length === 0) {
+                    newCommentsZero = [...commentsZero];
+                }
+                setCommentsZero(newCommentsZero);
+                console.log(commentsZero);
+
                 setIsSave(false);
             } catch (err) {
                 alert(err.response.data.mesasge);
-                console.log(err.data.response.message);
+                console.log(err.response.data.message);
+            } finally {
+                setIsLoading(false);
             }
         },
-        [postId, isSave],
+        [isSave, isReached],
     );
+
+    const handleScroll = useCallback(() => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollTop = document.documentElement.scrollTop;
+        const clientHeight = document.documentElement.clientHeight;
+        if (scrollTop + clientHeight >= scrollHeight) {
+            setIsReached(true);
+            console.log('isreached', isReached);
+        }
+    }, []);
+
+    console.log('isreached', isReached);
+
+    useEffect(() => {
+        // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
+        fetchComments(postId, nextCursor);
+        // 스크롤 이벤트 핸들러 등록 및 해제
+        window.addEventListener('scroll', handleScroll);
+        // console.log('nextCursor', nextCursor);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [fetchComments]);
 
     const handleLike = (postId, userId) => {
         try {
@@ -183,7 +231,7 @@ function PostDetail() {
                     </div>
                     <div className="commentSection w-full mt-1 mb-3">
                         {/* .. parentId === item.id  */}
-                        {commentsZero.slice(0, 3)?.map(item => (
+                        {commentsZero?.map(item => (
                             <div className="flex w-full" key={item.id}>
                                 <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
                                 <div className="flex flex-grow justify-end items-center">
@@ -192,6 +240,8 @@ function PostDetail() {
                                 </div>
                             </div>
                         ))}
+                        {isLoading && <p>Loading...</p>}
+                        {nextCursor === -1 && <p>데이터 로딩 완료!</p>}
                         <div className="pl-2 pb-3 fixed bottom-0 w-full bg-white" style={{ width: '40vw' }}>
                             <div className="flex mt-4">
                                 <input
