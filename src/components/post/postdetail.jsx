@@ -1,7 +1,7 @@
 import React, { Fragment, useMemo, useState, useEffect, useCallback } from 'react';
 import { UserStateContext } from '../../../App';
 import { useLocation } from 'react-router-dom';
-import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
+import { ChatBubbleBottomCenterTextIcon as CommentIcon, ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 import { StarIcon as SolidStarIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { StarIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
@@ -14,6 +14,9 @@ function PostDetail() {
     const userId = Number(localStorage.getItem('userId'));
     const postId = location.pathname.match(/\/post\/(\d+)/)[1];
     const [content, setContent] = useState('');
+    const [reContent, setReContent] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [parentId, setParentId] = useState(0);
     const [commentsZero, setCommentsZero] = useState([]);
     const [commentsOther, setCommentsOther] = useState([]);
     const [postImage, setPostImage] = useState('');
@@ -35,6 +38,15 @@ function PostDetail() {
         });
 
         setContent('');
+        setIsSave(true);
+    };
+    const handleReSubmit = async () => {
+        await Api.post('/comment', {
+            parentId: parentId,
+            content: reContent,
+            postId,
+        });
+        setReContent('');
         setIsSave(true);
     };
 
@@ -80,7 +92,7 @@ function PostDetail() {
                 const commentDataZero = res.data.commentListZero;
                 const commentDataOther = res.data.commentListOther;
 
-                console.log(commentDataZero);
+                console.log('답글', commentDataOther);
                 if (commentDataZero?.length < 10) {
                     setNextCursor(-1);
                 } else {
@@ -121,7 +133,6 @@ function PostDetail() {
 
         if (scrollTop + clientHeight >= scrollHeight) {
             setIsReached(true);
-            console.log('isreached', isReached);
         }
     }, []);
 
@@ -236,26 +247,70 @@ function PostDetail() {
                     <div className="commentSection w-full mt-1 mb-3">
                         {/* .. parentId === item.id  */}
                         {commentsZero?.map(item => (
-                            <div className="flex w-full" key={item.id}>
-                                <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
-                                <div className="flex flex-grow justify-end items-center">
-                                    {userId === item.userId && <PencilSquareIcon className="w-5 h-5" />}
-                                    {(isEditable || userId === item.userId) && <TrashIcon className="w-5 h-5" />}
+                            <div>
+                                <div className="flex w-full" key={item.id}>
+                                    <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span>{' '}
+                                    {item.content}
+                                    <div className="flex flex-grow justify-end items-center">
+                                        <CommentIcon
+                                            onClick={() => {
+                                                setIsEditing(!isEditing);
+                                                parentId == 0 ? setParentId(item.id) : setParentId(0);
+                                            }}
+                                            className="h-5 w-5"
+                                        />
+                                        {userId === item.userId && <PencilSquareIcon className="w-5 h-5" />}
+                                        {(isEditable || userId === item.userId) && <TrashIcon className="w-5 h-5" />}
+                                    </div>
                                 </div>
+
+                                {commentsOther
+                                    .filter(comment => comment.parentId === item.id)
+                                    .map((comment, index) => (
+                                        <div className="flex w-full" key={index}>
+                                            <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{comment.nickname}</span>
+                                            {comment.content}
+                                            <div className="flex flex-grow justify-end items-center">
+                                                {userId === comment.userId && <PencilSquareIcon className="w-5 h-5" />}
+                                                {(isEditable || userId === comment.userId) && <TrashIcon className="w-5 h-5" />}
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                {isEditing && parentId === item.id && (
+                                    <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
+                                        <div className="flex mt-4">
+                                            <textarea
+                                                style={{ width: '35vw' }}
+                                                className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                                placeholder="답글을 입력하세요."
+                                                value={reContent}
+                                                onChange={e => setReContent(e.target.value)}></textarea>
+                                            <div className="flex items-center ml-2">
+                                                <button
+                                                    type="submit"
+                                                    className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                                    onClick={() => handleReSubmit()}>
+                                                    등록
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         ))}
                         {isLoading && <p>Loading...</p>}
                         {nextCursor === -1 && <p>데이터 로딩 완료!</p>}
                         <div className="pl-2 pb-3 fixed bottom-0 w-full bg-white" style={{ width: '40vw' }}>
                             <div className="flex mt-4">
-                                <input
-                                    type="text"
+                                <textarea
                                     style={{ width: '35vw' }}
-                                    className="block rounded-lg border-0 py-1 pl-3 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                    className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                                     placeholder="댓글을 입력하세요."
                                     value={content}
-                                    onChange={e => setContent(e.target.value)}
-                                />
+                                    onChange={e => setContent(e.target.value)}>
+                                    {' '}
+                                </textarea>
                                 <div className="flex items-center ml-2">
                                     <button
                                         type="submit"
