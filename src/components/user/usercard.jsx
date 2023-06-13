@@ -18,7 +18,7 @@ const UserCard = ({ point }) => {
     return (
         <div
             className="flex items-center justify-center p-4 m-2 bg-white shadow-2xl rounded-xl"
-            style={{ width: '60vh', height: '60vh' }}>
+            style={{ width: '60vh', height: '20vh' }}>
             <div className="flex flex-col justify-center items-center text-center">
                 {' '}
                 <img className="w-20 h-20 object-cover rounded-full mb-2" src={getImageSrc()} alt={id} />
