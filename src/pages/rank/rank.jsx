@@ -11,8 +11,6 @@ function Rank() {
     const [point, setPoint] = useState();
     const [isFetchCompleted, setIsFetchCompleted] = useState(false);
 
-    const pointMax = 1000;
-
     const userId = localStorage.getItem('userId');
 
     const fetchOwner = useCallback(
@@ -66,7 +64,7 @@ function Rank() {
                 <RankPageSentence />
             </div>
             <div>
-                <PointBar point={point} pointMax={pointMax} />
+                <PointBar point={point} />
             </div>
             <div>
                 <UserCard user={user} point={point} />
