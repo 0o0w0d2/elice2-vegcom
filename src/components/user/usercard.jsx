@@ -5,8 +5,7 @@ const UserCard = ({ user, point }) => {
         if (user.userImage.startsWith('http')) {
             return user.userImage;
         } else {
-            user.userImage = `https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${user.userImage}`;
-            return user.userImage;
+            return `https://7team-bucket.s3.ap-northeast-2.amazonaws.com/${user.userImage}`;
         }
     };
 
