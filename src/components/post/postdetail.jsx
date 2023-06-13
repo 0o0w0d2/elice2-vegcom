@@ -126,6 +126,8 @@ function PostDetail() {
         [isSave, isReached],
     );
 
+    console.log('댓글:', commentsZero);
+    console.log('답글:', commentsOther);
     const handleScroll = useCallback(() => {
         const scrollHeight = document.documentElement.scrollHeight;
         const scrollTop = document.documentElement.scrollTop;
@@ -248,7 +250,7 @@ function PostDetail() {
                         {/* .. parentId === item.id  */}
                         {commentsZero?.map(item => (
                             <div>
-                                <div className="flex w-full" key={item.id}>
+                                <div className="pt-1 mt-1 pb-1 flex w-full" key={item.id}>
                                     <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span>{' '}
                                     {item.content}
                                     <div className="flex flex-grow justify-end items-center">
@@ -267,8 +269,13 @@ function PostDetail() {
                                 {commentsOther
                                     .filter(comment => comment.parentId === item.id)
                                     .map((comment, index) => (
-                                        <div className="flex w-full" key={index}>
-                                            <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{comment.nickname}</span>
+                                        <div
+                                            className="pt-1  pb-1 mt-1 flex w-full"
+                                            style={{ backgroundColor: '#dedede' }}
+                                            key={index}>
+                                            <span style={{ fontWeight: 'bold', marginRight: '0.4rem', marginLeft: '10px' }}>
+                                                {comment.nickname}
+                                            </span>
                                             {comment.content}
                                             <div className="flex flex-grow justify-end items-center">
                                                 {userId === comment.userId && <PencilSquareIcon className="w-5 h-5" />}
