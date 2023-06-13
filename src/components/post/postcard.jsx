@@ -174,7 +174,7 @@ function PostCard({ post }) {
                     </div>
                 </div>
                 <div className="commentSection mt-1">
-                    {commentsZero.slice(0, 3)?.map(item => (
+                    {commentsZero?.slice(0, 3).map(item => (
                         <div className="flex w-full" key={item.id}>
                             <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
                             <div className="flex flex-grow justify-end items-center">
