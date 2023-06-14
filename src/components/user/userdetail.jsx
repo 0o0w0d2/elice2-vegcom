@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import { get as getApi } from '../../../api';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
-import GetDays from '../functions/getdays';
+import GetDays from '../../utils/getdays';
 
 function UserDetail() {
     // post/:postId 로 받아와서 구현
