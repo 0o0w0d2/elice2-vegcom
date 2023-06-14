@@ -9,6 +9,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 const app = ReactDOM.createRoot(document.getElementById('app'));
 app.render(
     <Router>
-        <App />
+        <App style={{ overFlow: 'scroll' }} />
     </Router>,
 );
