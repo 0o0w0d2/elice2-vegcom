@@ -1,4 +1,5 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { get as getApi } from '../../../api';
 import RankCard from '../../components/rankcard/rankcard';
 import UserCard from '../../components/user/usercard';
@@ -6,6 +7,8 @@ import RankPageSentence from '../../components/rankpagesentence/rankpagesentence
 import PointBar from '../../components/pointbar/pointbar';
 
 function Rank() {
+    const navigate = useNavigate();
+
     const [user, setUser] = useState(null);
     const [rankList, setRankList] = useState([]);
     const [point, setPoint] = useState();
@@ -76,7 +79,7 @@ function Rank() {
             <p>랭킹</p>
             <div className="w-full">
                 {rankList.map((owner, index) => (
-                    <div key={owner.userId}>
+                    <div key={owner.userId} onClick={() => navigate(`/mypage/${owner.userId}`)}>
                         <RankCard user={owner} index={index + 1} />
                     </div>
                 ))}

@@ -1,5 +1,4 @@
-import React, { useContext, useCallback } from 'react';
-import { UserStateContext } from '../../../App';
+import React, { useCallback } from 'react';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 import GetDays from '../functions/getdays';
 
@@ -10,7 +9,7 @@ const UserCard = ({ user, point }) => {
         } else {
             return `${BUCKET_BASE_URL}${user.userImage}`;
         }
-    }, []);
+    }, [user]);
 
     return (
         <>
