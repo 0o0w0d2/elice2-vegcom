@@ -5,6 +5,7 @@ import { post as postApi } from '../../../api';
 function AddPost() {
     const [imageUrl, setImageUrl] = useState('');
     const [content, setContent] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async e => {
         try {
@@ -22,10 +23,24 @@ function AddPost() {
         }
     };
 
-    const navigate = useNavigate();
+    const handleImageUpload = e => {
+        const input = e.target;
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                const preview = document.getElementById('preview');
+                if (preview) {
+                    preview.src = e.target.result;
+                    setImageUrl(e.target.result);
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
 
     return (
-        <>
+        <div className="addPostContainer">
             <div>
                 <h1 className="h-auto mb-7 text-bold">식단 기록하기</h1>
             </div>
@@ -53,8 +68,12 @@ function AddPost() {
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">PNG of JPG</p>
                     </div>
-                    <input id="dropzone-file" type="file" onChange={e => setImageUrl(e.target.files[0])} className="hidden" />
-                    {!!imageUrl && <p>업데이트 완료!</p>}
+                    <div style={{ width: '600px', hegiht: '500px' }}>
+                        {!imageUrl && (
+                            <input id="dropzone-file" type="file" onChange={handleImageUpload} className="hidden w-full h-full" />
+                        )}
+                        <img className="w-full h-full object-cover" id="preview" src={imageUrl} alt="Preview" />
+                    </div>
                 </label>
             </div>
             <input
@@ -80,7 +99,7 @@ function AddPost() {
                     올리기
                 </button>
             </div>
-        </>
+        </div>
     );
 }
 
