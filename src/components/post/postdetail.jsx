@@ -57,6 +57,11 @@ function PostDetail() {
         navigate(-1);
     });
 
+    const handleCommentDelete = useCallback(async commentId => {
+        await delApi(`/comment/${commentId}`);
+        window.location.replace(`/post/${postId}`);
+    });
+
     const isEditable = useMemo(() => userId === post.userId, [userId, post.userId]);
     // console.log('userId', userId, 'post', post);
     // console.log('내건가', isEditable);
@@ -274,7 +279,16 @@ function PostDetail() {
                                             className="h-5 w-5"
                                         />
                                         {userId === item.userId && <PencilSquareIcon className="w-5 h-5" />}
-                                        {(isEditable || userId === item.userId) && <TrashIcon className="w-5 h-5" />}
+                                        {(isEditable || userId === item.userId) && (
+                                            <TrashIcon
+                                                className="w-5 h-5"
+                                                onClick={() => {
+                                                    if (window.confirm('정말로 삭제하시겠습니까?')) {
+                                                        handleCommentDelete(item.id);
+                                                    }
+                                                }}
+                                            />
+                                        )}
                                     </div>
                                 </div>
                                 <div className="text-left">{item.content}</div>
@@ -291,7 +305,14 @@ function PostDetail() {
                                                 <div className="flex flex-grow justify-end items-center">
                                                     {userId === comment.userId && <PencilSquareIcon className="w-5 h-5" />}
                                                     {(isEditable || userId === comment.userId) && (
-                                                        <TrashIcon className="w-5 h-5" />
+                                                        <TrashIcon
+                                                            className="w-5 h-5"
+                                                            onClick={() => {
+                                                                if (window.confirm('정말로 삭제하시겠습니까?')) {
+                                                                    handleCommentDelete(comment.id);
+                                                                }
+                                                            }}
+                                                        />
                                                     )}
                                                 </div>
                                             </div>

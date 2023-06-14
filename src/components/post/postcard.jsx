@@ -34,6 +34,11 @@ function PostCard({ post }) {
         window.location.replace('/story');
     };
 
+    const handleCommentDelete = async commentId => {
+        await delApi(`/comment/${commentId}`);
+        window.location.replace('/story');
+    };
+
     const getImageSrc = imageUrl => {
         if (imageUrl.startsWith('http')) {
             return imageUrl;
@@ -193,8 +198,16 @@ function PostCard({ post }) {
                         <div className="flex w-full" key={item.id}>
                             <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
                             <div className="flex flex-grow justify-end items-center">
-                                {userId === item.userId && <PencilSquareIcon className="w-5 h-5" />}
-                                {(isEditable || userId === item.userId) && <TrashIcon className="w-5 h-5" />}
+                                {(isEditable || userId === item.userId) && (
+                                    <TrashIcon
+                                        className="w-5 h-5"
+                                        onClick={() => {
+                                            if (window.confirm('정말로 삭제하시겠습니까?')) {
+                                                handleCommentDelete(item.id);
+                                            }
+                                        }}
+                                    />
+                                )}
                             </div>
                         </div>
                     ))}
