@@ -2,8 +2,8 @@ import React, { Fragment, useMemo, useState, useEffect, useCallback } from 'reac
 import { UserStateContext } from '../../../App';
 import { useNavigate } from 'react-router-dom';
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
-import { StarIcon as SolidStarIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { StarIcon } from '@heroicons/react/24/outline';
+import { HeartIcon as SolidHeartIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { HeartIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
 import { get as getApi, post as postApi, del as delApi } from '../../../api';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
@@ -28,6 +28,11 @@ function PostCard({ post }) {
         },
         [post],
     );
+
+    const handlePostDelete = async postId => {
+        await delApi(`/post/${postId}`);
+        window.location.replace('/story');
+    };
 
     const getImageSrc = imageUrl => {
         if (imageUrl.startsWith('http')) {
@@ -79,22 +84,22 @@ function PostCard({ post }) {
             setDisabled(true);
 
             if (liked === false) {
-                postApi(`/like/${postId}`, {
-                    // 좋아요 누르는 버튼 구현하기
+                await postApi(`/like/${postId}`, {
                     postId,
                     userId,
                 });
                 setLiked(true);
-                setLikeCount(likeCount + 1);
+                setLikeCount(prev => likeCount + 1);
             } else {
-                delApi(`/like/${postId}`);
                 setLiked(false);
-                setLikeCount(likeCount - 1);
+                setLikeCount(prev => likeCount - 1);
+                await delApi(`/like/${postId}`);
             }
-            console.log('like 누르기 이후', liked);
+
+            console.log('like 누르기 이후', !liked);
         } catch (err) {
-            alert(err.response.data.message);
-            console.log(err.response.data.message);
+            alert(err.message);
+            console.log(err.message);
         } finally {
             setDisabled(false);
         }
@@ -132,12 +137,22 @@ function PostCard({ post }) {
                                         <div className="py-1">
                                             <div
                                                 className="text-gray-700 block px-4 py-2 text-md"
-                                                onClick={() => navigate(`/postedit/${post.postId}`)}>
+                                                onClick={() => {
+                                                    if (post.userId !== userId) {
+                                                        alert('접근할 수 없는 페이지입니다.');
+                                                    } else {
+                                                        navigate(`/postedit/${post.postId}`);
+                                                    }
+                                                }}>
                                                 수정
                                             </div>
                                             <div
                                                 className="text-gray-700 block px-4 py-2 text-md"
-                                                onClick={() => navigate('/rank')}>
+                                                onClick={() => {
+                                                    if (window.confirm('정말로 삭제하시겠습니까?')) {
+                                                        handlePostDelete(post.postId);
+                                                    }
+                                                }}>
                                                 삭제
                                             </div>
                                         </div>
@@ -153,14 +168,14 @@ function PostCard({ post }) {
                         {/* 눌렀을 때 좋아요 상태 변경하는 코드 추가하기 */}
                         {/* <StarIcon className="h-7 w-7" onClick={() => handleLike(post)} /> */}
                         {liked == true ? (
-                            <SolidStarIcon
+                            <SolidHeartIcon
                                 disabled={disabled}
                                 onClick={() => handleLike(post.postId, userId)}
                                 className="h-7 w-7"
-                                fill="#008762"
+                                fill="#ff3040"
                             />
                         ) : (
-                            <StarIcon disabled={disabled} onClick={() => handleLike(post.postId, userId)} className="h-7 w-7" />
+                            <HeartIcon disabled={disabled} onClick={() => handleLike(post.postId, userId)} className="h-7 w-7" />
                         )}
                         <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7" onClick={() => handleClick(post)} />
                     </div>

@@ -2,8 +2,8 @@ import React, { Fragment, useMemo, useState, useEffect, useCallback } from 'reac
 import { UserStateContext } from '../../../App';
 import { useLocation } from 'react-router-dom';
 import { ChatBubbleBottomCenterTextIcon as CommentIcon, ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
-import { StarIcon as SolidStarIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { StarIcon } from '@heroicons/react/24/outline';
+import { HeartIcon as SolidHeartIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { HeartIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
 import { get as getApi, post as postApi, del as delApi } from '../../../api';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
@@ -51,6 +51,11 @@ function PostDetail() {
         setReContent('');
         setIsSave(true);
     };
+
+    const handlePostDelete = useCallback(async postId => {
+        await delApi(`/post/${postId}`);
+        navigate(-1);
+    });
 
     const isEditable = useMemo(() => userId === post.userId, [userId, post.userId]);
     // console.log('userId', userId, 'post', post);
@@ -183,7 +188,6 @@ function PostDetail() {
 
     return (
         <>
-            <div className="headerSection" style={{ height: '150px' }}></div>
             <div className="w-full pt-5 pl-5 pb-5 pr-5 mb-5">
                 <article key={postId} className="flex-col justify-between" style={{ width: '40vw' }}>
                     <div className="profileSection flex items-center gap-x-4">
@@ -210,12 +214,16 @@ function PostDetail() {
                                             <div className="py-1">
                                                 <div
                                                     className="text-gray-700 block px-4 py-2 text-md"
-                                                    onClick={() => navigate('/rank')}>
+                                                    onClick={() => navigate(`/postedit/${postId}`)}>
                                                     수정
                                                 </div>
                                                 <div
                                                     className="text-gray-700 block px-4 py-2 text-md"
-                                                    onClick={() => navigate('/rank')}>
+                                                    onClick={() => {
+                                                        if (window.confirm('정말로 삭제하시겠습니까?')) {
+                                                            handlePostDelete(postId);
+                                                        }
+                                                    }}>
                                                     삭제
                                                 </div>
                                             </div>
@@ -229,14 +237,14 @@ function PostDetail() {
                         <img src={postImage} alt="Post Image" className="postImage w-full h-auto mt-5" />
                         <div className="flex mt-3">
                             {liked == true ? (
-                                <SolidStarIcon
+                                <SolidHeartIcon
                                     disabled={disabled}
                                     onClick={() => handleLike(postId, userId)}
                                     className="h-7 w-7"
-                                    fill="#008762"
+                                    fill="#ff3040"
                                 />
                             ) : (
-                                <StarIcon disabled={disabled} onClick={() => handleLike(postId, userId)} className="h-7 w-7" />
+                                <HeartIcon disabled={disabled} onClick={() => handleLike(postId, userId)} className="h-7 w-7" />
                             )}
                             <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7" />
                         </div>

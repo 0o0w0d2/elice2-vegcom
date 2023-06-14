@@ -25,6 +25,7 @@ function AddPost() {
 
     const handleImageUpload = e => {
         const input = e.target;
+        setImageUrl(input.files[0]);
 
         if (input.files && input.files[0]) {
             const reader = new FileReader();
@@ -43,10 +44,12 @@ function AddPost() {
             <div>
                 <h1 className="h-auto mb-7 text-bold">식단 기록하기</h1>
             </div>
-            <div style={{ width: '200px' }}>
-                <span> 이미지 미리보기 </span>
-                <img className="w-full h-full object-cover" id="preview" alt="Preview" />
-            </div>
+            {imageUrl && (
+                <div style={{ width: '200px' }}>
+                    <span> 이미지 미리보기 </span>
+                    <img className="w-full h-full object-cover" id="preview" alt="Preview" />
+                </div>
+            )}
             <h2 className="text-left">파일 선택</h2>
             <div className="flex items-center justify-center w-full">
                 <label
@@ -76,7 +79,6 @@ function AddPost() {
                             id="dropzone-file"
                             type="file"
                             onChange={e => {
-                                setImageUrl(e.target.files[0]);
                                 handleImageUpload(e);
                             }}
                             className="hidden w-full h-full"
