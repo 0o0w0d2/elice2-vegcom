@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { get as getApi } from '../../../api';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 import GetDays from '../functions/getdays';
+import { chunkArray } from '../../utils/chunkArray';
 
 function UserDetail() {
     // post/:postId 로 받아와서 구현
@@ -50,6 +51,14 @@ function UserDetail() {
         [userId],
     );
 
+    const n = 3; // 한 행에 표시할 이미지 개수
+
+    const imageRows = [];
+    for (let i = 0; i < postList.length; i += n) {
+        const rowItems = postList.slice(i, i + n);
+        imageRows.push(rowItems);
+    }
+
     useEffect(() => {
         fetchUser(userId);
     }, [fetchUser]);
@@ -74,15 +83,22 @@ function UserDetail() {
                 </div>
             </div>
             <div>
-                {postList.map(item => (
-                    <div key={item.id} className="" style={{ width: '20vh', height: '20vh' }}>
-                        <img
-                            style={{ flex: 2, width: undefined, height: undefined }}
-                            src={getImageSrc(item.imageUrl)}
-                            alt={item.id}
-                        />
-                    </div>
-                ))}
+                <div className="w-full">
+                    {chunkArray(postList, 3).map((row, rowIndex) => (
+                        <div key={rowIndex} className="flex justify-center">
+                            {row.map(item => (
+                                <div key={item.id} className="flex items-center mx-2">
+                                    <img
+                                        className="object-contain  mb-2"
+                                        style={{ width: '20vh', height: '200px' }}
+                                        src={getImageSrc(item.imageUrl)}
+                                        alt={item.id}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+                </div>
             </div>
         </>
     );
