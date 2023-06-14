@@ -34,8 +34,6 @@ function Rank() {
         [userId],
     );
 
-    console.log(user);
-
     const fetchRank = useCallback(async () => {
         try {
             const res = await getApi('rank/list');
@@ -68,12 +66,12 @@ function Rank() {
             <div>
                 <PointBar point={point} />
             </div>
-            {/* <div>
-                <UserCard user={user.userInfo} point={point} />
-            </div> */}
             <div>
-                <UserCard point={point} />
+                <UserCard user={user} point={point} />
             </div>
+            {/* <div>
+                <UserCard point={point} />
+            </div> */}
             <div className="headerSection" style={{ height: '50px' }}></div>
             <p>랭킹</p>
             <div className="w-full">
