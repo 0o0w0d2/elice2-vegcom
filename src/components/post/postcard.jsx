@@ -132,7 +132,7 @@ function PostCard({ post }) {
                                         <div className="py-1">
                                             <div
                                                 className="text-gray-700 block px-4 py-2 text-md"
-                                                onClick={() => navigate('/rank')}>
+                                                onClick={() => navigate(`/postedit/${post.postId}`)}>
                                                 수정
                                             </div>
                                             <div
@@ -168,8 +168,9 @@ function PostCard({ post }) {
                         <span style={{ fontWeight: 'bold' }}>{likeCount.toLocaleString()} 명</span>이 좋아합니다.
                     </div>
 
-                    <div className="flex mt-2 text-md text-left">
-                        <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.nickname}</span> {post.content}
+                    <div className="mt-2 text-md text-left">
+                        <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.nickname}</span>
+                        <span>{post.content}</span>
                     </div>
                 </div>
                 <div className="commentSection mt-1">
