@@ -7,21 +7,70 @@ import { PlusCircleIcon, MagnifyingGlassCircleIcon } from '@heroicons/react/24/o
 function Story() {
     const navigate = useNavigate();
     const [postList, setPostList] = useState([]);
+    const [nextCursor, setNextCursor] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isReached, setIsReached] = useState(false);
 
-    const fetchPost = useCallback(async () => {
-        try {
-            const res = await getApi('post/list');
-            const postData = res.data;
+    const fetchPost = useCallback(
+        async cursor => {
+            try {
+                if (cursor === -1) {
+                    setIsLoading(false);
+                    return;
+                }
+                setIsLoading(true);
 
-            setPostList(postData.postList);
-        } catch (err) {
-            alert(err.data.response.message);
-            console.log(err.data.response.message);
+                const res = await getApi(`post/list/${cursor}`);
+
+                const postData = res.data;
+
+                if (postData.postList?.length < 5) {
+                    setNextCursor(-1);
+                } else {
+                    setNextCursor(postData.postList[postData.postList.length - 1].postId);
+                }
+
+                let newPostList;
+
+                if (cursor === 0) {
+                    newPostList = postData.postList;
+                } else if (cursor > 0 && postData.postList.length > 0) {
+                    newPostList = [...postList, ...postData.postList];
+                } else if (postData.postList.length === 0) {
+                    newPostList = [...postList];
+                }
+
+                setPostList(newPostList);
+
+                setIsReached(false);
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        },
+        [isReached],
+    );
+
+    const handleScroll = useCallback(() => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollTop = document.documentElement.scrollTop;
+        const clientHeight = document.documentElement.clientHeight;
+
+        if (scrollTop + clientHeight >= scrollHeight) {
+            setIsReached(true);
         }
     }, []);
 
     useEffect(() => {
-        fetchPost();
+        // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
+        fetchPost(nextCursor);
+        // 스크롤 이벤트 핸들러 등록 및 해제
+        window.addEventListener('scroll', handleScroll);
+        // console.log('nextCursor', nextCursor);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
     }, [fetchPost]);
 
     return (
@@ -42,6 +91,8 @@ function Story() {
                         <PostCard post={post} />
                     </div>
                 ))}
+                {isLoading && <p>Loading...</p>}
+                {nextCursor === -1 && <p>데이터 로딩 완료!</p>}
             </div>
         </>
     );

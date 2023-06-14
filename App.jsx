@@ -16,6 +16,7 @@ import Shop from './src/pages/shop/shop';
 import AddPost from './src/components/post/addpost';
 import PostDetail from './src/components/post/postdetail';
 import UserEdit from './src/components/user/useredit';
+import UserDetail from './src/components/user/userdetail';
 import NotFound from './src/pages/notfound';
 
 export const UserStateContext = createContext(null);
@@ -101,6 +102,8 @@ function App() {
                     <Route path="/addpost" element={<AddPost />} />
                     <Route path="/useredit" element={<UserEdit />} />
                     <Route path="/post/:postId" element={<PostDetail />} />
+                    <Route path="/mypage/:userId" element={<UserDetail />} />
+
                     <Route path="*" element={<NotFound />} />
                 </Routes>
                 {/* <Footer /> */}

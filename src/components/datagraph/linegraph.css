@@ -1,5 +1,5 @@
 .App {
-    width: 60vw;
+    width: 55vw;
     font-family: sans-serif;
     text-align: center;
 }
@@ -10,6 +10,42 @@
 }
 .graphContainer {
     height: 300px;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    z-index: 0;
+}
+
+.App2 {
+    width: 40vw;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+.wrapper2 {
+    height: 600px;
+    position: relative;
+}
+.graphContainer2 {
+    height: 600px;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    z-index: 0;
+}
+
+.App3 {
+    width: 35vw;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+.wrapper3 {
+    height: 400px;
+    position: relative;
+}
+.graphContainer3 {
+    height: 400px;
     position: absolute;
     top: 0px;
     width: 100%;

@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState, useEffect, useCallback } from 'react';
+import React, { Fragment, useMemo, useState, useEffect, useCallback } from 'react';
 import { UserStateContext } from '../../../App';
 import { useNavigate } from 'react-router-dom';
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
@@ -11,18 +11,16 @@ import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 // import { formatPostcssSourceMap } from 'vite';
 
 function PostCard({ post }) {
-    const userState = useContext(UserStateContext);
     const [commentsZero, setCommentsZero] = useState([]);
     const [commentsOther, setCommentsOther] = useState([]);
     const [likeCount, setLikeCount] = useState(0);
     const [liked, setLiked] = useState(false);
     const navigate = useNavigate();
-    const userId = localStorage.getItem('userId');
+    const userId = Number(localStorage.getItem('userId'));
     const [disabled, setDisabled] = useState(false);
     // console.log(post);
 
-    const isEditable = userId === post.userId;
-    console.log(isEditable);
+    const isEditable = useMemo(() => userId === post.userId, [userId, post.userId]);
 
     const handleClick = useCallback(
         post => {
@@ -59,14 +57,14 @@ function PostCard({ post }) {
     const fetchComments = useCallback(
         async post => {
             try {
-                const res = await getApi(`/comment/${post.postId}`);
+                const res = await getApi(`/comment?postId=${post.postId}&cursor=0`);
                 const commentDataZero = res.data.commentListZero;
                 const commentDataOther = res.data.commentListOther;
 
                 setCommentsZero(commentDataZero);
                 setCommentsOther(commentDataOther);
             } catch (err) {
-                alert(err.response.data.message);
+                alert(err.message);
                 console.log('댓글 불러오기를 실패했습니다');
             }
         },
@@ -175,7 +173,7 @@ function PostCard({ post }) {
                     </div>
                 </div>
                 <div className="commentSection mt-1">
-                    {commentsZero.slice(0, 3)?.map(item => (
+                    {commentsZero?.slice(0, 3).map(item => (
                         <div className="flex w-full" key={item.id}>
                             <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
                             <div className="flex flex-grow justify-end items-center">

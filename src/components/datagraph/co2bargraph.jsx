@@ -5,7 +5,7 @@ import { ResponsiveBar } from '@nivo/bar'
 const data = [
   {
       "type": "vegi",
-      "value": 1.851724137931034
+      "value": 1.85
   },
   {
       "type": "meat",
@@ -23,9 +23,9 @@ const data = [
 
 const CO2BarGraph = () => {
   return(
-    <div className="App">
-      <div div className="wrapper">
-        <div className="graphContainer">
+    <div className="App3" >
+      <div div className="wrapper3" >
+        <div className="graphContainer3" >
           <ResponsiveBar
             data={data}
             keys={['value']}
@@ -34,7 +34,7 @@ const CO2BarGraph = () => {
             padding={0.3}
             valueScale={{ type: 'linear' }}
             indexScale={{ type: 'band', round: true }}
-            colors={"#008000"}
+            colors={"#A2F403"}
             borderColor={{
               from: 'color',
               modifiers: [
