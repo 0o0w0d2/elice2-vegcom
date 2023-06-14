@@ -1,36 +1,76 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
-import * as Api from '../../../api';
-// import Navigator from '../../sections/navigator';
+import React, { useState, useEffect, useCallback } from 'react';
+import { get as getApi } from '../../../api';
 import PostCard from '../../components/post/postcard';
-import { UserStateContext } from '../../../App';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PlusCircleIcon, MagnifyingGlassCircleIcon } from '@heroicons/react/24/outline';
 
 function Story() {
     const navigate = useNavigate();
-    const userState = useContext(UserStateContext);
     const [postList, setPostList] = useState([]);
-    const userId = userState.id;
+    const [nextCursor, setNextCursor] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isReached, setIsReached] = useState(false);
 
-    const fetchPost = useCallback(async () => {
-        try {
-            const res = await Api.get('post/list');
-            const postData = res.data;
+    const fetchPost = useCallback(
+        async cursor => {
+            try {
+                if (cursor === -1) {
+                    setIsLoading(false);
+                    return;
+                }
+                setIsLoading(true);
 
-            setPostList(postData.postList);
-        } catch (err) {
-            alert('err.response.data.message');
-            console.log('DB 불러오기를 실패했습니다.');
+                const res = await getApi(`post/list/${cursor}`);
+
+                const postData = res.data;
+
+                if (postData.postList?.length < 5) {
+                    setNextCursor(-1);
+                } else {
+                    setNextCursor(postData.postList[postData.postList.length - 1].postId);
+                }
+
+                let newPostList;
+
+                if (cursor === 0) {
+                    newPostList = postData.postList;
+                } else if (cursor > 0 && postData.postList.length > 0) {
+                    newPostList = [...postList, ...postData.postList];
+                } else if (postData.postList.length === 0) {
+                    newPostList = [...postList];
+                }
+
+                setPostList(newPostList);
+
+                setIsReached(false);
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        },
+        [isReached],
+    );
+
+    const handleScroll = useCallback(() => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollTop = document.documentElement.scrollTop;
+        const clientHeight = document.documentElement.clientHeight;
+
+        if (scrollTop + clientHeight >= scrollHeight) {
+            setIsReached(true);
         }
     }, []);
 
     useEffect(() => {
-        // if (!userState.user) {
-        //     navigate('/login');
-        //     alert('로그인한 유저만 사용할 수 있습니다.');
-        //     return;
-        // }
-        fetchPost();
+        // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
+        fetchPost(nextCursor);
+        // 스크롤 이벤트 핸들러 등록 및 해제
+        window.addEventListener('scroll', handleScroll);
+        // console.log('nextCursor', nextCursor);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
     }, [fetchPost]);
 
     return (
@@ -43,14 +83,16 @@ function Story() {
                     </h2>
                 </div>
                 <div className="flex mb-3" style={{ justifyContent: 'flex-end' }}>
-                    <PlusCircleIcon className="w-7 h-7" onClick={() => navigate('/addpost')} />{' '}
                     <MagnifyingGlassCircleIcon className="w-7 h-7" />
+                    <PlusCircleIcon className="w-7 h-7" onClick={() => navigate('/addpost')} />
                 </div>
                 {postList.map(post => (
                     <div key={post.postId}>
                         <PostCard post={post} />
                     </div>
                 ))}
+                {isLoading && <p>Loading...</p>}
+                {nextCursor === -1 && <p>데이터 로딩 완료!</p>}
             </div>
         </>
     );

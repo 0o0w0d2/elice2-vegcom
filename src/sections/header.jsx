@@ -1,16 +1,24 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserStateContext, DispatchContext } from '../../App';
+import { DispatchContext } from '../../App';
 
 import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { ChatBubbleLeftRightIcon, UserIcon, TrophyIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
+import {
+    UserCircleIcon,
+    ChatBubbleLeftRightIcon,
+    UserIcon,
+    TrophyIcon,
+    ArrowLeftOnRectangleIcon,
+} from '@heroicons/react/24/outline';
 
 function Header() {
+    const userId = localStorage.getItem('userId');
     const menus = [
-        { name: '스토리', description: '스토리 페이지로 이동', href: '/story', icon: ChatBubbleLeftRightIcon },
-        { name: '랭킹', description: '랭킹 페이지로 이동', href: '/rank', icon: TrophyIcon },
+        { name: '스토리', description: '스토리 페이지', href: '/story', icon: ChatBubbleLeftRightIcon },
+        { name: '랭킹', description: '랭킹 페이지', href: '/rank', icon: TrophyIcon },
+        { name: '마이페이지', description: '마이페이지', href: `/mypage/${userId}`, icon: UserCircleIcon },
         // {name: '쇼핑'},
     ];
 
@@ -37,28 +45,10 @@ function Header() {
         return isLogoHovered ? '/logolong.png' : '/logoshort.png';
     };
 
-    // const location = useLocation();
-    // console.log('useLocation', location);
-    // const userState = useContext(UserStateContext);
-    // console.log('state', userState);
-
-    // const navigate = useNavigate();
-
-    // const dispatch = useContext(DispatchContext);
-
-    // const isLogin = !!userState.user;
-
-    // // 기본 페이지로 돌아가기
-    // const logout = () => {
-    //     localStorage.removeItem('userToken');
-    //     dispatch({ type: 'LOGOUT' });
-    //     navigate('/');
-    // };
-
     return (
         <header
-            className="fixed top-0 left-0 right-0 z-50 p-4 flex justify-center grid-cols-3"
-            style={{ height: '150px', backgroundColor: 'white' }}>
+            className="fixed top-0 left-0 right-0 z-50 p-4 flex  shadow-md justify-center grid-cols-3"
+            style={{ height: '120px', backgroundColor: 'white' }}>
             <div className="col-start-1 " style={{ width: '20vw' }}></div>
             <div className="col-start-2 items-center justify-center" style={{ width: '60vw' }}>
                 <img

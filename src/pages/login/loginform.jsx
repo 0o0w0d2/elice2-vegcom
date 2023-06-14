@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as Api from '../../../api';
-import { UserStateContext, DispatchContext } from '../../../App';
+import { post as postApi } from '../../../api';
+import { DispatchContext } from '../../../App';
 
 function LoginForm() {
     const navigate = useNavigate();
     const dispatch = useContext(DispatchContext);
-    const userState = useContext(UserStateContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -32,7 +31,7 @@ function LoginForm() {
 
     const handleSubmit = async () => {
         try {
-            const res = await Api.post('user/login', {
+            const res = await postApi('user/login', {
                 email,
                 password,
             });
@@ -40,7 +39,9 @@ function LoginForm() {
             const user = res.data;
             const jwtToken = user.token;
             // console.log('토큰: ', jwtToken);
+            console.log(user.userId);
             localStorage.setItem('userToken', jwtToken);
+            localStorage.setItem('userId', user.userId);
 
             dispatch({
                 type: 'LOGIN_SUCCESS',
@@ -49,20 +50,9 @@ function LoginForm() {
 
             navigate('/rank', { replace: true });
         } catch (err) {
-            if (err.response && err.response.status === 400) {
-                alert('비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.');
-            } else {
-                alert('로그인에 실패하였습니다.', err);
-            }
+            alert(err.response.data.message);
         }
     };
-    //만약 로그인된 상태라면, 기본 페이지로 이동
-    useEffect(() => {
-        if (userState.user) {
-            navigate('/rank');
-            return;
-        }
-    }, [userState, navigate]);
 
     return (
         <div className="login-page">

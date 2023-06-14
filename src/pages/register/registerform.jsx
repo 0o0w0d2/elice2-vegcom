@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { UserStateContext } from '../../../App';
-import * as Api from '../../../api';
+import React, { useState, useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { post as postApi } from '../../../api';
 
 function RegisterForm() {
     const navigate = useNavigate();
-    const userState = useContext(UserStateContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,26 +11,32 @@ function RegisterForm() {
     const [nickname, setNickname] = useState('');
     const [imageUrl, setImageUrl] = useState('http://placekitten.com/200/200');
 
-    const validateEmail = email => {
-        return email
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            );
-    };
+    const validateEmail = useCallback(
+        email => {
+            return email
+                .toLowerCase()
+                .match(
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                );
+        },
+        [email],
+    );
 
-    const isEmailValid = validateEmail(email);
-    const isPasswordValid = password.length >= 10;
-    const isPasswordSame = password === confirmPassword;
-    const isNicknameValid = nickname.length >= 2;
+    const isEmailValid = useMemo(() => validateEmail(email), [email]);
+    const isPasswordValid = useMemo(() => password.length >= 10, [password]);
+    const isPasswordSame = useMemo(() => password === confirmPassword, [confirmPassword]);
+    const isNicknameValid = useMemo(() => nickname.length >= 2, [nickname]);
 
     // 위 4개 조건이 모두 동시에 만족되는지 여부를 확인함.
-    const isFormValid = isEmailValid && isPasswordValid && isPasswordSame && isNicknameValid;
+    const isFormValid = useMemo(
+        () => isEmailValid && isPasswordValid && isPasswordSame && isNicknameValid,
+        [isEmailValid, isPasswordValid, isPasswordSame, isNicknameValid],
+    );
 
     const handleSubmit = async e => {
         try {
             console.log(imageUrl);
-            const res = await Api.post('user/register', {
+            const res = await postApi('user/register', {
                 email,
                 password,
                 nickname,
@@ -45,17 +49,9 @@ function RegisterForm() {
             navigate('/login');
         } catch (err) {
             alert(err.response.data.message);
-            console.log('회원가입에 실패하였습니다. err: ', err);
+            console.log(err.data.response.message);
         }
     };
-
-    //만약 로그인된 상태라면, 기본 페이지로 이동
-    useEffect(() => {
-        if (userState.user) {
-            console.log('state', userState);
-            navigate('/');
-        }
-    }, [userState, navigate]);
 
     return (
         <div style={{ alignItems: 'center', display: 'center', maxWidth: '700px', width: '75vh' }}>

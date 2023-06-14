@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserStateContext, DispatchContext } from '../../../App';
 import { UserCircleIcon } from '@heroicons/react/24/solid';
-import * as Api from '../../../api';
+import { put as putApi } from '../../../api';
 
 function UserEdit() {
     const userState = useContext(UserStateContext);
@@ -20,14 +20,12 @@ function UserEdit() {
             formData.append('nickname', nickname);
             formData.append('description', description);
 
-            const res = await Api.put(`/user/${userId}`, formData);
-            navigate(-1);
-
+            const res = await putApi(`/user/${userId}`, formData);
             navigate(-1);
         } catch (err) {
             console.log(err);
-            // alert(err.response.data.message);
-            console.log('DB 수정 요청을 실패했습니다.'); // 이거는 나중에 err안에 있는 message로 바꿔주세요. alert도 띄우고 콘솔도 띄우고
+            alert(err.response.data.message);
+            console.log(err.response.data.message); // 이거는 나중에 err안에 있는 message로 바꿔주세요. alert도 띄우고 콘솔도 띄우고
         }
     };
     return (
@@ -39,13 +37,12 @@ function UserEdit() {
                 </label>
                 <div className="userNickname w-full mt-2">
                     <div className="w-full flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
-                        <input
+                        <textarea
                             type="text"
                             className="w-60 block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm"
                             placeholder={nickname}
                             value={nickname}
-                            onChange={e => setNickname(e.target.value)}
-                        />
+                            onChange={e => setNickname(e.target.value)}></textarea>
                     </div>
                     {/* 글자수 제한 코드 추가하기 */}
                 </div>
@@ -71,11 +68,13 @@ function UserEdit() {
                         autoComplete={description}
                         value={description}
                         onChange={e => setDescription(e.target.value)}
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm "
-                    />
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm "></textarea>
                 </div>
                 <div className="buttonSection mt-5 justify-center">
-                    <button onClick={goBack} type="button" className=" shadow-sm text-sm font-semibold leading-6 text-gray-900">
+                    <button
+                        onClick={() => navigate(-1)}
+                        type="button"
+                        className=" shadow-sm text-sm font-semibold leading-6 text-gray-900">
                         취소
                     </button>
                     <button
