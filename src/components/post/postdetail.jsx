@@ -7,6 +7,7 @@ import { StarIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
 import { get as getApi, post as postApi, del as delApi } from '../../../api';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
+import GetTime from '../functions/gettime';
 
 function PostDetail() {
     // post/:postId 로 받아와서 구현
@@ -244,8 +245,10 @@ function PostDetail() {
                             <span style={{ fontWeight: 'bold' }}>{likeCount.toLocaleString()} 명</span>이 좋아합니다.
                         </div>
                         <div className="flex mt-2 text-md text-left">
-                            <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.nickname}</span> {post.content}
+                            <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.nickname}</span>
+                            <span style={{ color: '#737373' }}> {GetTime(post.createAt)} </span>
                         </div>
+                        <div className="text-left">{post.content}</div>
                     </div>
                     <div className="commentSection w-full mt-1 mb-3">
                         {/* .. parentId === item.id  */}
@@ -253,7 +256,7 @@ function PostDetail() {
                             <div>
                                 <div className="pt-1 mt-1 pb-1 flex w-full" key={item.id}>
                                     <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span>{' '}
-                                    {item.content}
+                                    <span style={{ color: '#737373' }}>{GetTime(item.createAt)}</span>
                                     <div className="flex flex-grow justify-end items-center">
                                         <CommentIcon
                                             onClick={() => {
@@ -266,22 +269,25 @@ function PostDetail() {
                                         {(isEditable || userId === item.userId) && <TrashIcon className="w-5 h-5" />}
                                     </div>
                                 </div>
+                                <div className="text-left">{item.content}</div>
 
                                 {commentsOther
                                     .filter(comment => comment.parentId === item.id)
                                     .map((comment, index) => (
-                                        <div
-                                            className="pt-1  pb-1 mt-1 flex w-full"
-                                            style={{ backgroundColor: '#dedede' }}
-                                            key={index}>
-                                            <span style={{ fontWeight: 'bold', marginRight: '0.4rem', marginLeft: '10px' }}>
-                                                {comment.nickname}
-                                            </span>
-                                            {comment.content}
-                                            <div className="flex flex-grow justify-end items-center">
-                                                {userId === comment.userId && <PencilSquareIcon className="w-5 h-5" />}
-                                                {(isEditable || userId === comment.userId) && <TrashIcon className="w-5 h-5" />}
+                                        <div className="ml-4" style={{ backgroundColor: '#c7c7c7' }}>
+                                            <div className="pt-1  pb-1 mt-1 flex w-full" key={index}>
+                                                <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>
+                                                    {comment.nickname}
+                                                </span>
+                                                <span style={{ color: '#737373' }}> {GetTime(comment.createAt)}</span>
+                                                <div className="flex flex-grow justify-end items-center">
+                                                    {userId === comment.userId && <PencilSquareIcon className="w-5 h-5" />}
+                                                    {(isEditable || userId === comment.userId) && (
+                                                        <TrashIcon className="w-5 h-5" />
+                                                    )}
+                                                </div>
                                             </div>
+                                            <div className="text-left">{comment.content}</div>
                                         </div>
                                     ))}
 

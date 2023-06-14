@@ -57,14 +57,14 @@ function PostCard({ post }) {
     const fetchComments = useCallback(
         async post => {
             try {
-                const res = await Api.get(`/comment?postId=${post.postId}&cursor=0`);
+                const res = await getApi(`/comment?postId=${post.postId}&cursor=0`);
                 const commentDataZero = res.data.commentListZero;
                 const commentDataOther = res.data.commentListOther;
 
                 setCommentsZero(commentDataZero);
                 setCommentsOther(commentDataOther);
             } catch (err) {
-                alert(err.response.data.message);
+                alert(err.message);
                 console.log('댓글 불러오기를 실패했습니다');
             }
         },
