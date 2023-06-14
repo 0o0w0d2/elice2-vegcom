@@ -7,7 +7,7 @@ import { StarIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
 import { get as getApi, post as postApi, del as delApi } from '../../../api';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
-import GetTime from '../functions/gettime';
+import GetTime from '../../utils/gettime';
 
 function PostDetail() {
     // post/:postId 로 받아와서 구현
@@ -17,7 +17,7 @@ function PostDetail() {
     const postId = location.pathname.match(/\/post\/(\d+)/)[1];
     const [content, setContent] = useState('');
     const [reContent, setReContent] = useState('');
-    const [isEditing, setIsEditing] = useState(false);
+    const [isReplying, setIsReplying] = useState(false);
     const [parentId, setParentId] = useState(0);
     const [commentsZero, setCommentsZero] = useState([]);
     const [commentsOther, setCommentsOther] = useState([]);
@@ -260,7 +260,7 @@ function PostDetail() {
                                     <div className="flex flex-grow justify-end items-center">
                                         <CommentIcon
                                             onClick={() => {
-                                                setIsEditing(!isEditing);
+                                                setIsReplying(!isReplying);
                                                 parentId == 0 ? setParentId(item.id) : setParentId(0);
                                             }}
                                             className="h-5 w-5"
@@ -291,7 +291,7 @@ function PostDetail() {
                                         </div>
                                     ))}
 
-                                {isEditing && parentId === item.id && (
+                                {isReplying && parentId === item.id && (
                                     <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
                                         <div className="flex mt-4">
                                             <textarea
