@@ -42,7 +42,7 @@ function PostDetail() {
         setIsSave(true);
     };
     const handleReSubmit = async () => {
-        await Api.post('/comment', {
+        await postApi('/comment', {
             parentId: parentId,
             content: reContent,
             postId,
@@ -87,7 +87,7 @@ function PostDetail() {
                     return;
                 }
                 setIsLoading(true);
-                const res = await Api.get(`/comment?postId=${postId}&cursor=${cursor}`);
+                const res = await getApi(`/comment?postId=${postId}&cursor=${cursor}`);
                 console.log('res:', res);
 
                 const commentDataZero = res.data.commentListZero;

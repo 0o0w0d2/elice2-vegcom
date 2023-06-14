@@ -20,7 +20,7 @@ function Story() {
                 }
                 setIsLoading(true);
 
-                const res = await Api.get(`post/list/${cursor}`);
+                const res = await getApi(`post/list/${cursor}`);
 
                 const postData = res.data;
 
