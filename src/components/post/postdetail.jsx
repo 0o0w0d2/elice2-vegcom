@@ -115,8 +115,6 @@ function PostDetail() {
     });
 
     const isEditable = useMemo(() => userId === post.userId, [userId, post.userId]);
-    // console.log('userId', userId, 'post', post);
-    // console.log('내건가', isEditable);
 
     const fetchPostDetail = useCallback(async () => {
         try {
@@ -155,12 +153,10 @@ function PostDetail() {
                 }
                 setIsLoading(true);
                 const res = await getApi(`/comment?postId=${postId}&cursor=${cursor}`);
-                console.log('res:', res);
 
                 const commentDataZero = res.data.commentListZero;
                 const commentDataOther = res.data.commentListOther;
 
-                console.log('답글', commentDataOther);
                 if (commentDataZero?.length < 10) {
                     setNextCursor(-1);
                 } else {
@@ -198,8 +194,6 @@ function PostDetail() {
         [isSave, isReached],
     );
 
-    console.log('댓글:', commentsZero);
-    console.log('답글:', commentsOther);
     const handleScroll = useCallback(() => {
         const scrollHeight = document.documentElement.scrollHeight;
         const scrollTop = document.documentElement.scrollTop;
@@ -209,8 +203,6 @@ function PostDetail() {
             setIsReached(true);
         }
     }, []);
-
-    console.log('isreached', isReached);
 
     const handleLike = (postId, userId) => {
         try {
@@ -242,13 +234,33 @@ function PostDetail() {
         }
     };
 
+    const fetchLikes = useCallback(
+        async postId => {
+            try {
+                const res = await getApi(`like/${postId}`);
+                console.log('좋아요 데이터:', res.data);
+                const likesData = res.data;
+                setLikeCount(likesData.likecount);
+                setLiked(likesData.likeuser);
+            } catch (err) {
+                if (err.response.data.message) {
+                    alert(err.response.data.message);
+                } else {
+                    alert('라우팅 경로가 잘못되었습니다.');
+                }
+            }
+        },
+        [post],
+    );
+
     useEffect(() => {
         // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
         fetchComments(postId, nextCursor);
         fetchPostDetail(postId);
+        fetchLikes(postId);
         // 스크롤 이벤트 핸들러 등록 및 해제
         window.addEventListener('scroll', handleScroll);
-        // console.log('nextCursor', nextCursor);
+
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
