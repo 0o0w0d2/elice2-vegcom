@@ -120,12 +120,16 @@ function PostCard({ post }) {
         <div className="postCard rounded-lg mx-auto grid max-w-2xl grid-cols-1 border border-gray-300 pt-5 pl-5 pb-5 pr-5 mb-5">
             <article key={post.postId} className="flex max-w-xl flex-col justify-between text-bold">
                 <div className="profileSection relative flex w-full items-center gap-x-4">
-                    {post.userImage ? (
-                        <img src={getImageSrc(post.userImage)} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
-                    ) : (
-                        <img src={'http://placekitten.com/200/200'} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
-                    )}
-                    <div style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold' }}>{post.nickname}</div>
+                    <div className="flex" onClick={() => navigate(`/mypage/${post.userId}`)}>
+                        {post.userImage ? (
+                            <img src={getImageSrc(post.userImage)} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+                        ) : (
+                            <img src={'http://placekitten.com/200/200'} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+                        )}
+                        <div style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold', marginLeft: '1rem' }}>
+                            {post.nickname}
+                        </div>
+                    </div>
                     {isEditable && (
                         <div className="flex flex-grow justify-end">
                             <Menu as="div" className="relative inline-block text-left">
