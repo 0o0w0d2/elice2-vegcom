@@ -7,7 +7,7 @@ import { put as putApi } from '../../../api';
 function UserEdit() {
     const userState = useContext(UserStateContext);
     const navigate = useNavigate();
-    const userId = userState.user.userId;
+    const userId = Number(localStorage.getItem('userId'));
     const [nickname, setNickname] = useState(userState.user.nickname);
     const [userImage, setUserImage] = useState(userState.user.imageUrl);
 
@@ -84,7 +84,7 @@ function UserEdit() {
                             onClick={() => handleSubmit(userId)}
                             type="submit"
                             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                            올리기
+                            수정하기
                         </button>
                     </div>
                 </div>

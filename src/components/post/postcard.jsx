@@ -125,7 +125,7 @@ function PostCard({ post }) {
     }, [fetchLikes, fetchComments]);
 
     return (
-        <div className="postCard rounded-lg mx-auto grid max-w-2xl grid-cols-1 border border-gray-300 pt-5 pl-5 pb-5 pr-5 mb-5">
+        <div className="postCard shadow-lg rounded-lg mx-auto grid max-w-2xl grid-cols-1 border border-gray-300 pt-5 pl-5 pb-5 pr-5 mb-5">
             <article key={post.postId} className="flex max-w-xl flex-col justify-between text-bold">
                 <div className="profileSection relative flex w-full items-center gap-x-4">
                     <div className="flex" onClick={() => navigate(`/mypage/${post.userId}`)}>

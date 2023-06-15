@@ -81,7 +81,7 @@ function Rank() {
                 <div>
                     <UserCard user={user} point={point} />
                 </div>
-                <p>랭킹</p>
+                <p style={{ fontSize: '1.5rem', color: '#008762', fontWeight: 'bold', marginTop: '3rem' }}>전체 랭킹</p>
                 <div>
                     {rankList.map((owner, index) => (
                         <div key={owner.userId} onClick={() => navigate(`/mypage/${owner.userId}`)}>

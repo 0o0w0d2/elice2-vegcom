@@ -57,7 +57,7 @@ function Header() {
     };
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-0" style={{ backgroundColor: 'white' }}>
+        <header className="fixed top-0 left-0 right-0 z-50" style={{ backgroundColor: 'white' }}>
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
                 <div className="flex lg:flex-1">
                     <a href="/" className="-m-1.5 p-1.5">
@@ -98,7 +98,7 @@ function Header() {
                             leave="transition ease-in duration-150"
                             leaveFrom="opacity-100 translate-y-0"
                             leaveTo="opacity-0 translate-y-1">
-                            <Popover.Panel className="absolute top-full z-0 mt-3 max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+                            <Popover.Panel className="absolute top-full z-1 mt-3 max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
                                 <div className="p-4">
                                     {mymenu.map(item => (
                                         <div
