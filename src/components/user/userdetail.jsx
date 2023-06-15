@@ -186,22 +186,34 @@ function UserDetail() {
                     )}
                     <div>
                         {!isSelect ? (
-                            <div className="w-full bg-white shadow-md rounded-xl pt-5 pb-5 pl-3 pr-3">
-                                {chunkArray(archivePostList, 3).map((row, rowIndex) => (
-                                    <div key={rowIndex} className="flex justify-left">
-                                        {row.map((item, index) => (
-                                            <div key={index} className="flex items-center mx-2">
-                                                <img
-                                                    className="object-cover mb-2"
-                                                    style={{ width: '18vh', height: '18vh' }}
-                                                    src={getImageSrc(item.imageUrl)}
-                                                    alt={item.id}
-                                                    onClick={() => navigate(`/post/${item.id}`)}
-                                                />
+                            <div>
+                                {archivePostList.length === 0 ? (
+                                    <div>
+                                        {currentUserId === userId ? (
+                                            <div>글을 안 썼어요. 쓰러 가자</div>
+                                        ) : (
+                                            <div>{userInfo.nickname}님은 글을 아직 작성하지 않았어요.</div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="w-full bg-white shadow-md rounded-xl pt-5 pb-5 pl-3 pr-3">
+                                        {chunkArray(archivePostList, 3).map((row, rowIndex) => (
+                                            <div key={rowIndex} className="flex justify-left">
+                                                {row.map((item, index) => (
+                                                    <div key={index} className="flex items-center mx-2">
+                                                        <img
+                                                            className="object-cover mb-2"
+                                                            style={{ width: '18vh', height: '18vh' }}
+                                                            src={getImageSrc(item.imageUrl)}
+                                                            alt={item.id}
+                                                            onClick={() => navigate(`/post/${item.id}`)}
+                                                        />
+                                                    </div>
+                                                ))}
                                             </div>
                                         ))}
                                     </div>
-                                ))}
+                                )}
                             </div>
                         ) : (
                             <div className="flex justify-center">
