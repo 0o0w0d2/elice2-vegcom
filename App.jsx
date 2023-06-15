@@ -5,6 +5,7 @@ import { get as getApi } from './api';
 import { loginReducer } from './reducer';
 import Header from './src/sections/header';
 // import Footer from './src/sections/footer';
+import Loading from './src/pages/loading';
 
 import LoginForm from './src/pages/login/loginform.jsx';
 import RegisterForm from './src/pages/register/registerform';
@@ -80,7 +81,7 @@ function App() {
     }, []);
 
     if (!isFetchCompleted) {
-        return 'loading...';
+        return <Loading />;
     }
 
     return (

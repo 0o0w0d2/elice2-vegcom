@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { get as getApi } from '../../../api';
 import PostCard from '../../components/post/postcard';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../loading';
 
 function SearchPost() {
     const [keyword, setKeyword] = useState('');
@@ -108,7 +109,7 @@ function SearchPost() {
                         <PostCard post={post} />
                     </div>
                 ))}
-                {isLoading && <p>Loading...</p>}
+                {isLoading && <Loading />}
             </div>
         </>
     );

@@ -5,6 +5,7 @@ import RankCard from '../../components/rankcard/rankcard';
 import UserCard from '../../components/user/usercard';
 import RankPageSentence from '../../components/rankpagesentence/rankpagesentence';
 import PointBar from '../../components/pointbar/pointbar';
+import Loading from '../loading';
 
 function Rank() {
     const navigate = useNavigate();
@@ -65,7 +66,7 @@ function Rank() {
     }, [fetchRank, fetchOwner]);
 
     if (!isFetchOwnerCompleted && !isFetchRankCompleted) {
-        return 'loading...';
+        return <Loading />;
     }
 
     return (

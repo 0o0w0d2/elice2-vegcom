@@ -6,6 +6,7 @@ import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 import GetDays from '../../utils/getdays';
 import { chunkArray } from '../../utils/chunkArray';
 import { HeartIcon } from '@heroicons/react/24/solid';
+import Loading from '../../pages/loading';
 
 function UserDetail() {
     // post/:postId 로 받아와서 구현
@@ -85,7 +86,7 @@ function UserDetail() {
     }, [fetchArchive, fetchLikes]);
 
     if (!isFetchArchiveCompleted && !isFetchLikesCompleted) {
-        return 'loading...';
+        return <Loading />;
     }
 
     return (

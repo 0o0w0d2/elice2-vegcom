@@ -2,6 +2,7 @@ import React, { useEffect, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { put as putApi, get as getApi } from '../../../api';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
+import Loading from '../../pages/loading';
 
 function PostEdit() {
     const [imageUrl, setImageUrl] = useState('');
@@ -78,7 +79,7 @@ function PostEdit() {
     return (
         <>
             {!post ? (
-                <div>Loading...</div>
+                <Loading />
             ) : (
                 <div className="editPostContainer">
                     <div>

@@ -8,6 +8,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { get as getApi, post as postApi, del as delApi, put as putApi } from '../../../api';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 import GetTime from '../../utils/gettime';
+import Loading from '../../pages/loading';
 import { comment } from 'postcss';
 
 function PostDetail() {
@@ -253,7 +254,7 @@ function PostDetail() {
     }, [fetchComments, fetchPostDetail]);
 
     if (!isFetchCommentCompleted && !isFetchPostCompleted) {
-        return 'loading...';
+        return <Loading />;
     }
 
     return (
@@ -331,9 +332,9 @@ function PostDetail() {
                     </div>
                     <div className="commentSection w-full mt-1 mb-3">
                         {/* .. parentId === item.id  */}
-                        {commentsZero?.map(item => (
+                        {commentsZero?.map((item, index) => (
                             <div>
-                                <div className="pt-1 mt-1 pb-1 flex w-full" key={item.id}>
+                                <div className="pt-1 mt-1 pb-1 flex w-full" key={index}>
                                     <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span>{' '}
                                     <span style={{ color: '#737373' }}>{GetTime(item.createAt)}</span>
                                     <div className="flex flex-grow justify-end items-center">
@@ -462,7 +463,7 @@ function PostDetail() {
                                 )}
                             </div>
                         ))}
-                        {isLoading && <p>Loading...</p>}
+                        {isLoading && <Loading />}
 
                         {!isEditing && (
                             <div className="pl-2 pb-3 fixed bottom-0 w-full bg-white" style={{ width: '40vw' }}>

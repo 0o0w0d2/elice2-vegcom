@@ -3,6 +3,7 @@ import { get as getApi } from '../../../api';
 import PostCard from '../../components/post/postcard';
 import { useNavigate } from 'react-router-dom';
 import { PlusCircleIcon, MagnifyingGlassCircleIcon } from '@heroicons/react/24/outline';
+import Loading from '../loading';
 
 function Story() {
     const navigate = useNavigate();
@@ -94,7 +95,7 @@ function Story() {
                         <PostCard post={post} />
                     </div>
                 ))}
-                {isLoading && <p>Loading...</p>}
+                {isLoading && <Loading />}
             </div>
         </>
     );
