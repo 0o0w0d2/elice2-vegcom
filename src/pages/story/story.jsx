@@ -82,7 +82,7 @@ function Story() {
                     </h2>
                 </div>
                 <div className="flex mb-3" style={{ justifyContent: 'flex-end' }}>
-                    <MagnifyingGlassCircleIcon className="w-7 h-7" />
+                    <MagnifyingGlassCircleIcon className="w-7 h-7" onClick={() => navigate('/searchpost')} />
                     <PlusCircleIcon className="w-7 h-7" onClick={() => navigate('/addpost')} />
                 </div>
                 {postList.map(post => (
