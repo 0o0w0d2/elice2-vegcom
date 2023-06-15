@@ -68,7 +68,7 @@ function SearchPost() {
     );
 
     const handleSearchButtonClick = useCallback(() => {
-        handleSearch(keyword, 0);
+        handleSearch(keyword, nextCursor);
     }, [handleSearch, keyword]);
 
     const handleScroll = useCallback(() => {
@@ -125,7 +125,10 @@ function SearchPost() {
                             placeholder="궁금한 식단의 키워드를 검색해 보세요"
                         />
                         <button
-                            onClick={() => handleSearchButtonClick(keyword, nextCursor)}
+                            onClick={() => {
+                                setNextCursor(0);
+                                handleSearchButtonClick(keyword, nextCursor);
+                            }}
                             type="submit"
                             className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             검색
