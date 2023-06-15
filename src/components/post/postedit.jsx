@@ -56,8 +56,11 @@ function PostEdit() {
             console.log('formData 요청 후', formData);
             navigate(-1);
         } catch (err) {
-            alert(err.message);
-            console.log(err.data.message);
+            if (err.response.data.message) {
+                alert(err.response.data.message);
+            } else {
+                alert('라우팅 경로가 잘못되었습니다.');
+            }
         }
     };
 
@@ -92,7 +95,7 @@ function PostEdit() {
                     {imageUrl && (
                         <div style={{ width: '200px' }}>
                             <span> 이미지 미리보기 </span>
-                            <img className="w-full h-full object-cover" id="preview" alt="Preview" />
+                            <img className="w-full h-full object-cover" id="preview" src={imageUrl} alt="Preview" />
                         </div>
                     )}
 
