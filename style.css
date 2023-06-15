@@ -98,7 +98,7 @@ button:focus-visible {
     padding: 10px 12px 10px 12px;
     font-weight: bold;
     color: white;
-    border-radius: 9px;
+    border-radius: 45px;
 }
 
 .addPostButton {
@@ -107,7 +107,7 @@ button:focus-visible {
     color: white;
     font-weight: bold;
 
-    border-radius: 9px;
+    border-radius: 45px;
 }
 
 .searchButton:hover {
