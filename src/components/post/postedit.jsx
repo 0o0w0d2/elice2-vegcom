@@ -83,7 +83,11 @@ function PostEdit() {
             ) : (
                 <div className="editPostContainer">
                     <div>
-                        <h1 className="h-auto mb-7 text-bold">게시물 수정하기</h1>
+                        <h1
+                            className="h-auto mb-7 "
+                            style={{ fontSize: '2.5rem', color: '#008762', fontWeight: 'bold', marginTop: '-9rem' }}>
+                            게시물 수정하기
+                        </h1>
                     </div>
                     {imageUrl && (
                         <div style={{ width: '200px' }}>
