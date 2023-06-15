@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
-import GetDays from '../functions/getdays';
+import GetDays from '../../utils/getdays';
 
 const UserCard = ({ user, point }) => {
     const getImageSrc = useCallback(() => {

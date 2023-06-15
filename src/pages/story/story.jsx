@@ -75,7 +75,6 @@ function Story() {
 
     return (
         <>
-            <div className="headerSection" style={{ height: '150px' }}></div>
             <div className="w-full">
                 <div className="mx-auto max-w-2xl lg:mx-0">
                     <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-10">
@@ -92,7 +91,6 @@ function Story() {
                     </div>
                 ))}
                 {isLoading && <p>Loading...</p>}
-                {nextCursor === -1 && <p>데이터 로딩 완료!</p>}
             </div>
         </>
     );

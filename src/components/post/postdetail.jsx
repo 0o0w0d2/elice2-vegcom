@@ -2,12 +2,13 @@ import React, { Fragment, useMemo, useState, useEffect, useCallback } from 'reac
 import { UserStateContext } from '../../../App';
 import { useLocation } from 'react-router-dom';
 import { ChatBubbleBottomCenterTextIcon as CommentIcon, ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
-import { StarIcon as SolidStarIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { StarIcon } from '@heroicons/react/24/outline';
+import { HeartIcon as SolidHeartIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { HeartIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
-import { get as getApi, post as postApi, del as delApi } from '../../../api';
+import { get as getApi, post as postApi, del as delApi, put as putApi } from '../../../api';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
-import GetTime from '../functions/gettime';
+import GetTime from '../../utils/gettime';
+import { comment } from 'postcss';
 
 function PostDetail() {
     // post/:postId 로 받아와서 구현
@@ -17,7 +18,7 @@ function PostDetail() {
     const postId = location.pathname.match(/\/post\/(\d+)/)[1];
     const [content, setContent] = useState('');
     const [reContent, setReContent] = useState('');
-    const [isEditing, setIsEditing] = useState(false);
+    const [isReplying, setIsReplying] = useState(false);
     const [parentId, setParentId] = useState(0);
     const [commentsZero, setCommentsZero] = useState([]);
     const [commentsOther, setCommentsOther] = useState([]);
@@ -31,26 +32,83 @@ function PostDetail() {
     const [isLoading, setIsLoading] = useState(false);
     const [isReached, setIsReached] = useState(false);
     const [nextCursor, setNextCursor] = useState(0);
+    const [isEditing, setIsEditing] = useState(false);
+    const [isReEditing, setIsReEditing] = useState(false);
 
-    const handleSubmit = async () => {
-        await postApi('/comment', {
-            parentId: 0,
-            content,
-            postId,
-        });
+    const handleSubmit = async commentId => {
+        if (!isEditing) {
+            await postApi('/comment', {
+                parentId: 0,
+                content,
+                postId,
+            });
+        } else if (isEditing) {
+            await putApi(`/comment/${commentId}`, {
+                commentId,
+                postId,
+                content,
+            });
 
+            setCommentsZero(prevComments => {
+                return prevComments.map(comment => {
+                    if (comment.id === commentId) {
+                        return {
+                            ...comment,
+                            content: content,
+                        };
+                    } else {
+                        return comment;
+                    }
+                });
+            });
+            setIsEditing(false);
+        }
         setContent('');
         setIsSave(true);
     };
-    const handleReSubmit = async () => {
-        await postApi('/comment', {
-            parentId: parentId,
-            content: reContent,
-            postId,
-        });
-        setReContent('');
+
+    const handleReSubmit = async commentId => {
+        if (!isReEditing) {
+            await postApi('/comment', {
+                parentId: parentId,
+                content: reContent,
+                postId,
+            });
+            setReContent('');
+            setIsReplying(false);
+        } else if (isReEditing) {
+            await putApi(`/comment/${commentId}`, {
+                commentId,
+                postId,
+                content: reContent,
+            });
+
+            setCommentsOther(prevComments => {
+                return prevComments.map(comment => {
+                    if (comment.id === commentId) {
+                        return {
+                            ...comment,
+                            content: reContent,
+                        };
+                    } else {
+                        return comment;
+                    }
+                });
+            });
+            setIsReEditing(false);
+        }
         setIsSave(true);
     };
+
+    const handlePostDelete = useCallback(async postId => {
+        await delApi(`/post/${postId}`);
+        navigate(-1);
+    });
+
+    const handleCommentDelete = useCallback(async commentId => {
+        await delApi(`/comment/${commentId}`);
+        window.location.replace(`/post/${postId}`);
+    });
 
     const isEditable = useMemo(() => userId === post.userId, [userId, post.userId]);
     // console.log('userId', userId, 'post', post);
@@ -183,7 +241,6 @@ function PostDetail() {
 
     return (
         <>
-            <div className="headerSection" style={{ height: '150px' }}></div>
             <div className="w-full pt-5 pl-5 pb-5 pr-5 mb-5">
                 <article key={postId} className="flex-col justify-between" style={{ width: '40vw' }}>
                     <div className="profileSection flex items-center gap-x-4">
@@ -214,12 +271,16 @@ function PostDetail() {
                                             <div className="py-1">
                                                 <div
                                                     className="text-gray-700 block px-4 py-2 text-md"
-                                                    onClick={() => navigate('/rank')}>
+                                                    onClick={() => navigate(`/postedit/${postId}`)}>
                                                     수정
                                                 </div>
                                                 <div
                                                     className="text-gray-700 block px-4 py-2 text-md"
-                                                    onClick={() => navigate('/rank')}>
+                                                    onClick={() => {
+                                                        if (window.confirm('정말로 삭제하시겠습니까?')) {
+                                                            handlePostDelete(postId);
+                                                        }
+                                                    }}>
                                                     삭제
                                                 </div>
                                             </div>
@@ -241,14 +302,14 @@ function PostDetail() {
                         )}
                         <div className="flex mt-3">
                             {liked == true ? (
-                                <SolidStarIcon
+                                <SolidHeartIcon
                                     disabled={disabled}
                                     onClick={() => handleLike(postId, userId)}
                                     className="h-7 w-7"
-                                    fill="#008762"
+                                    fill="#ff3040"
                                 />
                             ) : (
-                                <StarIcon disabled={disabled} onClick={() => handleLike(postId, userId)} className="h-7 w-7" />
+                                <HeartIcon disabled={disabled} onClick={() => handleLike(postId, userId)} className="h-7 w-7" />
                             )}
                             <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7" />
                         </div>
@@ -272,16 +333,52 @@ function PostDetail() {
                                     <div className="flex flex-grow justify-end items-center">
                                         <CommentIcon
                                             onClick={() => {
-                                                setIsEditing(!isEditing);
+                                                setIsReplying(!isReplying);
                                                 parentId == 0 ? setParentId(item.id) : setParentId(0);
                                             }}
                                             className="h-5 w-5"
                                         />
-                                        {userId === item.userId && <PencilSquareIcon className="w-5 h-5" />}
-                                        {(isEditable || userId === item.userId) && <TrashIcon className="w-5 h-5" />}
+                                        {userId === item.userId && (
+                                            <PencilSquareIcon
+                                                onClick={() => {
+                                                    !isEditing ? setIsEditing(true) : setIsEditing(false);
+                                                    setContent(item.content);
+                                                }}
+                                                className="w-5 h-5"
+                                            />
+                                        )}
+                                        {(isEditable || userId === item.userId) && (
+                                            <TrashIcon
+                                                className="w-5 h-5"
+                                                onClick={() => {
+                                                    if (window.confirm('정말로 삭제하시겠습니까?')) {
+                                                        handleCommentDelete(item.id);
+                                                    }
+                                                }}
+                                            />
+                                        )}
                                     </div>
                                 </div>
                                 <div className="text-left">{item.content}</div>
+                                {isEditing && (
+                                    <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
+                                        <div className="flex mt-4">
+                                            <textarea
+                                                style={{ width: '35vw' }}
+                                                className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                                value={content}
+                                                onChange={e => setContent(e.target.value)}></textarea>
+                                            <div className="flex items-center ml-2">
+                                                <button
+                                                    type="submit"
+                                                    className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                                    onClick={() => handleSubmit(item.id)}>
+                                                    수정
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
 
                                 {commentsOther
                                     .filter(comment => comment.parentId === item.id)
@@ -293,17 +390,51 @@ function PostDetail() {
                                                 </span>
                                                 <span style={{ color: '#737373' }}> {GetTime(comment.createAt)}</span>
                                                 <div className="flex flex-grow justify-end items-center">
-                                                    {userId === comment.userId && <PencilSquareIcon className="w-5 h-5" />}
+                                                    {userId === comment.userId && (
+                                                        <PencilSquareIcon
+                                                            className="w-5 h-5"
+                                                            onClick={() => {
+                                                                isReEditing ? setIsReEditing(false) : setIsReEditing(true);
+                                                                setReContent(comment.content);
+                                                            }}
+                                                        />
+                                                    )}
                                                     {(isEditable || userId === comment.userId) && (
-                                                        <TrashIcon className="w-5 h-5" />
+                                                        <TrashIcon
+                                                            className="w-5 h-5"
+                                                            onClick={() => {
+                                                                if (window.confirm('정말로 삭제하시겠습니까?')) {
+                                                                    handleCommentDelete(comment.id);
+                                                                }
+                                                            }}
+                                                        />
                                                     )}
                                                 </div>
                                             </div>
                                             <div className="text-left">{comment.content}</div>
+                                            {isReEditing && (
+                                                <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
+                                                    <div className="flex mt-4">
+                                                        <textarea
+                                                            style={{ width: '35vw' }}
+                                                            className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                                            value={reContent}
+                                                            onChange={e => setReContent(e.target.value)}></textarea>
+                                                        <div className="flex items-center ml-2">
+                                                            <button
+                                                                type="submit"
+                                                                className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                                                onClick={() => handleReSubmit(comment.id)}>
+                                                                수정
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     ))}
 
-                                {isEditing && parentId === item.id && (
+                                {isReplying && parentId === item.id && (
                                     <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
                                         <div className="flex mt-4">
                                             <textarea
@@ -326,27 +457,27 @@ function PostDetail() {
                             </div>
                         ))}
                         {isLoading && <p>Loading...</p>}
-                        {nextCursor === -1 && <p>데이터 로딩 완료!</p>}
-                        <div className="pl-2 pb-3 fixed bottom-0 w-full bg-white" style={{ width: '40vw' }}>
-                            <div className="flex mt-4">
-                                <textarea
-                                    style={{ width: '35vw' }}
-                                    className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                                    placeholder="댓글을 입력하세요."
-                                    value={content}
-                                    onChange={e => setContent(e.target.value)}>
-                                    {' '}
-                                </textarea>
-                                <div className="flex items-center ml-2">
-                                    <button
-                                        type="submit"
-                                        className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
-                                        onClick={() => handleSubmit()}>
-                                        등록
-                                    </button>
+
+                        {!isEditing && (
+                            <div className="pl-2 pb-3 fixed bottom-0 w-full bg-white" style={{ width: '40vw' }}>
+                                <div className="flex mt-4">
+                                    <textarea
+                                        style={{ width: '35vw' }}
+                                        className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                        placeholder="댓글을 입력하세요."
+                                        value={content}
+                                        onChange={e => setContent(e.target.value)}></textarea>
+                                    <div className="flex items-center ml-2">
+                                        <button
+                                            type="submit"
+                                            className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                            onClick={() => handleSubmit()}>
+                                            등록
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </article>
             </div>

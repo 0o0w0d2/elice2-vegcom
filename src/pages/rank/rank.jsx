@@ -65,7 +65,6 @@ function Rank() {
 
     return (
         <div>
-            <div className="headerSection" style={{ height: '150px' }}></div>
             <div>
                 <RankPageSentence />
             </div>
@@ -78,7 +77,6 @@ function Rank() {
             {/* <div>
                 <UserCard point={point} />
             </div> */}
-            <div className="headerSection" style={{ height: '50px' }}></div>
             <p>랭킹</p>
             <div className="w-full">
                 {rankList.map((owner, index) => (
