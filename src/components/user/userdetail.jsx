@@ -72,34 +72,36 @@ function UserDetail() {
     }
 
     return (
-        <>
-            <div
-                className="flex items-center justify-center p-4 m-2 bg-white shadow-lg rounded-xl"
-                style={{ width: '60vh', height: '20vh' }}>
-                <div className="flex flex-row justify-center items-center text-center">
-                    {userImage ? (
-                        <img className="w-20 h-20 object-cover rounded-full mb-2 mr-5" src={userImage} alt={userInfo.id} />
-                    ) : (
-                        <img
-                            src={'http://placekitten.com/200/200'}
-                            alt=""
-                            className="w-20 h-20 object-cover rounded-full mb-2 mr-5"
-                        />
-                    )}
-                    <div>
+        <div style={{ width: '900px' }}>
+            <div className="w-full flex justify-center">
+                <div
+                    className="flex items-center justify-center p-4 m-2 bg-white shadow-lg rounded-xl"
+                    style={{ width: '60vh', height: '20vh' }}>
+                    <div className="flex flex-row justify-center items-center text-center">
+                        {userImage ? (
+                            <img className="w-20 h-20 object-cover rounded-full mb-2 mr-5" src={userImage} alt={userInfo.id} />
+                        ) : (
+                            <img
+                                src={'http://placekitten.com/200/200'}
+                                alt=""
+                                className="w-20 h-20 object-cover rounded-full mb-2 mr-5"
+                            />
+                        )}
                         <div>
-                            {userInfo.nickname}님은 지금까지 {GetDays(userInfo.createAt)}일 동안 총 {userInfo.storyCount} 끼의
-                            채식을 했어요!
+                            <div>
+                                {userInfo.nickname}님은 지금까지 {GetDays(userInfo.createAt)}일 동안 총 {userInfo.storyCount} 끼의
+                                채식을 했어요!
+                            </div>
+                            <p className="text-sm text-gray-500">현재 누적 포인트: {userInfo.accuPoint}</p>
+                            <p className="text-sm text-gray-500">
+                                오늘 순위: {userInfo.TodayRanking}위 전체 누적 순위: {userInfo.AccuRanking}위
+                            </p>
                         </div>
-                        <p className="text-sm text-gray-500">현재 누적 포인트: {userInfo.accuPoint}</p>
-                        <p className="text-sm text-gray-500">
-                            오늘 순위: {userInfo.TodayRanking}위 전체 누적 순위: {userInfo.AccuRanking}위
-                        </p>
                     </div>
                 </div>
             </div>
-            <div>
-                <div className="w-full bg-white shadow-lg rounded-xl mt-10 pt-5 pb-5 pl-5">
+            <div className="flex justify-center">
+                <div className="bg-white shadow-lg rounded-xl mt-10 pt-5 pb-5 pl-5">
                     {chunkArray(postList, 3).map((row, rowIndex) => (
                         <div key={rowIndex} className="flex justify-left">
                             {row.map((item, index) => (
@@ -117,7 +119,7 @@ function UserDetail() {
                     ))}
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
