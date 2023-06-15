@@ -7,6 +7,7 @@ import { HeartIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
 import { get as getApi, post as postApi, del as delApi } from '../../../api';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
+import GetHours from '../../utils/gethours';
 // import { comment } from 'postcss';
 // import { formatPostcssSourceMap } from 'vite';
 
@@ -128,12 +129,16 @@ function PostCard({ post }) {
         <div className="postCard rounded-lg mx-auto grid max-w-2xl grid-cols-1 border border-gray-300 pt-5 pl-5 pb-5 pr-5 mb-5">
             <article key={post.postId} className="flex max-w-xl flex-col justify-between text-bold">
                 <div className="profileSection relative flex w-full items-center gap-x-4">
-                    {post.userImage ? (
-                        <img src={getImageSrc(post.userImage)} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
-                    ) : (
-                        <img src={'http://placekitten.com/200/200'} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
-                    )}
-                    <div style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold' }}>{post.nickname}</div>
+                    <div className="flex" onClick={() => navigate(`/mypage/${post.userId}`)}>
+                        {post.userImage ? (
+                            <img src={getImageSrc(post.userImage)} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+                        ) : (
+                            <img src={'http://placekitten.com/200/200'} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+                        )}
+                        <div style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold', marginLeft: '1rem' }}>
+                            {post.nickname}
+                        </div>
+                    </div>
                     {isEditable && (
                         <div className="flex flex-grow justify-end">
                             <Menu as="div" className="relative inline-block text-left">
@@ -167,8 +172,18 @@ function PostCard({ post }) {
                                             <div
                                                 className="text-gray-700 block px-4 py-2 text-md"
                                                 onClick={() => {
-                                                    if (window.confirm('정말로 삭제하시겠습니까?')) {
-                                                        handlePostDelete(post.postId);
+                                                    if (GetHours) {
+                                                        if (
+                                                            window.confirm(
+                                                                '게시물을 작성한 지 48시간이 경과하지 않았습니다. 삭제하면 포인트가 차감됩니다. 정말로 삭제하시겠습니까?',
+                                                            )
+                                                        ) {
+                                                            handlePostDelete(post.postId);
+                                                        }
+                                                    } else {
+                                                        if (window.confirm('정말로 삭제하시겠습니까?')) {
+                                                            handlePostDelete(post.postId);
+                                                        }
                                                     }
                                                 }}>
                                                 삭제

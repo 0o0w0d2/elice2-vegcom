@@ -44,6 +44,7 @@ h1 {
     max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;
+    min-width: 900px;
     text-align: center;
 }
 
@@ -90,6 +91,33 @@ button:hover {
 button:focus,
 button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
+}
+
+.searchButton {
+    background-color: #78bdaa;
+    padding: 10px 12px 10px 12px;
+    font-weight: bold;
+    color: white;
+    border-radius: 9px;
+}
+
+.addPostButton {
+    background-color: #008762;
+    padding: 10px 12px 10px 12px;
+    color: white;
+    font-weight: bold;
+
+    border-radius: 9px;
+}
+
+.searchButton:hover {
+    color: white;
+    background-color: #689d8e;
+}
+
+.addPostButton:hover {
+    color: white;
+    background-color: #155745;
 }
 
 @media (prefers-color-scheme: light) {

@@ -96,130 +96,136 @@ function UserDetail() {
     }
 
     return (
-        <>
-            <div
-                className="flex items-center justify-center p-4 m-2 bg-white shadow-lg rounded-xl"
-                style={{ width: '60vh', height: '20vh' }}>
-                <div className="flex flex-row justify-center items-center text-center">
-                    <img className="w-20 h-20 object-cover rounded-full mb-2 mr-5" src={userImage} alt={userInfo.id} />
-                    <div>
-                        <div>
-                            {userInfo.nickname}님은 지금까지 {GetDays(userInfo.createAt)}일 동안 총 {userInfo.storyCount} 끼의
-                            채식을 했어요!
+        <div style={{ width: '900px' }}>
+            <div className="w-full flex justify-center">
+                <div>
+                    <div
+                        className="flex items-center justify-center p-4 m-2 bg-white shadow-lg rounded-xl"
+                        style={{ width: '60vh', height: '20vh' }}>
+                        <div className="flex flex-row justify-center items-center text-center">
+                            <img className="w-20 h-20 object-cover rounded-full mb-2 mr-5" src={userImage} alt={userInfo.id} />
+                            <div>
+                                <div>
+                                    {userInfo.nickname}님은 지금까지 {GetDays(userInfo.createAt)}일 동안 총 {userInfo.storyCount}{' '}
+                                    끼의 채식을 했어요!
+                                </div>
+                                <p className="text-sm text-gray-500">현재 누적 포인트: {userInfo.accuPoint}</p>
+                                <p className="text-sm text-gray-500">
+                                    오늘 순위: {userInfo.TodayRanking}위 전체 누적 순위: {userInfo.AccuRanking}위
+                                </p>
+                            </div>
                         </div>
-                        <p className="text-sm text-gray-500">현재 누적 포인트: {userInfo.accuPoint}</p>
-                        <p className="text-sm text-gray-500">
-                            오늘 순위: {userInfo.TodayRanking}위 전체 누적 순위: {userInfo.AccuRanking}위
-                        </p>
                     </div>
-                </div>
-            </div>
-            {isEditing ? (
-                <div className="bg-gray-200 text-sm text-gray-500 leading-none border-2 border-gray-200 rounded-full inline-flex mt-10 mb-10">
-                    <button
-                        className="inline-flex items-center transition-colors duration-300 ease-in focus:outline-none hover:text-blue-400 focus:text-blue-400 rounded-l-full px-4 py-2 active"
-                        id="grid"
-                        onClick={() => setIsSelect(false)}>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="fill-current w-4 h-4 mr-2">
-                            <rect x="3" y="3" width="6" height="7" />
-                            <rect x="14" y="3" width="6" height="7" />
-                            <rect x="14" y="14" width="6" height="7" />
-                            <rect x="3" y="14" width="6" height="7" />
-                        </svg>
-                        <span>Archive</span>
-                    </button>
+                    {isEditing ? (
+                        <div className="bg-gray-200 text-sm text-gray-500 leading-none border-2 border-gray-200 rounded-full inline-flex mt-10 mb-10">
+                            <button
+                                className="inline-flex items-center transition-colors duration-300 ease-in focus:outline-none hover:text-blue-400 focus:text-blue-400 rounded-l-full px-4 py-2 active"
+                                id="grid"
+                                onClick={() => setIsSelect(false)}>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="fill-current w-4 h-4 mr-2">
+                                    <rect x="3" y="3" width="6" height="7" />
+                                    <rect x="14" y="3" width="6" height="7" />
+                                    <rect x="14" y="14" width="6" height="7" />
+                                    <rect x="3" y="14" width="6" height="7" />
+                                </svg>
+                                <span>Archive</span>
+                            </button>
 
-                    <button
-                        className="inline-flex items-center transition-colors duration-300 ease-in focus:outline-none hover:text-blue-400 focus:text-blue-400 rounded-r-full px-4 py-2"
-                        id="list"
-                        onClick={() => setIsSelect(true)}>
-                        <HeartIcon
-                            className="fill-current w-4 h-4 mr-2"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
-                        <span>Likes</span>
-                    </button>
-                </div>
-            ) : (
-                <div className="bg-gray-200 text-sm text-gray-500 leading-none border-2 border-gray-200 rounded-full inline-flex mt-10 mb-10">
-                    <button
-                        className="inline-flex items-center transition-colors duration-300 ease-in focus:outline-none hover:text-blue-400 focus:text-blue-400 rounded-full px-4 py-2 active"
-                        id="grid"
-                        onClick={() => setIsSelect(false)}>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="fill-current w-4 h-4 mr-2">
-                            <rect x="3" y="3" width="6" height="7" />
-                            <rect x="14" y="3" width="6" height="7" />
-                            <rect x="14" y="14" width="6" height="7" />
-                            <rect x="3" y="14" width="6" height="7" />
-                        </svg>
-                        <span>Archive</span>
-                    </button>
-                </div>
-            )}
-            <div>
-                {!isSelect ? (
-                    <div className="w-full bg-white shadow-lg rounded-xl pt-5 pb-5 pl-5">
-                        {chunkArray(archivePostList, 3).map((row, rowIndex) => (
-                            <div key={rowIndex} className="flex justify-left">
-                                {row.map((item, index) => (
-                                    <div key={index} className="flex items-center mx-2">
-                                        <img
-                                            className="object-cover mb-2"
-                                            style={{ width: '18vh', height: '18vh' }}
-                                            src={getImageSrc(item.imageUrl)}
-                                            alt={item.id}
-                                            onClick={() => navigate(`/post/${item.id}`)}
-                                        />
+                            <button
+                                className="inline-flex items-center transition-colors duration-300 ease-in focus:outline-none hover:text-blue-400 focus:text-blue-400 rounded-r-full px-4 py-2"
+                                id="list"
+                                onClick={() => setIsSelect(true)}>
+                                <HeartIcon
+                                    className="fill-current w-4 h-4 mr-2"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                                <span>Likes</span>
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="bg-gray-200 text-sm text-gray-500 leading-none border-2 border-gray-200 rounded-full inline-flex mt-10 mb-10">
+                            <button
+                                className="inline-flex items-center transition-colors duration-300 ease-in focus:outline-none hover:text-blue-400 focus:text-blue-400 rounded-full px-4 py-2 active"
+                                id="grid"
+                                onClick={() => setIsSelect(false)}>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="fill-current w-4 h-4 mr-2">
+                                    <rect x="3" y="3" width="6" height="7" />
+                                    <rect x="14" y="3" width="6" height="7" />
+                                    <rect x="14" y="14" width="6" height="7" />
+                                    <rect x="3" y="14" width="6" height="7" />
+                                </svg>
+                                <span>Archive</span>
+                            </button>
+                        </div>
+                    )}
+                    <div>
+                        {!isSelect ? (
+                            <div className="w-full bg-white shadow-lg rounded-xl pt-5 pb-5 pl-5">
+                                {chunkArray(archivePostList, 3).map((row, rowIndex) => (
+                                    <div key={rowIndex} className="flex justify-left">
+                                        {row.map((item, index) => (
+                                            <div key={index} className="flex items-center mx-2">
+                                                <img
+                                                    className="object-cover mb-2"
+                                                    style={{ width: '18vh', height: '18vh' }}
+                                                    src={getImageSrc(item.imageUrl)}
+                                                    alt={item.id}
+                                                    onClick={() => navigate(`/post/${item.id}`)}
+                                                />
+                                            </div>
+                                        ))}
                                     </div>
                                 ))}
                             </div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="w-full bg-white shadow-lg rounded-xl pt-5 pb-5 pl-5">
-                        {chunkArray(likePostList, 3).map((row, rowIndex) => (
-                            <div key={rowIndex} className="flex justify-left">
-                                {row.map((item, index) => (
-                                    <div key={index} className="flex items-center mx-2">
-                                        <img
-                                            className="object-cover mb-2"
-                                            style={{ width: '18vh', height: '18vh' }}
-                                            src={getImageSrc(item.imageUrl)}
-                                            alt={item.id}
-                                            onClick={() => navigate(`/post/${item.id}`)}
-                                        />
-                                    </div>
-                                ))}
+                        ) : (
+                            <div className="flex justify-center">
+                                <div className="bg-white shadow-lg rounded-xl pt-5 pb-5 pl-5">
+                                    {chunkArray(likePostList, 3).map((row, rowIndex) => (
+                                        <div key={rowIndex} className="flex justify-left">
+                                            {row.map((item, index) => (
+                                                <div key={index} className="flex items-center mx-2">
+                                                    <img
+                                                        className="object-cover mb-2"
+                                                        style={{ width: '18vh', height: '18vh' }}
+                                                        src={getImageSrc(item.imageUrl)}
+                                                        alt={item.id}
+                                                        onClick={() => navigate(`/post/${item.id}`)}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        ))}
+                        )}
                     </div>
-                )}
+                </div>
             </div>
-        </>
+        </div>
     );
 }
 

@@ -70,23 +70,25 @@ function Rank() {
     }
 
     return (
-        <div>
+        <div className=" flex justify-center w-full items-center">
             <div>
-                <RankPageSentence />
-            </div>
-            <div>
-                <PointBar point={point} />
-            </div>
-            <div>
-                <UserCard user={user} point={point} />
-            </div>
-            <p>랭킹</p>
-            <div className="w-full">
-                {rankList.map((owner, index) => (
-                    <div key={owner.userId} onClick={() => navigate(`/mypage/${owner.userId}`)}>
-                        <RankCard user={owner} index={index + 1} />
-                    </div>
-                ))}
+                <div>
+                    <RankPageSentence />
+                </div>
+                <div>
+                    <PointBar point={point} />
+                </div>
+                <div>
+                    <UserCard user={user} point={point} />
+                </div>
+                <p>랭킹</p>
+                <div>
+                    {rankList.map((owner, index) => (
+                        <div key={owner.userId} onClick={() => navigate(`/mypage/${owner.userId}`)}>
+                            <RankCard user={owner} index={index + 1} />
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
