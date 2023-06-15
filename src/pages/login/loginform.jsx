@@ -50,11 +50,12 @@ function LoginForm() {
 
             navigate('/rank', { replace: true });
         } catch (err) {
-            if (err.response.data.message) {
-                alert(err.response.data.message);
-            } else {
-                alert('라우팅 경로가 잘못되었습니다.');
-            }
+            // if (err.response && err.response.status === 400) {
+            //     alert('비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.');
+            // } else {
+            //     alert('로그인에 실패하였습니다.');
+            // }
+            alert(err.message);
         }
     };
 

@@ -101,11 +101,10 @@ function PostCard({ post }) {
                     userId,
                 });
                 setLiked(true);
-                setLikeCount(prev => likeCount + 1);
+                setLikeCount(likeCount + 1);
             } else {
                 setLiked(false);
-                setLikeCount(prev => likeCount - 1);
-                await delApi(`/like/${postId}`);
+                setLikeCount(likeCount - 1);
             }
 
             console.log('like 누르기 이후', !liked);
@@ -221,22 +220,10 @@ function PostCard({ post }) {
                         <span>{post.content}</span>
                     </div>
                 </div>
-                <div className="commentSection mt-1">
-                    {commentsZero?.slice(0, 3).map(item => (
-                        <div className="flex w-full" key={item.id}>
-                            <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
-                            <div className="flex flex-grow justify-end items-center">
-                                {(isEditable || userId === item.userId) && (
-                                    <TrashIcon
-                                        className="w-5 h-5"
-                                        onClick={() => {
-                                            if (window.confirm('정말로 삭제하시겠습니까?')) {
-                                                handleCommentDelete(item.id);
-                                            }
-                                        }}
-                                    />
-                                )}
-                            </div>
+                <div>
+                    {comments.slice(0, 3)?.map(item => (
+                        <div className="text-left" key={item.id}>
+                            {item.nickname}: {item.content}
                         </div>
                     ))}
                 </div>
