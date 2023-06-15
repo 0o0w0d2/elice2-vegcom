@@ -70,7 +70,7 @@ function App() {
     useEffect(() => {
         fetchCurrentUser();
 
-        if (isLogin && (path === '/login' || path === 'register')) {
+        if (isLogin && (path === '/login' || path === 'register' || path === '/')) {
             navigate('/rank');
         }
         if (!isLogin && path != '/login' && path != '/register' && path != '/') {
