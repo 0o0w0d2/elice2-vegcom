@@ -1,6 +1,8 @@
+@import 'animate.css';
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
 
 /* @font-face {
     font-family: 'TTWanjudaedunsancheB';
@@ -126,4 +128,10 @@ button:focus-visible {
     }
 }
 
+.animation {
+    width: 400px;
+    height: 80px;
+    background-color: brown;
+    margin: 10px auto;
+}
 

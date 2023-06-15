@@ -24,7 +24,7 @@ const data = [
 const CO2BarGraph = () => {
   return(
     <div className="App3" >
-      <div div className="wrapper3" >
+      <div className="wrapper3" >
         <div className="graphContainer3" >
           <ResponsiveBar
             data={data}
