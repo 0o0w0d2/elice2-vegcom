@@ -34,6 +34,8 @@ function PostDetail() {
     const [nextCursor, setNextCursor] = useState(0);
     const [isEditing, setIsEditing] = useState(false);
     const [isReEditing, setIsReEditing] = useState(false);
+    const [isFetchCommentCompleted, setIsFetchCommentCompleted] = useState(false);
+    const [isFetchPostCompleted, setIsFetchPostCompleted] = useState(false);
 
     const handleSubmit = async commentId => {
         if (!isEditing) {
@@ -132,6 +134,7 @@ function PostDetail() {
             } else {
                 setUserImage(`${BUCKET_BASE_URL}${postData.userImage}`);
             }
+            setIsFetchPostCompleted(true);
         } catch (err) {
             alert(err.response.data.message);
             console.log(err.data.response.message);
@@ -176,6 +179,7 @@ function PostDetail() {
                     setIsReached(false);
                     setIsSave(false);
                 }
+                setIsFetchCommentCompleted(true);
             } catch (err) {
                 // alert(err.response.data.mesasge);
                 console.log(err);
@@ -239,16 +243,17 @@ function PostDetail() {
         };
     }, [fetchComments, fetchPostDetail]);
 
+    if (!isFetchCommentCompleted && !isFetchPostCompleted) {
+        return 'loading...';
+    }
+
     return (
         <>
             <div className="w-full pt-5 pl-5 pb-5 pr-5 mb-5">
                 <article key={postId} className="flex-col justify-between" style={{ width: '40vw' }}>
                     <div className="profileSection flex items-center gap-x-4">
-                        {userImage ? (
-                            <img src={userImage} alt="유저 프로필" className="h-10 w-10 rounded-full bg-gray-50" />
-                        ) : (
-                            <img src={'http://placekitten.com/200/200'} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
-                        )}
+                        <img src={userImage} alt="유저 프로필" className="h-10 w-10 rounded-full bg-gray-50" />
+
                         <div style={{ display: 'flex', verticalAlign: 'middle' }}>{post.nickname}</div>
                         {isEditable && (
                             <div className="flex flex-grow justify-end">
@@ -291,15 +296,7 @@ function PostDetail() {
                         )}
                     </div>
                     <div className="postSection w-full">
-                        {postImage ? (
-                            <img src={postImage} alt="Post Image" className="postImage w-full h-auto mt-5" />
-                        ) : (
-                            <img
-                                src={'http://placekitten.com/200/200'}
-                                alt="Post Image"
-                                className="postImage w-full h-auto mt-5"
-                            />
-                        )}
+                        <img src={postImage} alt="Post Image" className="postImage w-full h-auto mt-5" />
                         <div className="flex mt-3">
                             {liked == true ? (
                                 <SolidHeartIcon
