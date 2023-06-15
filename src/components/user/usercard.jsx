@@ -20,12 +20,12 @@ const UserCard = ({ user, point }) => {
                     <img className="w-20 h-20 object-cover rounded-full mb-2 mr-5" src={getImageSrc()} alt={user.id} />
                     <div>
                         <div>
-                            {user.nickname}님은 지금까지{' '}
+                            <span style={{ fontWeight: 'bold' }}> {user.nickname}</span> 님은 지금까지{' '}
                             <span style={{ color: '#008762', fontWeight: 'bold' }}>{GetDays(user.createAt)}</span>일 동안 총{' '}
                             <span style={{ fontWeight: 'bold', color: '#008762' }}>{user.storyCount} </span>끼 채식을 했어요!
                         </div>
-                        <p className="text-sm text-gray-500">현재 누적 포인트: {point}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm">현재 누적 포인트: {point}</p>
+                        <p className="text-sm">
                             오늘 순위: {user.TodayRanking}위 전체 누적 순위: {user.AccuRanking}위
                         </p>
                     </div>
