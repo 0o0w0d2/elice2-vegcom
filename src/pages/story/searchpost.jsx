@@ -17,52 +17,77 @@ function SearchPost() {
     };
 
     const handleSearch = useCallback(
-        async keyword => {
+        async (keyword, cursor) => {
             try {
+                if (cursor === -1) {
+                    setIsLoading(false);
+                    return;
+                }
                 setIsLoading(true);
                 console.log('keyword', keyword);
-                const res = await getApi(`/search?keyword=${keyword}&cursor=0`);
+                const res = await getApi(`/search?keyword=${keyword}&cursor=${cursor}`);
                 console.log('res.data', res.data);
                 const searchData = res.data.searchPost;
 
-                setSearchList(searchData);
+                if (searchData.length < 5) {
+                    setNextCursor(-1);
+                } else {
+                    setNextCursor(searchData[searchData.length - 1].postId);
+                }
+
+                let newSearchList;
+
+                if (cursor == 0) {
+                    newSearchList = res.data.searchPost;
+                } else if (cursor > 0 && searchList.length > 0) {
+                    newSearchList = [...searchList, ...searchData];
+                } else if (searchData.length === 0) {
+                    newSearchList = [...searchList];
+                }
+
+                setSearchList(newSearchList);
+                setIsReached(false);
+
+                if (cursor != -1) {
+                    setIsReached(false);
+                    setIsSave(false);
+                }
             } catch (err) {
                 console.log(err.message);
-                console.log(err.response.data.message);
             } finally {
                 setIsLoading(false);
-                setKeyword('');
             }
         },
-        [isSave],
+        [isSave, isReached],
     );
 
-    // const handleScroll = useCallback(() => {
-    //     const scrollHeight = document.documentElement.scrollHeight;
-    //     const scrollTop = document.documentElement.scrollTop;
-    //     const clientHeight = document.documentElement.clientHeight;
+    const handleScroll = useCallback(() => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollTop = document.documentElement.scrollTop;
+        const clientHeight = document.documentElement.clientHeight;
 
-    //     if (scrollTop + clientHeight >= scrollHeight) {
-    //         setIsReached(true);
-    //     }
-    // }, []);
+        if (scrollTop + clientHeight >= scrollHeight) {
+            setIsReached(true);
+        }
+    }, []);
 
-    // useEffect(() => {
-    //     // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
-
-    //     handleSearch(keyword, 0);
-    //     // 스크롤 이벤트 핸들러 등록 및 해제
-    //     // window.addEventListener('scroll', handleScroll);
-    //     // // console.log('nextCursor', nextCursor);
-    //     // return () => {
-    //     //     window.removeEventListener('scroll', handleScroll);
-    //     // };
-    // }, [handleSearch]);
+    useEffect(() => {
+        if (searchList.length > 0) {
+            handleSearch(keyword, nextCursor);
+        }
+        // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
+        // 스크롤 이벤트 핸들러 등록 및 해제
+        window.addEventListener('scroll', handleScroll);
+        // console.log('nextCursor', nextCursor);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [handleSearch]);
 
     return (
         <>
             <div className="flex justify-center items-center" style={{ width: '960px' }}>
-                <div className="search fixed top-0" style={{ marginTop: '150px', width: '800px' }}>
+                <div className="search top-0" style={{ width: '800px' }}>
                     <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
                         Search
                     </label>
@@ -90,7 +115,7 @@ function SearchPost() {
                             placeholder="궁금한 식단의 키워드를 검색해 보세요"
                         />
                         <button
-                            onClick={() => handleSearch(keyword)}
+                            onClick={() => handleSearch(keyword, nextCursor)}
                             type="submit"
                             className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             검색
@@ -99,7 +124,7 @@ function SearchPost() {
                 </div>
             </div>
 
-            <div className="w-full">
+            <div className="w-full mt-5">
                 {searchList.map(post => (
                     <div key={post.postId}>
                         <PostCard post={post} />
