@@ -27,47 +27,53 @@ function UserDetail() {
     const [isFetchLikesCompleted, setIsFetchLikesCompleted] = useState(false);
     const [isSelect, setIsSelect] = useState(false);
 
-    const fetchArchive = useCallback(async userId => {
-        try {
-            // 유저 id를 가지고 "/user/유저id" 엔드포인트로 요청해 사용자 정보를 불러옴.
-            const user = await getApi(`user/${userId}`);
-            // 사용자 정보는 response의 data임.
-            const userData = user.data.userInfo;
-            // portfolioOwner을 해당 사용자 정보로 세팅함.
-            setUserInfo(userData);
+    const fetchArchive = useCallback(
+        async userId => {
+            try {
+                // 유저 id를 가지고 "/user/유저id" 엔드포인트로 요청해 사용자 정보를 불러옴.
+                const user = await getApi(`user/${userId}`);
+                // 사용자 정보는 response의 data임.
+                const userData = user.data.userInfo;
+                // portfolioOwner을 해당 사용자 정보로 세팅함.
+                setUserInfo(userData);
 
-            const imageUrl = user.data.userInfo.userImage;
-            if (imageUrl.startsWith('http')) {
-                setUserImage(imageUrl);
-            } else {
-                setUserImage(`${BUCKET_BASE_URL}${imageUrl}`);
-            }
+                const imageUrl = user.data.userInfo.userImage;
+                if (imageUrl.startsWith('http')) {
+                    setUserImage(imageUrl);
+                } else {
+                    setUserImage(`${BUCKET_BASE_URL}${imageUrl}`);
+                }
 
-            const archiveList = await getApi(`post/mypage/${userId}`);
-            setArchivePostList(archiveList.data.userPostList);
-            setIsFetchArchiveCompleted(true);
-        } catch (err) {
-            if (err.response.data.message) {
-                alert(err.response.data.message);
-            } else {
-                alert('라우팅 경로가 잘못되었습니다.');
+                const archiveList = await getApi(`post/mypage/${userId}`);
+                setArchivePostList(archiveList.data.userPostList);
+                setIsFetchArchiveCompleted(true);
+            } catch (err) {
+                if (err.response.data.message) {
+                    alert(err.response.data.message);
+                } else {
+                    alert('라우팅 경로가 잘못되었습니다.');
+                }
             }
-        }
-    }, []);
+        },
+        [userId],
+    );
 
-    const fetchLikes = useCallback(async userId => {
-        try {
-            const likesList = await getApi(`post/like/${userId}`);
-            setLikePostList(likesList.data.userLikePostList);
-            setIsFetchLikesCompleted(true);
-        } catch (err) {
-            if (err.response.data.message) {
-                alert(err.response.data.message);
-            } else {
-                alert('라우팅 경로가 잘못되었습니다.');
+    const fetchLikes = useCallback(
+        async userId => {
+            try {
+                const likesList = await getApi(`post/like/${userId}`);
+                setLikePostList(likesList.data.userLikePostList);
+                setIsFetchLikesCompleted(true);
+            } catch (err) {
+                if (err.response.data.message) {
+                    alert(err.response.data.message);
+                } else {
+                    alert('라우팅 경로가 잘못되었습니다.');
+                }
             }
-        }
-    }, []);
+        },
+        [userId],
+    );
 
     const getImageSrc = useCallback(
         imageUrl => {
