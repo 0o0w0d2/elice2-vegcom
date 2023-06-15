@@ -156,7 +156,7 @@ function PostCard({ post }) {
                                     leave="transition ease-in duration-75"
                                     leaveFrom="transform opacity-100 scale-100"
                                     leaveTo="transform opacity-0 scale-95">
-                                    <Menu.Items className="text-center absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <Menu.Items className="text-center text-sm absolute z-10 w-20 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                         <div className="py-1">
                                             <div
                                                 className="text-gray-700 block px-4 py-2 text-md"
