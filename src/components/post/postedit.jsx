@@ -26,8 +26,11 @@ function PostEdit() {
                     setImageUrl(`${BUCKET_BASE_URL}${postData.imageUrl}`);
                 }
             } catch (err) {
-                alert(err.message);
-                console.log(err.message);
+                if (err.response.data.message) {
+                    alert(err.response.data.message);
+                } else {
+                    alert('라우팅 경로가 잘못되었습니다.');
+                }
             }
         },
         [postId],

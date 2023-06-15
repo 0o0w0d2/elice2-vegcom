@@ -57,8 +57,11 @@ function PostCard({ post }) {
                 setLikeCount(likesData.likecount);
                 setLiked(likesData.likeuser);
             } catch (err) {
-                alert(err.rseponse.data.message);
-                console.log('좋아요 불러오기를 실패했습니다.');
+                if (err.response.data.message) {
+                    alert(err.response.data.message);
+                } else {
+                    alert('라우팅 경로가 잘못되었습니다.');
+                }
             }
         },
         [post],
@@ -74,8 +77,11 @@ function PostCard({ post }) {
                 setCommentsZero(commentDataZero);
                 setCommentsOther(commentDataOther);
             } catch (err) {
-                alert(err.message);
-                console.log('댓글 불러오기를 실패했습니다');
+                if (err.response.data.message) {
+                    alert(err.response.data.message);
+                } else {
+                    alert('라우팅 경로가 잘못되었습니다.');
+                }
             }
         },
         [post],
@@ -103,8 +109,11 @@ function PostCard({ post }) {
 
             console.log('like 누르기 이후', !liked);
         } catch (err) {
-            alert(err.message);
-            console.log(err.message);
+            if (err.response.data.message) {
+                alert(err.response.data.message);
+            } else {
+                alert('라우팅 경로가 잘못되었습니다.');
+            }
         } finally {
             setDisabled(false);
         }

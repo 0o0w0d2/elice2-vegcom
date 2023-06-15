@@ -46,8 +46,11 @@ function UserDetail() {
             setArchivePostList(archiveList.data.userPostList);
             setIsFetchArchiveCompleted(true);
         } catch (err) {
-            // alert(err.response.data.error);
-            console.log(err);
+            if (err.response.data.message) {
+                alert(err.response.data.message);
+            } else {
+                alert('라우팅 경로가 잘못되었습니다.');
+            }
         }
     }, []);
 
@@ -57,8 +60,11 @@ function UserDetail() {
             setLikePostList(likesList.data.userLikePostList);
             setIsFetchLikesCompleted(true);
         } catch (err) {
-            // alert(err.response.data.error);
-            console.log(err);
+            if (err.response.data.message) {
+                alert(err.response.data.message);
+            } else {
+                alert('라우팅 경로가 잘못되었습니다.');
+            }
         }
     }, []);
 

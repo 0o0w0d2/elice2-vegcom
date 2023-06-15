@@ -23,9 +23,11 @@ function UserEdit() {
             const res = await putApi(`/user/${userId}`, formData);
             navigate(-1);
         } catch (err) {
-            console.log(err);
-            alert(err.response.data.message);
-            console.log(err.response.data.message); // 이거는 나중에 err안에 있는 message로 바꿔주세요. alert도 띄우고 콘솔도 띄우고
+            if (err.response.data.message) {
+                alert(err.response.data.message);
+            } else {
+                alert('라우팅 경로가 잘못되었습니다.');
+            }
         }
     };
     return (

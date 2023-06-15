@@ -22,6 +22,7 @@ function Rank() {
             try {
                 // 유저 id를 가지고 "/user/유저id" 엔드포인트로 요청해 사용자 정보를 불러옴.
                 const res = await getApi(`user/${ownerId}`);
+
                 // 사용자 정보는 response의 data임.
                 const ownerData = res.data.userInfo;
                 // portfolioOwner을 해당 사용자 정보로 세팅함.
@@ -29,10 +30,11 @@ function Rank() {
                 // fetchOwner 과정이 끝났으므로, isFetchCompleted를 true로 바꿈.
                 setIsFetchOwnerCompleted(true);
             } catch (err) {
-                // if (err.response.status === 400) {
-                //     alert('유저 정보를 불러오는데 실패하였습니다.');
-                // }
-                console.log('유저 정보를 불러오는데 실패하였습니다.', err);
+                if (err.response.data.message) {
+                    alert(err.response.data.message);
+                } else {
+                    alert('라우팅 경로가 잘못되었습니다.');
+                }
             }
         },
         [userId],
@@ -49,8 +51,11 @@ function Rank() {
 
             setIsFetchRankCompleted(true);
         } catch (err) {
-            alert(err.response.data.error);
-            console.log(err.data.response.message);
+            if (err.response.data.message) {
+                alert(err.response.data.message);
+            } else {
+                alert('라우팅 경로가 잘못되었습니다.');
+            }
         }
     }, []);
 

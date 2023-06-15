@@ -18,8 +18,11 @@ function AddPost() {
             console.log('formData 전송 후:', formData);
             navigate('/story');
         } catch (err) {
-            alert(err.response.data.mesasge);
-            console.log(err.response.data.message);
+            if (err.response.data.message) {
+                alert(err.response.data.message);
+            } else {
+                alert('라우팅 경로가 잘못되었습니다.');
+            }
         }
     };
 

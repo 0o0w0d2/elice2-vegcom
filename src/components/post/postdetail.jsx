@@ -136,8 +136,11 @@ function PostDetail() {
             }
             setIsFetchPostCompleted(true);
         } catch (err) {
-            alert(err.response.data.message);
-            console.log(err.data.response.message);
+            if (err.response.data.message) {
+                alert(err.response.data.message);
+            } else {
+                alert('라우팅 경로가 잘못되었습니다.');
+            }
         }
     }, [path]);
 
@@ -181,8 +184,11 @@ function PostDetail() {
                 }
                 setIsFetchCommentCompleted(true);
             } catch (err) {
-                // alert(err.response.data.mesasge);
-                console.log(err);
+                if (err.response.data.message) {
+                    alert(err.response.data.message);
+                } else {
+                    alert('라우팅 경로가 잘못되었습니다.');
+                }
             } finally {
                 setIsLoading(false);
             }
@@ -224,8 +230,11 @@ function PostDetail() {
                 setLikeCount(likeCount - 1);
             }
         } catch (err) {
-            alert(err.response.data.message);
-            console.log(err.response.data.message);
+            if (err.response.data.message) {
+                alert(err.response.data.message);
+            } else {
+                alert('라우팅 경로가 잘못되었습니다.');
+            }
         } finally {
             setDisabled(false);
         }
