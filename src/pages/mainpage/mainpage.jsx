@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import BarGraph from './data/bargraph';
 import LineGraph from './data/linegraph';
+=======
+import React from 'react';
+>>>>>>> f74ae47 (Style:일반커밋)
 
 function MainPage() {
     return (
         <div>
+<<<<<<< HEAD
             <div className="p-4 ">
                 <div className="items-center justify-center text-3xl font-sans font-bold">
                     <div className="flex items-center justify-center">
@@ -36,8 +41,24 @@ function MainPage() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <LineGraph />
             </div>
+=======
+            <img
+                src="/logoshort.png"
+                alt="오채완 로고"
+                className="logo"
+                ></img>
+            <p>
+                <a href="/login">로그인하기</a>
+                <br />
+                <a href="/register">회원가입하기</a>
+            </p>
+>>>>>>> f74ae47 (Style:일반커밋)
         </div>
     );
 }
 
 export default MainPage;
+<<<<<<< HEAD
+=======
+
+>>>>>>> f74ae47 (Style:일반커밋)
