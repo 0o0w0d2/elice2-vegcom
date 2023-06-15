@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { get as getApi } from '../../../api';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
-import GetDays from '../functions/getdays';
+import GetDays from '../../utils/getdays';
 import { chunkArray } from '../../utils/chunkArray';
 
 function UserDetail() {
