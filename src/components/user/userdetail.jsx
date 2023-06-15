@@ -184,7 +184,7 @@ function UserDetail() {
                     )}
                     <div>
                         {!isSelect ? (
-                            <div className="w-full bg-white shadow-lg rounded-xl pt-5 pb-5 pl-5">
+                            <div className="w-full bg-white shadow-lg rounded-xl pt-5 pb-5 pl-3 pr-3">
                                 {chunkArray(archivePostList, 3).map((row, rowIndex) => (
                                     <div key={rowIndex} className="flex justify-left">
                                         {row.map((item, index) => (
