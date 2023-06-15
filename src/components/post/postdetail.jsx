@@ -244,7 +244,11 @@ function PostDetail() {
             <div className="w-full pt-5 pl-5 pb-5 pr-5 mb-5">
                 <article key={postId} className="flex-col justify-between" style={{ width: '40vw' }}>
                     <div className="profileSection flex items-center gap-x-4">
-                        <img src={userImage} alt="유저 프로필" className="h-10 w-10 rounded-full bg-gray-50" />
+                        {userImage ? (
+                            <img src={userImage} alt="유저 프로필" className="h-10 w-10 rounded-full bg-gray-50" />
+                        ) : (
+                            <img src={'http://placekitten.com/200/200'} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+                        )}
                         <div style={{ display: 'flex', verticalAlign: 'middle' }}>{post.nickname}</div>
                         {isEditable && (
                             <div className="flex flex-grow justify-end">
@@ -287,7 +291,15 @@ function PostDetail() {
                         )}
                     </div>
                     <div className="postSection w-full">
-                        <img src={postImage} alt="Post Image" className="postImage w-full h-auto mt-5" />
+                        {postImage ? (
+                            <img src={postImage} alt="Post Image" className="postImage w-full h-auto mt-5" />
+                        ) : (
+                            <img
+                                src={'http://placekitten.com/200/200'}
+                                alt="Post Image"
+                                className="postImage w-full h-auto mt-5"
+                            />
+                        )}
                         <div className="flex mt-3">
                             {liked == true ? (
                                 <SolidHeartIcon

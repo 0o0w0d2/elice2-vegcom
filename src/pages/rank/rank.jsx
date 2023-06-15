@@ -12,7 +12,8 @@ function Rank() {
     const [user, setUser] = useState(null);
     const [rankList, setRankList] = useState([]);
     const [point, setPoint] = useState();
-    const [isFetchCompleted, setIsFetchCompleted] = useState(false);
+    const [isFetchOwnerCompleted, setIsFetchOwnerCompleted] = useState(false);
+    const [isFetchRankCompleted, setIsFetchRankCompleted] = useState(false);
 
     const userId = localStorage.getItem('userId');
 
@@ -26,7 +27,7 @@ function Rank() {
                 // portfolioOwner을 해당 사용자 정보로 세팅함.
                 setUser(ownerData);
                 // fetchOwner 과정이 끝났으므로, isFetchCompleted를 true로 바꿈.
-                setIsFetchCompleted(true);
+                setIsFetchOwnerCompleted(true);
             } catch (err) {
                 // if (err.response.status === 400) {
                 //     alert('유저 정보를 불러오는데 실패하였습니다.');
@@ -45,6 +46,8 @@ function Rank() {
 
             const point = await getApi('user/point');
             setPoint(point.data.userPoint.accuPoint);
+
+            setIsFetchRankCompleted(true);
         } catch (err) {
             alert(err.response.data.error);
             console.log(err.data.response.message);
@@ -56,7 +59,7 @@ function Rank() {
         fetchOwner(userId);
     }, [fetchRank, fetchOwner]);
 
-    if (!isFetchCompleted) {
+    if (!isFetchOwnerCompleted && !isFetchRankCompleted) {
         return 'loading...';
     }
 
