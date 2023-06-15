@@ -7,6 +7,7 @@ import { HeartIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
 import { get as getApi, post as postApi, del as delApi } from '../../../api';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
+import GetHours from '../../utils/gethours';
 // import { comment } from 'postcss';
 // import { formatPostcssSourceMap } from 'vite';
 
@@ -158,8 +159,18 @@ function PostCard({ post }) {
                                             <div
                                                 className="text-gray-700 block px-4 py-2 text-md"
                                                 onClick={() => {
-                                                    if (window.confirm('정말로 삭제하시겠습니까?')) {
-                                                        handlePostDelete(post.postId);
+                                                    if (GetHours) {
+                                                        if (
+                                                            window.confirm(
+                                                                '게시물을 작성한 지 48시간이 경과하지 않았습니다. 삭제하면 포인트가 차감됩니다. 정말로 삭제하시겠습니까?',
+                                                            )
+                                                        ) {
+                                                            handlePostDelete(post.postId);
+                                                        }
+                                                    } else {
+                                                        if (window.confirm('정말로 삭제하시겠습니까?')) {
+                                                            handlePostDelete(post.postId);
+                                                        }
                                                     }
                                                 }}>
                                                 삭제
