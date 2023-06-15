@@ -93,6 +93,33 @@ button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
 }
 
+.searchButton {
+    background-color: #78bdaa;
+    padding: 10px 12px 10px 12px;
+    font-weight: bold;
+    color: white;
+    border-radius: 9px;
+}
+
+.addPostButton {
+    background-color: #008762;
+    padding: 10px 12px 10px 12px;
+    color: white;
+    font-weight: bold;
+
+    border-radius: 9px;
+}
+
+.searchButton:hover {
+    color: white;
+    background-color: #689d8e;
+}
+
+.addPostButton:hover {
+    color: white;
+    background-color: #155745;
+}
+
 @media (prefers-color-scheme: light) {
     :root {
         color: #213547;

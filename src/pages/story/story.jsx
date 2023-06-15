@@ -74,16 +74,20 @@ function Story() {
     }, [fetchPost]);
 
     return (
-        <>
-            <div className="w-full">
-                <div className="mx-auto max-w-2xl lg:mx-0">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-10">
+        <div className="flex justify-center" style={{ width: '900px' }}>
+            <div>
+                <div className="justify-center flex items-center mx-auto max-w-2xl lg:mx-0">
+                    <h2 className="text-3xl w-full font-bold tracking-tight text-gray-900 sm:text-4xl mb-10">
                         함께 실천하는 사람들을 만나 보세요.
                     </h2>
                 </div>
-                <div className="flex mb-3" style={{ justifyContent: 'flex-end' }}>
-                    <MagnifyingGlassCircleIcon className="w-7 h-7" onClick={() => navigate('/searchPost')} />
-                    <PlusCircleIcon className="w-7 h-7" onClick={() => navigate('/addpost')} />
+                <div className="flex mb-10" style={{ justifyContent: 'center' }}>
+                    <div className="searchButton w-auto mr-5" onClick={() => navigate('/searchPost')}>
+                        검색하기
+                    </div>
+                    <div className="addPostButton btn-2 w-auto " onClick={() => navigate('/addpost')}>
+                        식단 기록하기
+                    </div>
                 </div>
                 {postList.map(post => (
                     <div key={post.postId}>
@@ -92,7 +96,7 @@ function Story() {
                 ))}
                 {isLoading && <p>Loading...</p>}
             </div>
-        </>
+        </div>
     );
 }
 
