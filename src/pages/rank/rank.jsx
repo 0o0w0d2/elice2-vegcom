@@ -74,9 +74,6 @@ function Rank() {
             <div>
                 <UserCard user={user} point={point} />
             </div>
-            {/* <div>
-                <UserCard point={point} />
-            </div> */}
             <p>랭킹</p>
             <div className="w-full">
                 {rankList.map((owner, index) => (
