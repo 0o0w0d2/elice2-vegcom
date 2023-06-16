@@ -34,6 +34,13 @@ body {
     place-items: center;
     min-width: 320px;
     min-height: 100vh;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
 }
 
 h1 {
