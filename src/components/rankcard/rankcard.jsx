@@ -14,32 +14,37 @@ const RankCard = ({ user, index }) => {
         }
     };
     return (
-        <div className="flex p-4 m-2 bg-white shadow-lg rounded-xl" style={{ width: '60vh', height: '20vh' }}>
-            <div className="flex flex-row justify-between items-center text-center">
-                <p style={{ color: '#008762' }} className="ml-5 mr-5 text-xl font-bold">
-                    {index}
-                </p>
-                <img className="mr-5 w-20 h-20 object-cover rounded-full" src={getImageSrc()} alt={user.id} />
-                <div className="w-full">
-                    <div className="text-left ">
-                        <p style={{ fontFamily: 'SUITE-Regular' }} className="text-lg font-bold">
-                            {user.nickname}
-                        </p>
-                        <p className="text-sm">누적 포인트: {user.accuPoint}</p>
-                        <p className="text-sm">총 게시물 수: {user.storyCount}</p>
-                        <p className="text-sm flex items-center">
-                            등급 :
-                            <img
-                                className="w-5 h-5 ml-2"
-                                src={TierDecision(user.accuPoint)[2]}
-                                alt={TierDecision(user.accuPoint)[0]}
-                            />
-                            {TierDecision(user.accuPoint)[1]}
-                        </p>
+        <div className="flex flex-col items-center">
+            {index == 1 && <img src="/1등왕관.png" alt="1등왕관" ></img>}
+            <div className="flex p-4 m-2 bg-white shadow-lg rounded-xl" style={{ width: '65vh', height: '25vh' }}>
+                <div className="flex flex-row justify-between items-center text-center">
+                    <p style={{ color: '#008762', fontSize: '3rem' }} className="ml-5 mr-5 text-xl font-bold">
+                        {index}
+                    </p>
+                    <img style={{ height: '15vh' }} className="mr-5 object-cover rounded-full" src={getImageSrc()} alt={user.id} />
+                    <div className="ml-3 w-full">
+                        <div className="text-left ">
+                            <p style={{ fontFamily: 'SUITE-Regular', fontSize: '1.5rem' }} className="text-lg mb-2">
+                                {user.nickname}
+                            </p>
+                            <p className="text-md">누적 포인트: {user.accuPoint}</p>
+                            <p className="text-md">총 게시물 수: {user.storyCount}</p>
+                            <p className="text-md flex items-center">
+                                등급 :
+                                <img
+                                    className="w-5 h-5 ml-2"
+                                    src={TierDecision(user.accuPoint)[2]}
+                                    alt={TierDecision(user.accuPoint)[0]}
+                                />
+                                {TierDecision(user.accuPoint)[1]}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        
+        
     );
 };
 

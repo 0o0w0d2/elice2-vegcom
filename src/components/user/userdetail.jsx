@@ -103,20 +103,25 @@ function UserDetail() {
     }
 
     return (
-        <div style={{ width: '900px' }}>
+        <div style={{ width: '60vw' }}>
             <div className="w-full flex justify-center ">
                 <div>
                     <div
-                        className="userDetailCard flex justify-center p-4 m-2 bg-white shadow-md rounded-xl items-center"
-                        style={{ width: '60vh', height: '20vh' }}>
+                        className="p-2 userDetailCard flex justify-center p-4 m-2 bg-white shadow-md rounded-xl items-center"
+                        style={{ width: '65vh', height: '25vh' }}>
                         <div className="flex flex-row justify-between items-center">
-                            <img className="w-20 h-20 object-cover rounded-full mb-2 mr-5" src={userImage} alt={userInfo.id} />
+                            <img
+                                style={{ height: '15vh' }}
+                                className="object-cover pl-2 rounded-full mb-2 mr-5"
+                                src={userImage}
+                                alt={userInfo.id}
+                            />
                             <div className=" text-left mr-7">
-                                <div style={{ fontFamily: 'SUITE-Regular' }}>{userInfo.nickname}</div>
-                                <div style={{ fontSize: '0.8rem' }} className="mt-1">
+                                <div style={{ fontFamily: 'SUITE-Regular', fontSize: '1.5rem' }}>{userInfo.nickname}</div>
+                                <div style={{ fontSize: '1rem' }} className="mt-1">
                                     {userInfo.description}
                                 </div>
-                                <div style={{ fontSize: '0.8rem' }} className="mt-2">
+                                <div style={{ fontSize: '0.9rem' }} className="mt-2">
                                     가입한 지 {GetDays(userInfo.createAt)}일 총 게시물 수 {userInfo.storyCount}
                                 </div>
                             </div>
@@ -248,7 +253,7 @@ function UserDetail() {
                             </div>
                         ) : (
                             <div className="flex justify-center">
-                                <div className="bg-white shadow-lg rounded-xl pt-5 pb-5 pl-5">
+                                <div className="w-full bg-white shadow-md rounded-xl pt-5 pb-5 pl-5">
                                     {chunkArray(likePostList, 3).map((row, rowIndex) => (
                                         <div key={rowIndex} className="flex justify-left">
                                             {row.map((item, index) => (

@@ -25,10 +25,14 @@ function SearchPost() {
                     setIsLoading(false);
                     return;
                 }
+                console.log(cursor);
                 setIsLoading(true);
                 setIsSave(true);
                 const res = await getApi(`/search?keyword=${keyword}&cursor=${cursor}`);
                 const searchData = res.data.searchPost;
+                if (searchData.length === 0) {
+                    alert('게시물이 더이상 없습니다.');
+                }
 
                 if (searchData.length < 5) {
                     setNextCursor(-1);
@@ -53,6 +57,8 @@ function SearchPost() {
                     setIsReached(false);
                     setIsSave(false);
                 }
+
+                console.log(searchList);
             } catch (err) {
                 if (err.response.data.message) {
                     alert(err.response.data.message);
@@ -68,7 +74,7 @@ function SearchPost() {
 
     const handleSearchButtonClick = useCallback(() => {
         handleSearch(keyword, nextCursor);
-    }, [handleSearch, keyword]);
+    }, [handleSearch, keyword, nextCursor]);
 
     const handleScroll = useCallback(() => {
         const scrollHeight = document.documentElement.scrollHeight;
@@ -94,8 +100,11 @@ function SearchPost() {
 
     return (
         <>
-            <div className="flex justify-center items-center" style={{ width: '960px' }}>
-                <div className="search top-0" style={{ width: '800px' }}>
+            <div className="flex justify-center items-center" style={{ maxWidth: '960px', height: 'auto' }}>
+                <div className="search" style={{ width: '80vw' }}>
+                    <div className="mb-8" style={{ fontSize: '2rem', fontWeight: 'bold' }}>
+                        검색으로 궁금한 식단을 찾아보세요!
+                    </div>
                     <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
                         Search
                     </label>
@@ -119,8 +128,8 @@ function SearchPost() {
                             onChange={e => handleChange(e)}
                             value={keyword}
                             type="text"
-                            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="궁금한 식단의 키워드를 검색해 보세요"
+                            className="block w-full p-4 pl-10 text-md text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="궁금한 식단의 키워드를 검색해 보세요 ex) 샐러드, 당근 ..."
                         />
                         <button
                             onClick={() => {
@@ -141,7 +150,6 @@ function SearchPost() {
                         <PostCard post={post} />
                     </div>
                 ))}
-                {isLoading && <Loading />}
             </div>
         </>
     );
