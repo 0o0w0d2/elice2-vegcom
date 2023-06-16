@@ -36,6 +36,8 @@ function PostDetail() {
     const [nextCursor, setNextCursor] = useState(0);
     const [isEditing, setIsEditing] = useState(false);
     const [isReEditing, setIsReEditing] = useState(false);
+    const [target, setTarget] = useState('');
+    const [reTarget, setReTarget] = useState('');
     const [isFetchCommentCompleted, setIsFetchCommentCompleted] = useState(false);
     const [isFetchPostCompleted, setIsFetchPostCompleted] = useState(false);
 
@@ -136,111 +138,6 @@ function PostDetail() {
         },
         [isSave, isReached],
     );
-    const handleSubmit = async commentId => {
-        if (!isEditing) {
-            await postApi('/comment', {
-                parentId: 0,
-                content,
-                postId,
-            });
-            setCommentsZero(current => {
-                const commentList = [
-                    {
-                        id: commentId,
-                        postId: postId,
-                        userId: userId,
-                        nickname: user.nickname,
-                        content: content,
-                        createAt: new Date(),
-                    },
-                    ...current,
-                ];
-                return commentList;
-            });
-        } else if (isEditing) {
-            await putApi(`/comment/${commentId}`, {
-                commentId,
-                postId,
-                content,
-            });
-
-            setCommentsZero(prevComments => {
-                return prevComments.map(comment => {
-                    if (comment.id === commentId) {
-                        return {
-                            ...comment,
-                            content: content,
-                        };
-                    } else {
-                        return comment;
-                    }
-                });
-            });
-            setIsEditing(false);
-        }
-        setContent('');
-        setIsSave(true);
-    };
-
-    const handleReSubmit = async commentId => {
-        if (!isReEditing) {
-            await postApi('/comment', {
-                parentId: commentId,
-                content: reContent,
-                postId,
-            });
-            setCommentsOther(current => {
-                const commentList = [
-                    {
-                        id: commentId,
-                        postId: postId,
-                        userId: userId,
-                        nickname: user.nickname,
-                        content: reContent,
-                        parentId: commentId,
-                        createAt: new Date(),
-                    },
-                    ...current,
-                ];
-                return commentList;
-            });
-            setReContent('');
-            setIsReplying(false);
-        } else if (isReEditing) {
-            await putApi(`/comment/${commentId}`, {
-                commentId,
-                postId,
-                content: reContent,
-            });
-
-            setCommentsOther(prevComments => {
-                return prevComments.map(comment => {
-                    if (comment.id === commentId) {
-                        return {
-                            ...comment,
-                            content: reContent,
-                        };
-                    } else {
-                        return comment;
-                    }
-                });
-            });
-            setIsReEditing(false);
-        }
-        setIsSave(true);
-    };
-
-    const handlePostDelete = useCallback(async postId => {
-        await delApi(`/post/${postId}`);
-        navigate(-1);
-    });
-
-    const handleCommentDelete = useCallback(async commentId => {
-        await delApi(`/comment/${commentId}`);
-        window.location.replace(`/post/${postId}`);
-    });
-
-    const isEditable = useMemo(() => userId === post.userId, [userId, post.userId]);
 
     const handleSubmit = async () => {
         await postApi('/comment', {
@@ -316,7 +213,7 @@ function PostDetail() {
         }
     }, []);
 
-    const handleLike = (postId, userId) => {
+    const handleLike = async (postId, userId) => {
         try {
             if (disabled === true) {
                 return;
@@ -324,16 +221,24 @@ function PostDetail() {
             setDisabled(true);
 
             if (liked === false) {
-                postApi(`/like/${postId}`, {
+                await postApi(`/like/${postId}`, {
                     postId,
                     userId,
                 });
-                setLiked(true);
-                setLikeCount(likeCount + 1);
+
+                const res = await getApi(`like/${postId}`);
+                console.log(liked, '좋아요 데이터:', res.data);
+                const likesData = res.data;
+                setLikeCount(likesData.likecount);
+                setLiked(likesData.likeuser);
             } else {
-                delApi(`/like/${postId}`);
-                setLiked(false);
-                setLikeCount(likeCount - 1);
+                await delApi(`/like/${postId}`);
+
+                const res = await getApi(`like/${postId}`);
+                console.log(liked, '좋아요 데이터:', res.data);
+                const likesData = res.data;
+                setLikeCount(likesData.likecount);
+                setLiked(likesData.likeuser);
             }
         } catch (err) {
             if (err.response.data.message) {
@@ -362,7 +267,7 @@ function PostDetail() {
                 }
             }
         },
-        [post],
+        [liked],
     );
 
     useEffect(() => {
@@ -468,7 +373,7 @@ function PostDetail() {
                 <div className="pt-4 commentSection w-full mt-1 mb-3">
                     {/* .. parentId === item.id  */}
                     {commentsZero?.map((item, index) => (
-                        <div>
+                        <div key={item.id}>
                             <div className="mb-6 text-base bg-white dark:bg-gray-900">
                                 <div className="flex justify-between items-center mb-2">
                                     <div className="flex items-center">
@@ -519,7 +424,6 @@ function PostDetail() {
                                 </div>
                                 <p className="pl-2 text-gray-500 dark:text-gray-400 text-left">{item.content}</p>
                             </div>
-                            <div className="text-left">{item.content}</div>
                             {isReplying && target === item.id && (
                                 <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
                                     <div className="flex mt-4">
@@ -562,51 +466,49 @@ function PostDetail() {
                             {commentsOther
                                 ?.filter(comment => comment.parentId === item.id)
                                 .map((comment, index) => (
-                                    <>
-                                        <div className="ml-8 mb-6 text-base dark:bg-gray-900">
-                                            <div className="flex justify-between items-center mb-2">
-                                                <div className="flex items-center">
-                                                    <p
-                                                        className="profileSection inline-flex mr-3 text-sm text-gray-900 dark:text-white"
-                                                        style={{ fontWeight: 'bold', fontSize: '1rem' }}>
-                                                        {comment.nickname}
-                                                    </p>
-                                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                                        {GetTime(comment.createAt)}
-                                                    </p>
-                                                </div>
-                                                <div className="text-sm text-gray-600 dark:text-gray-400">
-                                                    {userId === comment.userId && (
-                                                        <span
-                                                            className="ml-1 mr-1"
-                                                            style={{ cursor: 'pointer' }}
-                                                            onClick={() => {
-                                                                isReEditing ? setIsReEditing(false) : setIsReEditing(true);
-                                                                setReContent(comment.content);
-                                                                setTarget(item.id);
-                                                                setReTarget(comment.id);
-                                                            }}>
-                                                            수정
-                                                        </span>
-                                                    )}
-                                                    {(isEditable || userId === comment.userId) && (
-                                                        <span
-                                                            className="ml-1 mr-1"
-                                                            style={{ cursor: 'pointer' }}
-                                                            onClick={() => {
-                                                                if (window.confirm('정말로 삭제하시겠습니까?')) {
-                                                                    handleCommentDelete(comment.id);
-                                                                }
-                                                            }}>
-                                                            삭제
-                                                        </span>
-                                                    )}
-                                                </div>
+                                    <div className="ml-8 mb-6 text-base dark:bg-gray-900" key={comment.id}>
+                                        <div className="flex justify-between items-center mb-2">
+                                            <div className="flex items-center">
+                                                <p
+                                                    className="profileSection inline-flex mr-3 text-sm text-gray-900 dark:text-white"
+                                                    style={{ fontWeight: 'bold', fontSize: '1rem' }}>
+                                                    {comment.nickname}
+                                                </p>
+                                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                                    {GetTime(comment.createAt)}
+                                                </p>
                                             </div>
-                                            <p className="pl-2 text-gray-500 dark:text-gray-400 text-left">{comment.content}</p>
+                                            <div className="text-sm text-gray-600 dark:text-gray-400">
+                                                {userId === comment.userId && (
+                                                    <span
+                                                        className="ml-1 mr-1"
+                                                        style={{ cursor: 'pointer' }}
+                                                        onClick={() => {
+                                                            isReEditing ? setIsReEditing(false) : setIsReEditing(true);
+                                                            setReContent(comment.content);
+                                                            setTarget(item.id);
+                                                            setReTarget(comment.id);
+                                                        }}>
+                                                        수정
+                                                    </span>
+                                                )}
+                                                {(isEditable || userId === comment.userId) && (
+                                                    <span
+                                                        className="ml-1 mr-1"
+                                                        style={{ cursor: 'pointer' }}
+                                                        onClick={() => {
+                                                            if (window.confirm('정말로 삭제하시겠습니까?')) {
+                                                                handleCommentDelete(comment.id);
+                                                            }
+                                                        }}>
+                                                        삭제
+                                                    </span>
+                                                )}
+                                            </div>
                                         </div>
-                                        <div className="text-left">{comment.content}</div>
-                                        {isReEditing && (
+                                        <p className="pl-2 text-gray-500 dark:text-gray-400 text-left">{comment.content}</p>
+
+                                        {isReEditing && target === item.id && reTarget === comment.id && (
                                             <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
                                                 <div className="flex mt-4">
                                                     <textarea
@@ -618,7 +520,7 @@ function PostDetail() {
                                                         <button
                                                             type="submit"
                                                             className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
-                                                            onClick={() => handleReSubmit(comment.id)}>
+                                                            onClick={() => handleReEdit(comment.id, comment.parentId)}>
                                                             수정
                                                         </button>
                                                     </div>
@@ -627,39 +529,16 @@ function PostDetail() {
                                         )}
                                     </div>
                                 ))}
-
-                            {isReplying && parentId === item.id && (
-                                <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
-                                    <div className="flex mt-4">
-                                        <textarea
-                                            style={{ width: '35vw' }}
-                                            className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                                            placeholder="답글을 입력하세요."
-                                            value={reContent}
-                                            onChange={e => setReContent(e.target.value)}></textarea>
-                                        <div className="flex items-center ml-2">
-                                            <button
-                                                type="submit"
-                                                className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
-                                                onClick={() => handleReSubmit()}>
-                                                등록
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
                         </div>
                     ))}
-                    {isLoading && <Loading />}
 
-                    {!isEditing && (
+                    {!isReplying && !isEditing && (
                         <div className="pl-2 pb-3 fixed bottom-0 w-full bg-white" style={{ width: '40vw' }}>
                             <div className="flex mt-4">
                                 <textarea
                                     style={{ width: '35vw' }}
                                     className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                                     placeholder="댓글을 입력하세요."
-                                    value={content}
                                     onChange={e => setContent(e.target.value)}></textarea>
                                 <div className="flex items-center ml-2">
                                     <button
@@ -672,6 +551,8 @@ function PostDetail() {
                             </div>
                         </div>
                     )}
+
+                    {isLoading && <Loading />}
                 </div>
             </article>
         </div>
