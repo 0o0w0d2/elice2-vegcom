@@ -99,7 +99,7 @@ function MainPage() {
                     <div
                         style={{ width: '70vw' }}
                         className="p-10 flex justify-between items-center rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
-                        <div className="w-30 h-30" data-aos="fade-left">
+                        <div className="mr-3 w-30 h-30" data-aos="fade-left">
                             <PieGraph />
                         </div>
                         <div className="mr-2 text-center">
@@ -129,7 +129,7 @@ function MainPage() {
                     <div
                         style={{ width: '70vw' }}
                         className="p-10 flex justify-between items-center rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
-                        <div className="w-full text-center">
+                        <div className="mr-3 w-full text-center">
                             <div className="space-y-10" data-aos="fade-right">
                                 <div className="text-3xl text-[#0D0D0D] font-['NanumSquareNeo-Variable2']">
                                     <span>
