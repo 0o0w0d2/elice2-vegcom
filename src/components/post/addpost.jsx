@@ -97,7 +97,7 @@ function AddPost() {
                 id="postContent"
                 value={content}
                 onChange={e => setContent(e.target.value)}
-                className="block w-full rounded-md border-0 mt-3 mb-3 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 mt-3 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 placeholder="설명을 입력해 주세요."></textarea>
             <div className="buttonSection flex mt-12" style={{ justifyContent: 'center' }}>
                 <button
