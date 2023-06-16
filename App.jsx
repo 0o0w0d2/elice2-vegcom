@@ -13,7 +13,6 @@ import RegisterForm from './src/pages/register/registerform';
 import MainPage from './src/pages/mainpage/mainpage.jsx';
 import Rank from './src/pages/rank/rank';
 import Story from './src/pages/story/story';
-import Shop from './src/pages/shop/shop';
 import AddPost from './src/components/post/addpost';
 import PostDetail from './src/components/post/postdetail';
 import UserEdit from './src/components/user/useredit';
@@ -106,7 +105,6 @@ function App() {
                     <Route path="/register" element={<RegisterForm />} />
                     <Route path="/rank" element={<Rank />} />
                     <Route path="/story" element={<Story />} />
-                    <Route path="/shop" element={<Shop />} />
                     <Route path="/addpost" element={<AddPost />} />
                     <Route path="/useredit" element={<UserEdit />} />
                     <Route path="/post/:postId" element={<PostDetail />} />
