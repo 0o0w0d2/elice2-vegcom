@@ -5,7 +5,7 @@ import { get as getApi } from './api';
 import { loginReducer } from './reducer';
 import Header from './src/sections/header';
 import HeaderLogout from './src/sections/headerlogout';
-// import Footer from './src/sections/footer';
+import Footer from './src/sections/footer';
 import Loading from './src/pages/loading';
 
 import LoginForm from './src/pages/login/loginform.jsx';
@@ -113,7 +113,11 @@ function App() {
 
                     <Route path="*" element={<NotFound />} />
                 </Routes>
-                {/* <Footer /> */}
+                {isLogin && (
+                    <>
+                        <Footer />
+                    </>
+                )}
             </UserStateContext.Provider>
         </DispatchContext.Provider>
     );
