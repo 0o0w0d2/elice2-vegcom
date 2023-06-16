@@ -38,6 +38,7 @@ function PostDetail() {
     const [isReEditing, setIsReEditing] = useState(false);
     const [target, setTarget] = useState('');
     const [reTarget, setReTarget] = useState('');
+    const [count, setCount] = useState(10000000);
     const [isFetchCommentCompleted, setIsFetchCommentCompleted] = useState(false);
     const [isFetchPostCompleted, setIsFetchPostCompleted] = useState(false);
 
@@ -138,83 +139,57 @@ function PostDetail() {
         },
         [isSave, isReached],
     );
-    const handleSubmit = async commentId => {
-        if (!isEditing) {
-            await postApi('/comment', {
-                parentId: 0,
-                content,
-                postId,
-            });
-            setCommentsZero(current => {
-                const commentList = [
-                    { userId: userId, nickname: user.nickname, content: content, createAt: new Date() },
-                    ...current,
-                ];
-                return commentList;
-            });
-        } else if (isEditing) {
-            await putApi(`/comment/${commentId}`, {
-                commentId,
-                postId,
-                content,
-            });
 
-            setCommentsZero(prevComments => {
-                return prevComments.map(comment => {
-                    if (comment.id === commentId) {
-                        return {
-                            ...comment,
-                            content: content,
-                        };
-                    } else {
-                        return comment;
-                    }
-                });
-            });
-            setIsEditing(false);
-        }
+    const handleSubmit = async () => {
+        await postApi('/comment', {
+            parentId: 0,
+            content,
+            postId,
+        });
+        window.location.reload();
+    };
+
+    const handleEdit = async commentId => {
+        await putApi(`/comment/${commentId}`, {
+            commentId,
+            postId,
+            content,
+        });
+
+        setIsEditing(false);
         setContent('');
         setIsSave(true);
+
+        window.location.reload();
     };
 
     const handleReSubmit = async commentId => {
-        if (!isReEditing) {
-            await postApi('/comment', {
-                parentId: commentId,
-                content: reContent,
-                postId,
-            });
-            setCommentsOther(current => {
-                const commentList = [
-                    { userId: userId, nickname: user.nickname, content: reContent, parentId: commentId, createAt: new Date() },
-                    ...current,
-                ];
-                return commentList;
-            });
-            setReContent('');
-            setIsReplying(false);
-        } else if (isReEditing) {
-            await putApi(`/comment/${commentId}`, {
-                commentId,
-                postId,
-                content: reContent,
-            });
-
-            setCommentsOther(prevComments => {
-                return prevComments.map(comment => {
-                    if (comment.id === commentId) {
-                        return {
-                            ...comment,
-                            content: reContent,
-                        };
-                    } else {
-                        return comment;
-                    }
-                });
-            });
-            setIsReEditing(false);
+        console.log('postId', postId, 'content', reContent, 'parentId', commentId);
+        if (commentId === undefined) {
+            commentId = count;
         }
+        await postApi('/comment', {
+            parentId: commentId,
+            content: reContent,
+            postId,
+        });
+
+        setReContent('');
+        setIsReplying(false);
+
+        window.location.reload();
+    };
+    const handleReEdit = async commentId => {
+        await putApi(`/comment/${commentId}`, {
+            commentId,
+            postId,
+            content: reContent,
+        });
+
+        setIsReEditing(false);
         setIsSave(true);
+
+        window.location.reload();
     };
 
     const handlePostDelete = useCallback(async postId => {
@@ -398,7 +373,8 @@ function PostDetail() {
                                 <div className="flex flex-grow justify-end items-center">
                                     <CommentIcon
                                         onClick={() => {
-                                            setIsReplying(!isReplying);
+                                            !isReplying ? setIsReplying(true) : setIsReplying(false);
+                                            setIsEditing(false);
                                             setTarget(item.id);
                                         }}
                                         className="h-5 w-5"
@@ -407,6 +383,7 @@ function PostDetail() {
                                         <PencilSquareIcon
                                             onClick={() => {
                                                 !isEditing ? setIsEditing(true) : setIsEditing(false);
+                                                setIsReplying(false);
                                                 setContent(item.content);
                                                 setTarget(item.id);
                                             }}
@@ -426,6 +403,25 @@ function PostDetail() {
                                 </div>
                             </div>
                             <div className="text-left">{item.content}</div>
+                            {isReplying && target === item.id && (
+                                <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
+                                    <div className="flex mt-4">
+                                        <textarea
+                                            style={{ width: '35vw' }}
+                                            className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                            placeholder="답글을 입력하세요."
+                                            onChange={e => setReContent(e.target.value)}></textarea>
+                                        <div className="flex items-center ml-2">
+                                            <button
+                                                type="submit"
+                                                className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                                onClick={() => handleReSubmit(item.id)}>
+                                                등록
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                             {isEditing && target === item.id && (
                                 <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
                                     <div className="flex mt-4">
@@ -438,7 +434,7 @@ function PostDetail() {
                                             <button
                                                 type="submit"
                                                 className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
-                                                onClick={() => handleSubmit(item.id)}>
+                                                onClick={() => handleEdit(item.id)}>
                                                 수정
                                             </button>
                                         </div>
@@ -490,28 +486,8 @@ function PostDetail() {
                                                         <button
                                                             type="submit"
                                                             className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
-                                                            onClick={() => handleReSubmit(comment.id, comment.parentId)}>
+                                                            onClick={() => handleReEdit(comment.id, comment.parentId)}>
                                                             수정
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {!isEditing && target === item.id && (
-                                            <div className="pl-2 pb-3 fixed bottom-0 w-full bg-white" style={{ width: '40vw' }}>
-                                                <div className="flex mt-4">
-                                                    <textarea
-                                                        style={{ width: '35vw' }}
-                                                        className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                                                        placeholder="댓글을 입력하세요."
-                                                        onChange={e => setContent(e.target.value)}></textarea>
-                                                    <div className="flex items-center ml-2">
-                                                        <button
-                                                            type="submit"
-                                                            className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
-                                                            onClick={() => handleSubmit()}>
-                                                            등록
                                                         </button>
                                                     </div>
                                                 </div>
@@ -519,28 +495,27 @@ function PostDetail() {
                                         )}
                                     </div>
                                 ))}
-
-                            {isReplying && target === item.id && (
-                                <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
-                                    <div className="flex mt-4">
-                                        <textarea
-                                            style={{ width: '35vw' }}
-                                            className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                                            placeholder="답글을 입력하세요."
-                                            onChange={e => setReContent(e.target.value)}></textarea>
-                                        <div className="flex items-center ml-2">
-                                            <button
-                                                type="submit"
-                                                className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
-                                                onClick={() => handleReSubmit(item.id)}>
-                                                등록
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
                         </div>
                     ))}
+                    {!isReplying && !isEditing && (
+                        <div className="pl-2 pb-3 fixed bottom-0 w-full bg-white" style={{ width: '40vw' }}>
+                            <div className="flex mt-4">
+                                <textarea
+                                    style={{ width: '35vw' }}
+                                    className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                    placeholder="댓글을 입력하세요."
+                                    onChange={e => setContent(e.target.value)}></textarea>
+                                <div className="flex items-center ml-2">
+                                    <button
+                                        type="submit"
+                                        className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                        onClick={() => handleSubmit()}>
+                                        등록
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     {isLoading && <Loading />}
                 </div>
             </article>
