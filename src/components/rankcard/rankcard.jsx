@@ -16,8 +16,8 @@ const RankCard = ({ user, index }) => {
     return (
         <div className="flex flex-col items-center">
             {index == 1 && <img style={{ height: '7vh' }} src="/1등왕관.png" alt="1등왕관"></img>}
-            <div className="flex p-4 m-2 bg-white shadow-lg rounded-xl" style={{ width: '65vh', height: '25vh' }}>
-                <div className="flex flex-row justify-between items-center text-center">
+            <div className="flex p-10 m-2 bg-white shadow-lg rounded-xl">
+                <div className="usercard flex flex-row justify-between items-center text-center">
                     <p style={{ color: '#008762', fontSize: '3rem' }} className="ml-5 mr-5 text-xl font-bold">
                         {index}
                     </p>
@@ -34,15 +34,15 @@ const RankCard = ({ user, index }) => {
                             </p>
                             <p className="text-md">누적 포인트: {user.accuPoint}</p>
                             <p className="text-md">총 게시물 수: {user.storyCount}</p>
-                            <p className="text-md flex items-center">
-                                등급 :
+                            <div className="flex justify-start">
+                                <div>등급:</div>
                                 <img
                                     className="w-5 h-5 ml-2"
                                     src={TierDecision(user.accuPoint)[2]}
                                     alt={TierDecision(user.accuPoint)[0]}
                                 />
                                 {TierDecision(user.accuPoint)[1]}
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -43,7 +43,7 @@ function MainPage() {
                 <div className="flex justify-center">
                     <div
                         style={{ width: '70vw' }}
-                        className="p-10 flex justify-between items-center rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+                        className="mainbox p-10 flex justify-between items-center rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
                         <div className="text-center space-y-10" data-aos="fade-right">
                             <div className="text-3xl text-[#0D0D0D] font-['NanumSquareNeo-Variable2']">
                                 <span>
@@ -52,7 +52,7 @@ function MainPage() {
                                     전세계적인 트랜드 탄소 배출량 감소
                                 </span>
                             </div>
-                            <div className="text-2xl">
+                            <div className="text-2xl ">
                                 <p>최근 탄소 배출량을 감소시키는 것이 전세계적인 이슈로 떠올랐습니다. </p>
                                 <p>지구의 평균 온도 상승을 막고 지속 가능한 발전을 위해 </p>
                                 <p>국가적, 개인적 차원에서 많은 노력이 이뤄지고 있습니다.</p>
@@ -98,9 +98,9 @@ function MainPage() {
                 <div className="flex justify-center">
                     <div
                         style={{ width: '70vw' }}
-                        className="p-10 flex justify-between items-center rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+                        className="mainbox p-10 flex justify-between items-center rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
                         <div className="mr-3 w-30 h-30" data-aos="fade-left">
-                            <PieGraph />
+                            <PieGraph className=".piegraph" />
                         </div>
                         <div className="mr-2 text-center">
                             <div className="space-y-10" data-aos="fade-left">
@@ -128,7 +128,7 @@ function MainPage() {
                 <div className="flex justify-center">
                     <div
                         style={{ width: '70vw' }}
-                        className="p-10 flex justify-between items-center rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+                        className="mainbox p-10 flex justify-between items-center rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
                         <div className="mr-3 w-full text-center">
                             <div className="space-y-10" data-aos="fade-right">
                                 <div className="text-3xl text-[#0D0D0D] font-['NanumSquareNeo-Variable2']">
@@ -196,9 +196,9 @@ function MainPage() {
                             <div className="space-y-10">
                                 <span className="text-4xl text-[#14A492]">탄소 감축 포인트를 쌓아요</span>
                             </div>
-                            <div className="p-5 flex justify-center items-center rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
-                                <img style={{ width: '60%' }} src="/rank1.png" />
-                                <img style={{ width: '40%' }} src="/rank2.png" />
+                            <div className="mainbox p-5 flex justify-center items-center rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+                                <img className="rankphoto" style={{ width: '60%' }} src="/rank1.png" />
+                                <img className="rankphoto " style={{ width: '40%' }} src="/rank2.png" />
                             </div>
                         </div>
 

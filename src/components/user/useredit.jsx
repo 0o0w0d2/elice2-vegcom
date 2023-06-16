@@ -14,7 +14,7 @@ function UserEdit() {
     const [description, setDescription] = useState('');
     const [userImage, setUserImage] = useState('');
 
-    const isDesValid = useMemo(() => description.length <= 200, [description]);
+    const isDesValid = useMemo(() => description?.length <= 200, [description]);
     const isNicknameValid = useMemo(() => nickname.length < 10 && nickname.length >= 2);
 
     const isFormValid = useMemo(() => isDesValid && isNicknameValid, [isDesValid, isNicknameValid]);
