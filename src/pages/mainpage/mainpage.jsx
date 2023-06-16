@@ -166,27 +166,13 @@ function MainPage() {
                                 <div>
                                     <span className="text-4xl text-[#14A492]">나의 식단을 기록하고 공유해요</span>
                                 </div>
-                                <div
-                                    style={{ widtH: '70vw' }}
-                                    className="p-10 flex justify-center items-center rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
-                                    <div className="flex justify-center items-center">
-                                        <img
-                                            className="w-1/3 mr-2 h-full object-cover"
-                                            src={'https://cdn.pixabay.com/photo/2015/12/09/17/11/vegetables-1085063_640.jpg'}
-                                            alt={1}
-                                        />
+                                <div className="p-10 flex justify-center items-center rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+                                    <div className="mainbox flex justify-center items-center">
+                                        <img className="storyphoto w-1/3 mr-2 h-full object-cover" src="/story1.png" alt={1} />
 
-                                        <img
-                                            className="w-1/3 mr-3 h-full object-cover"
-                                            src={'https://cdn.pixabay.com/photo/2015/12/09/17/11/vegetables-1085063_640.jpg'}
-                                            alt={2}
-                                        />
+                                        <img className="storyphoto w-1/3 mr-3 h-full object-cover" src="/story2.png" alt={2} />
 
-                                        <img
-                                            className="w-1/3 h-full object-cover"
-                                            src={'https://cdn.pixabay.com/photo/2015/12/09/17/11/vegetables-1085063_640.jpg'}
-                                            alt={3}
-                                        />
+                                        <img className="storyphoto w-1/3 h-full object-cover" src="/story3.png" alt={3} />
                                     </div>
                                 </div>
                             </div>
@@ -196,9 +182,9 @@ function MainPage() {
                             <div className="space-y-10">
                                 <span className="text-4xl text-[#14A492]">탄소 감축 포인트를 쌓아요</span>
                             </div>
-                            <div className="mainbox p-5 flex justify-center items-center rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
-                                <img className="rankphoto" style={{ width: '60%' }} src="/rank1.png" />
-                                <img className="rankphoto " style={{ width: '40%' }} src="/rank2.png" />
+                            <div className="mainbox p-5 flex justify-between items-center rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+                                <img className="w-60% rankphoto" src="/rank1.png" />
+                                <img className="w-40% rankphoto " src="/rank2.png" />
                             </div>
                         </div>
 

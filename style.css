@@ -69,10 +69,13 @@ body {
 
 @media (max-width: 1080px) {
     .mainbox {
-        flex-wrap: wrap;
+        flex-direction: column;
         justify-content: center;
     }
     .rankphoto {
+        width: 100%;
+    }
+    .storyphoto {
         width: 100%;
     }
 }
