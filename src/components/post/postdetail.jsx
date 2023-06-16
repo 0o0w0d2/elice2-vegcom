@@ -147,7 +147,9 @@ function PostDetail() {
             content,
             postId,
         });
-        window.location.reload();
+
+        setContent('');
+        fetchComments(postId, 0);
     };
 
     const handleEdit = async commentId => {
@@ -157,11 +159,11 @@ function PostDetail() {
             content,
         });
 
+        fetchComments(postId, 0);
+
         setIsEditing(false);
         setContent('');
         setIsSave(true);
-
-        window.location.reload();
     };
 
     const handleReSubmit = async commentId => {
@@ -177,7 +179,7 @@ function PostDetail() {
         setReContent('');
         setIsReplying(false);
 
-        window.location.reload();
+        fetchComments(postId, 0);
     };
     const handleReEdit = async commentId => {
         await putApi(`/comment/${commentId}`, {
@@ -189,17 +191,17 @@ function PostDetail() {
         setIsReEditing(false);
         setIsSave(true);
 
-        window.location.reload();
+        fetchComments(postId, 0);
     };
 
     const handlePostDelete = useCallback(async postId => {
         await delApi(`/post/${postId}`);
-        navigate(-1);
+        fetchComments(postId, 0);
     });
 
     const handleCommentDelete = useCallback(async commentId => {
         await delApi(`/comment/${commentId}`);
-        window.location.replace(`/post/${postId}`);
+        fetchComments(postId, 0);
     });
 
     const isEditable = useMemo(() => userId === post.userId, [userId, post.userId]);
@@ -541,6 +543,7 @@ function PostDetail() {
                                     style={{ width: '35vw' }}
                                     className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                                     placeholder="댓글을 입력하세요."
+                                    value={content}
                                     onChange={e => setContent(e.target.value)}></textarea>
                                 <div className="flex items-center ml-2">
                                     <button
