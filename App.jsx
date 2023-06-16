@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useReducer, createContext, useContext, lazy, Suspense } from 'react';
 import { useNavigate, BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
-import { get as getApi } from './api';
-import { loginReducer } from './reducer';
+import { get as getApi } from './api.js';
+import { loginReducer } from './reducer.jsx';
 
-import Header from './src/sections/header';
-import HeaderLogout from './src/sections/headerlogout';
-import Footer from './src/sections/footer';
-import Loading from './src/pages/loading';
+import Header from './src/sections/header.jsx';
+import HeaderLogout from './src/sections/headerlogout.jsx';
+import Footer from './src/sections/footer.jsx';
+import Loading from './src/pages/loading.jsx';
 
 const LoginForm = lazy(() => import('/src/pages/login/loginform.jsx'));
 const RegisterForm = lazy(() => import('/src/pages/register/registerform.jsx'));
