@@ -24,7 +24,7 @@ function TierDecision(point) {
     } else {
         tier[0] = 5;
         tier[1] = '5단계';
-        tier[2] = './6단계.png';
+        tier[2] = './5단계.png';
     }
     return tier;
 }
