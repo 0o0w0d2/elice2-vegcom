@@ -190,9 +190,35 @@ function UserDetail() {
                                 {archivePostList.length === 0 ? (
                                     <div>
                                         {currentUserId === userId ? (
-                                            <div>글을 안 썼어요. 쓰러 가자</div>
+                                            <div>
+                                                <div
+                                                    className="text-center"
+                                                    style={{
+                                                        fontWeight: 'bold',
+                                                        fontSize: '1.5rem',
+                                                        marginTop: '1rem',
+                                                        marginBottom: '2rem',
+                                                    }}>
+                                                    {' '}
+                                                    <span style={{ color: '#008762' }}>{userInfo.nickname}</span> 님은 글을 아직
+                                                    작성하지 않으셨네요!
+                                                </div>
+                                                <div className="goAdd" onClick={() => navigate('/addpost')}>
+                                                    식단 기록하러 가기 →
+                                                </div>
+                                            </div>
                                         ) : (
-                                            <div>{userInfo.nickname}님은 글을 아직 작성하지 않았어요.</div>
+                                            <div
+                                                className="text-center"
+                                                style={{
+                                                    fontWeight: 'bold',
+                                                    fontSize: '1.5rem',
+                                                    marginTop: '1rem',
+                                                    marginBottom: '2rem',
+                                                }}>
+                                                <span style={{ color: '#008762' }}>{userInfo.nickname}</span> 님은 글을 아직
+                                                작성하지 않았어요.
+                                            </div>
                                         )}
                                     </div>
                                 ) : (
