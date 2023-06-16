@@ -2,11 +2,12 @@ import React, { Fragment, useMemo, useState, useEffect, useCallback } from 'reac
 import { UserStateContext } from '../../../App';
 import { useNavigate } from 'react-router-dom';
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
-import { StarIcon as SolidStarIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { StarIcon } from '@heroicons/react/24/outline';
+import { HeartIcon as SolidHeartIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { HeartIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
 import { get as getApi, post as postApi, del as delApi } from '../../../api';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
+import GetHours from '../../utils/gethours';
 // import { comment } from 'postcss';
 // import { formatPostcssSourceMap } from 'vite';
 
@@ -29,6 +30,16 @@ function PostCard({ post }) {
         [post],
     );
 
+    const handlePostDelete = async postId => {
+        await delApi(`/post/${postId}`);
+        window.location.replace('/story');
+    };
+
+    const handleCommentDelete = async commentId => {
+        await delApi(`/comment/${commentId}`);
+        window.location.replace('/story');
+    };
+
     const getImageSrc = imageUrl => {
         if (imageUrl.startsWith('http')) {
             return imageUrl;
@@ -47,8 +58,11 @@ function PostCard({ post }) {
                 setLikeCount(likesData.likecount);
                 setLiked(likesData.likeuser);
             } catch (err) {
-                alert(err.rseponse.data.message);
-                console.log('좋아요 불러오기를 실패했습니다.');
+                if (err.response.data.message) {
+                    alert(err.response.data.message);
+                } else {
+                    alert('라우팅 경로가 잘못되었습니다.');
+                }
             }
         },
         [post],
@@ -64,8 +78,11 @@ function PostCard({ post }) {
                 setCommentsZero(commentDataZero);
                 setCommentsOther(commentDataOther);
             } catch (err) {
-                alert(err.message);
-                console.log('댓글 불러오기를 실패했습니다');
+                if (err.response.data.message) {
+                    alert(err.response.data.message);
+                } else {
+                    alert('라우팅 경로가 잘못되었습니다.');
+                }
             }
         },
         [post],
@@ -79,22 +96,25 @@ function PostCard({ post }) {
             setDisabled(true);
 
             if (liked === false) {
-                postApi(`/like/${postId}`, {
-                    // 좋아요 누르는 버튼 구현하기
+                await postApi(`/like/${postId}`, {
                     postId,
                     userId,
                 });
                 setLiked(true);
-                setLikeCount(likeCount + 1);
+                setLikeCount(prev => likeCount + 1);
             } else {
-                delApi(`/like/${postId}`);
                 setLiked(false);
-                setLikeCount(likeCount - 1);
+                setLikeCount(prev => likeCount - 1);
+                await delApi(`/like/${postId}`);
             }
-            console.log('like 누르기 이후', liked);
+
+            console.log('like 누르기 이후', !liked);
         } catch (err) {
-            alert(err.response.data.message);
-            console.log(err.response.data.message);
+            if (err.response.data.message) {
+                alert(err.response.data.message);
+            } else {
+                alert('라우팅 경로가 잘못되었습니다.');
+            }
         } finally {
             setDisabled(false);
         }
@@ -109,8 +129,16 @@ function PostCard({ post }) {
         <div className="postCard rounded-lg mx-auto grid max-w-2xl grid-cols-1 border border-gray-300 pt-5 pl-5 pb-5 pr-5 mb-5">
             <article key={post.postId} className="flex max-w-xl flex-col justify-between text-bold">
                 <div className="profileSection relative flex w-full items-center gap-x-4">
-                    <img src={getImageSrc(post.userImage)} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
-                    <div style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold' }}>{post.nickname}</div>
+                    <div className="flex" onClick={() => navigate(`/mypage/${post.userId}`)}>
+                        {post.userImage ? (
+                            <img src={getImageSrc(post.userImage)} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+                        ) : (
+                            <img src={'http://placekitten.com/200/200'} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+                        )}
+                        <div style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold', marginLeft: '1rem' }}>
+                            {post.nickname}
+                        </div>
+                    </div>
                     {isEditable && (
                         <div className="flex flex-grow justify-end">
                             <Menu as="div" className="relative inline-block text-left">
@@ -132,12 +160,32 @@ function PostCard({ post }) {
                                         <div className="py-1">
                                             <div
                                                 className="text-gray-700 block px-4 py-2 text-md"
-                                                onClick={() => navigate('/rank')}>
+                                                onClick={() => {
+                                                    if (post.userId !== userId) {
+                                                        alert('접근할 수 없는 페이지입니다.');
+                                                    } else {
+                                                        navigate(`/postedit/${post.postId}`);
+                                                    }
+                                                }}>
                                                 수정
                                             </div>
                                             <div
                                                 className="text-gray-700 block px-4 py-2 text-md"
-                                                onClick={() => navigate('/rank')}>
+                                                onClick={() => {
+                                                    if (GetHours) {
+                                                        if (
+                                                            window.confirm(
+                                                                '게시물을 작성한 지 48시간이 경과하지 않았습니다. 삭제하면 포인트가 차감됩니다. 정말로 삭제하시겠습니까?',
+                                                            )
+                                                        ) {
+                                                            handlePostDelete(post.postId);
+                                                        }
+                                                    } else {
+                                                        if (window.confirm('정말로 삭제하시겠습니까?')) {
+                                                            handlePostDelete(post.postId);
+                                                        }
+                                                    }
+                                                }}>
                                                 삭제
                                             </div>
                                         </div>
@@ -153,14 +201,14 @@ function PostCard({ post }) {
                         {/* 눌렀을 때 좋아요 상태 변경하는 코드 추가하기 */}
                         {/* <StarIcon className="h-7 w-7" onClick={() => handleLike(post)} /> */}
                         {liked == true ? (
-                            <SolidStarIcon
+                            <SolidHeartIcon
                                 disabled={disabled}
                                 onClick={() => handleLike(post.postId, userId)}
                                 className="h-7 w-7"
-                                fill="#008762"
+                                fill="#ff3040"
                             />
                         ) : (
-                            <StarIcon disabled={disabled} onClick={() => handleLike(post.postId, userId)} className="h-7 w-7" />
+                            <HeartIcon disabled={disabled} onClick={() => handleLike(post.postId, userId)} className="h-7 w-7" />
                         )}
                         <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7" onClick={() => handleClick(post)} />
                     </div>
@@ -168,8 +216,9 @@ function PostCard({ post }) {
                         <span style={{ fontWeight: 'bold' }}>{likeCount.toLocaleString()} 명</span>이 좋아합니다.
                     </div>
 
-                    <div className="flex mt-2 text-md text-left">
-                        <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.nickname}</span> {post.content}
+                    <div className="mt-2 text-md text-left">
+                        <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.nickname}</span>
+                        <span>{post.content}</span>
                     </div>
                 </div>
                 <div className="commentSection mt-1">
@@ -177,8 +226,16 @@ function PostCard({ post }) {
                         <div className="flex w-full" key={item.id}>
                             <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
                             <div className="flex flex-grow justify-end items-center">
-                                {userId === item.userId && <PencilSquareIcon className="w-5 h-5" />}
-                                {(isEditable || userId === item.userId) && <TrashIcon className="w-5 h-5" />}
+                                {(isEditable || userId === item.userId) && (
+                                    <TrashIcon
+                                        className="w-5 h-5"
+                                        onClick={() => {
+                                            if (window.confirm('정말로 삭제하시겠습니까?')) {
+                                                handleCommentDelete(item.id);
+                                            }
+                                        }}
+                                    />
+                                )}
                             </div>
                         </div>
                     ))}

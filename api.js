@@ -7,6 +7,8 @@ axios.defaults.baseURL = 'http://localhost:5001/';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.put['Content-Type'] = 'application/json';
 
+axios.defaults.timeout = 20000;
+
 // 토큰 불러오기(로그인 시 localStorage에 저장된 Token값을 불러오기)
 const getToken = () => {
     return localStorage.getItem('userToken');
@@ -58,7 +60,7 @@ axios.interceptors.response.use(
         return res;
     },
     err => {
-        console.log('axios에서 일어나는 모든 response 에러', err);
+        // console.log('axios에서 일어나는 모든 response 에러', err);
         return Promise.reject(err);
     },
 );
