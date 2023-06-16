@@ -86,6 +86,8 @@ function UserDetail() {
         [userId],
     );
 
+    console.log(userInfo);
+
     useEffect(() => {
         fetchArchive(userId);
         fetchLikes(userId);
@@ -97,25 +99,25 @@ function UserDetail() {
 
     return (
         <div style={{ width: '900px' }}>
-            <div className="w-full flex justify-center">
+            <div className="w-full flex justify-center ">
                 <div>
                     <div
-                        className="flex items-center justify-center p-4 m-2 bg-white shadow-lg rounded-xl"
+                        className="userDetailCard flex justify-center p-4 m-2 bg-white shadow-md rounded-xl items-center"
                         style={{ width: '60vh', height: '20vh' }}>
-                        <div className="flex flex-row justify-center items-center text-center">
+                        <div className="flex flex-row justify-between items-center">
                             <img className="w-20 h-20 object-cover rounded-full mb-2 mr-5" src={userImage} alt={userInfo.id} />
-                            <div>
-                                <div>
-                                    {userInfo.nickname}님은 지금까지 {GetDays(userInfo.createAt)}일 동안 총 {userInfo.storyCount}{' '}
-                                    끼의 채식을 했어요!
+                            <div className=" text-left mr-7">
+                                <div style={{ fontFamily: 'SUITE-Regular' }}>{userInfo.nickname}</div>
+                                <div style={{ fontSize: '0.3rem' }} className="mt-1">
+                                    {userInfo.description}
                                 </div>
-                                <p className="text-sm text-gray-500">현재 누적 포인트: {userInfo.accuPoint}</p>
-                                <p className="text-sm text-gray-500">
-                                    오늘 순위: {userInfo.TodayRanking}위 전체 누적 순위: {userInfo.AccuRanking}위
-                                </p>
+                                <div style={{ fontSize: '0.3rem' }} className="mt-2">
+                                    가입한 지 {GetDays(userInfo.createAt)}일 총 게시물 수 {userInfo.storyCount}
+                                </div>
                             </div>
                         </div>
                     </div>
+
                     {isEditing ? (
                         <div className="bg-gray-200 text-sm text-gray-500 leading-none border-2 border-gray-200 rounded-full inline-flex mt-10 mb-10">
                             <button
@@ -184,22 +186,34 @@ function UserDetail() {
                     )}
                     <div>
                         {!isSelect ? (
-                            <div className="w-full bg-white shadow-lg rounded-xl pt-5 pb-5 pl-3 pr-3">
-                                {chunkArray(archivePostList, 3).map((row, rowIndex) => (
-                                    <div key={rowIndex} className="flex justify-left">
-                                        {row.map((item, index) => (
-                                            <div key={index} className="flex items-center mx-2">
-                                                <img
-                                                    className="object-cover mb-2"
-                                                    style={{ width: '18vh', height: '18vh' }}
-                                                    src={getImageSrc(item.imageUrl)}
-                                                    alt={item.id}
-                                                    onClick={() => navigate(`/post/${item.id}`)}
-                                                />
+                            <div>
+                                {archivePostList.length === 0 ? (
+                                    <div>
+                                        {currentUserId === userId ? (
+                                            <div>글을 안 썼어요. 쓰러 가자</div>
+                                        ) : (
+                                            <div>{userInfo.nickname}님은 글을 아직 작성하지 않았어요.</div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="w-full bg-white shadow-md rounded-xl pt-5 pb-5 pl-3 pr-3">
+                                        {chunkArray(archivePostList, 3).map((row, rowIndex) => (
+                                            <div key={rowIndex} className="flex justify-left">
+                                                {row.map((item, index) => (
+                                                    <div key={index} className="flex items-center mx-2">
+                                                        <img
+                                                            className="object-cover mb-2"
+                                                            style={{ width: '18vh', height: '18vh' }}
+                                                            src={getImageSrc(item.imageUrl)}
+                                                            alt={item.id}
+                                                            onClick={() => navigate(`/post/${item.id}`)}
+                                                        />
+                                                    </div>
+                                                ))}
                                             </div>
                                         ))}
                                     </div>
-                                ))}
+                                )}
                             </div>
                         ) : (
                             <div className="flex justify-center">

@@ -181,6 +181,14 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.19.0"
 
+"@babel/polyfill@^7.2.5":
+  version "7.12.1"
+  resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.12.1.tgz#1f2d6371d1261bbd961f3c5d5909150e12d0bd96"
+  integrity sha512-X0pi0V6gxLi6lFZpGmeNa4zxtwEmCs42isWLNjZZDE0Y8yVfgu0T2OAHlzBbdYlqbW/YXVvoBHpATEM+goCj8g==
+  dependencies:
+    core-js "^2.6.5"
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.20.7", "@babel/template@^7.21.9":
   version "7.21.9"
   resolved "https://registry.npmjs.org/@babel/template/-/template-7.21.9.tgz"
@@ -311,8 +319,19 @@
   resolved "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.17.19.tgz"
   integrity sha512-lAhycmKnVOuRYNtRtatQR1LPQf2oYCkRGkSFnseDAKPl8lu5SOsK/e1sXe5a0Pc5kHIHe6P2I/ilntNv2xf3cA==
 
+<<<<<<< HEAD
 =======
 >>>>>>> f74ae47 (Style:일반커밋)
+=======
+"@fullpage/react-fullpage@^0.1.40":
+  version "0.1.40"
+  resolved "https://registry.yarnpkg.com/@fullpage/react-fullpage/-/react-fullpage-0.1.40.tgz#09d5b9965f6ff60b30787f0d2c5956722a4924e4"
+  integrity sha512-wmId7EXRx07iTDqXVRkYyv9WAkHN2Sropke89S7sv13/gMAV2KtaBoWVXMIDnsLIHPx05w9n3TOrHk572plGRQ==
+  dependencies:
+    "@babel/polyfill" "^7.2.5"
+    fullpage.js "^4.0.20"
+
+>>>>>>> feature/이영현
 "@headlessui/react@^1.7.15":
   version "1.7.15"
   resolved "https://registry.npmjs.org/@headlessui/react/-/react-1.7.15.tgz"
@@ -373,6 +392,17 @@
     "@types/prop-types" "^15.7.2"
     lodash "^4.17.21"
     prop-types "^15.7.2"
+
+"@nivo/arcs@0.83.0":
+  version "0.83.0"
+  resolved "https://registry.yarnpkg.com/@nivo/arcs/-/arcs-0.83.0.tgz#57062df79556d7dc42101fa5143586d56e7bd1b8"
+  integrity sha512-UcbNbtp28lbI5V/Sm6TIgYzZmtuhSxW3eTma+YBsgXi1AN/THSwEg0gSV8owyDT/8kaL+jcBQ6c54gzSLClhkw==
+  dependencies:
+    "@nivo/colors" "0.83.0"
+    "@nivo/core" "0.83.0"
+    "@react-spring/web" "9.4.5 || ^9.7.2"
+    "@types/d3-shape" "^2.0.0"
+    d3-shape "^1.3.5"
 
 "@nivo/axes@0.83.0":
   version "0.83.0"
@@ -470,6 +500,19 @@
     "@react-spring/web" "9.4.5 || ^9.7.2"
     d3-shape "^1.3.5"
     prop-types "^15.7.2"
+
+"@nivo/pie@^0.83.0":
+  version "0.83.0"
+  resolved "https://registry.yarnpkg.com/@nivo/pie/-/pie-0.83.0.tgz#4d58c689533cd62cb656632a1fd740f5b36e2bac"
+  integrity sha512-98j/h4T/QmQ10gFh1cMh6uLfcGurFcYZN97Lu3ig3D9bbsLuLgpUED/d5O+8w7qLJtnlg3zptqy+N9UgRAqbOg==
+  dependencies:
+    "@nivo/arcs" "0.83.0"
+    "@nivo/colors" "0.83.0"
+    "@nivo/core" "0.83.0"
+    "@nivo/legends" "0.83.0"
+    "@nivo/tooltip" "0.83.0"
+    "@types/d3-shape" "^2.0.0"
+    d3-shape "^1.3.5"
 
 "@nivo/recompose@0.83.0":
   version "0.83.0"
@@ -643,6 +686,11 @@
     "@rollup/pluginutils" "^4.1.1"
     react-refresh "^0.10.0"
 
+animate.css@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/animate.css/-/animate.css-4.1.1.tgz#614ec5a81131d7e4dc362a58143f7406abd68075"
+  integrity sha512-+mRmCTv6SbCmtYJCN4faJMNFVNN5EuCTTprDTAo7YzIGji2KADmakjVA3+8mVDkZ2Bf09vayB35lSQIex2+QaQ==
+
 ansi-regex@^5.0.1:
   version "5.0.1"
   resolved "https://registry.npmjs.org/ansi-regex/-/ansi-regex-5.0.1.tgz"
@@ -674,6 +722,15 @@ anymatch@~3.1.2:
   dependencies:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
+
+aos@^2.3.4:
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/aos/-/aos-2.3.4.tgz#eb1c29f5c1806a197cf6323080747547edd3db8e"
+  integrity sha512-zh/ahtR2yME4I51z8IttIt4lC1Nw0ktsFtmeDzID1m9naJnWXhCoARaCgNOGXb5CLy3zm+wqmRAEgMYB5E2HUw==
+  dependencies:
+    classlist-polyfill "^1.0.3"
+    lodash.debounce "^4.0.6"
+    lodash.throttle "^4.0.1"
 
 arg@^5.0.2:
   version "5.0.2"
@@ -775,6 +832,11 @@ chokidar@^3.3.0, chokidar@^3.5.3:
   optionalDependencies:
     fsevents "~2.3.2"
 
+classlist-polyfill@^1.0.3:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/classlist-polyfill/-/classlist-polyfill-1.2.0.tgz#935bc2dfd9458a876b279617514638bcaa964a2e"
+  integrity sha512-GzIjNdcEtH4ieA2S8NmrSxv7DfEV5fmixQeyTmqmRmRJPGpRBaSnA2a0VrCjyT8iW8JjEdMbKzDotAJf+ajgaQ==
+
 client-only@^0.0.1:
   version "0.0.1"
   resolved "https://registry.npmjs.org/client-only/-/client-only-0.0.1.tgz"
@@ -834,6 +896,16 @@ convert-source-map@^1.7.0:
   version "1.9.0"
   resolved "https://registry.npmjs.org/convert-source-map/-/convert-source-map-1.9.0.tgz"
   integrity sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==
+
+core-js@^2.6.5:
+  version "2.6.12"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
+  integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
+
+core-js@^3.16.2:
+  version "3.31.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.31.0.tgz#4471dd33e366c79d8c0977ed2d940821719db344"
+  integrity sha512-NIp2TQSGfR6ba5aalZD+ZQ1fSxGhDo/s1w0nx3RYzf2pnJxt7YynxFlFScP6eV7+GZsKO95NSjGxyJsU3DZgeQ==
 
 cssesc@^3.0.0:
   version "3.0.0"
@@ -1086,6 +1158,11 @@ fsevents@, fsevents@~2.3.2:
   resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
   integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
 
+fullpage.js@^4.0.20:
+  version "4.0.20"
+  resolved "https://registry.yarnpkg.com/fullpage.js/-/fullpage.js-4.0.20.tgz#7870a2b06f43bf37a8c051af2031f4d01b0b02d7"
+  integrity sha512-y72V3oV/pFccPYaxnUosEltQP9tXH340x479oQSS9Yab0L0YpIPNE0PFA68l6XEq5Lhw7IRqyCgVwL+WdjtQdA==
+
 function-bind@^1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/function-bind/-/function-bind-1.1.1.tgz"
@@ -1273,6 +1350,16 @@ lines-and-columns@^1.1.6:
   version "1.2.4"
   resolved "https://registry.npmjs.org/lines-and-columns/-/lines-and-columns-1.2.4.tgz"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
+
+lodash.debounce@^4.0.6:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  integrity sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==
+
+lodash.throttle@^4.0.1, lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ==
 
 lodash@^4.17.21:
   version "4.17.21"
@@ -1495,7 +1582,7 @@ pretty-hrtime@^1.0.3:
   resolved "https://registry.npmjs.org/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz"
   integrity sha512-66hKPCr+72mlfiSjlEB1+45IjXSqvVAIy6mocupoww4tBFE9R9IhwwUGoI4G++Tc9Aq+2rxOt0RFU6gPcrte0A==
 
-prop-types@^15.7.2:
+prop-types@^15.5.9, prop-types@^15.7.2:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -1514,13 +1601,32 @@ queue-microtask@^1.2.2:
   resolved "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
+<<<<<<< HEAD
 "react-dom@^16 || ^17 || ^18", react-dom@^18.2.0, react-dom@>=16.8:
+=======
+react-animate-on-scroll@^2.1.7:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/react-animate-on-scroll/-/react-animate-on-scroll-2.1.7.tgz#6bf3102519eb89c07264148cb0492b8de79fbed3"
+  integrity sha512-A4MsApouThr2YhguCQ0fq/HVOLtDMuBM1XCHxhYug8k2NfP0S4S6B7qhrVjylMCX4zFAnTa+YKz7eQG/StizFw==
+  dependencies:
+    lodash.throttle "^4.1.1"
+    prop-types "^15.5.9"
+
+react-dom@^18.2.0:
+>>>>>>> feature/이영현
   version "18.2.0"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"
   integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
   dependencies:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
+
+react-full-page@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/react-full-page/-/react-full-page-0.1.12.tgz#59dc3a0e86e56d5783b63c6a48a8d195a347dc78"
+  integrity sha512-Bk6gcxANuWNkeBNmaTUNRcA05zDBqJaTKxlr78dC59gsXhiWPODa8kcrDHClaRAc6JkH16jzbCOO1mNH9Ta1jQ==
+  dependencies:
+    core-js "^3.16.2"
 
 react-is@^16.13.1:
   version "16.13.1"
@@ -1552,7 +1658,23 @@ react-router@6.11.2:
   dependencies:
     "@remix-run/router" "1.6.2"
 
+<<<<<<< HEAD
 "react@^16 || ^17 || ^18", react@^18.2.0, "react@>= 16", react@>=16.8:
+=======
+react-router@^6.12.1:
+  version "6.12.1"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.12.1.tgz#9e4126aa1139ec6b5d347e19576d5e940cd46362"
+  integrity sha512-evd/GrKJOeOypD0JB9e1r7pQh2gWCsTbUfq059Wm1AFT/K2MNZuDo19lFtAgIhlBrp0MmpgpqtvZC7LPAs7vSw==
+  dependencies:
+    "@remix-run/router" "1.6.3"
+
+react-scroll-motion@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/react-scroll-motion/-/react-scroll-motion-0.3.2.tgz#78213b0ca454352b7fa86dfcd9b6189466fed76d"
+  integrity sha512-w/6btLiY4I1wh1hxRhVKN0Vd3Hrpb+ZfSBZxxMh+mMtc9oXeR+VvfLfx2VRTNl+0JyjTCciwFxtDTK6vg09Mhw==
+
+react@^18.2.0:
+>>>>>>> feature/이영현
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
@@ -1572,6 +1694,11 @@ readdirp@~3.6.0:
   integrity sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==
   dependencies:
     picomatch "^2.2.1"
+
+regenerator-runtime@^0.13.4:
+  version "0.13.11"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz#f6dca3e7ceec20590d07ada785636a90cdca17f9"
+  integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==
 
 require-directory@^2.1.1:
   version "2.1.1"

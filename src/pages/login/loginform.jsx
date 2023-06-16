@@ -63,6 +63,7 @@ function LoginForm() {
         <div className="login-page">
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <img
+                    onClick={() => navigate('/')}
                     src="/logoshort.png"
                     alt="오채완 로고"
                     className="logo"

@@ -1,3 +1,4 @@
+@import 'animate.css';
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
@@ -41,7 +42,7 @@ h1 {
 }
 
 #app {
-    max-width: 1280px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 2rem;
     min-width: 900px;
@@ -131,4 +132,32 @@ button:focus-visible {
     button {
         background-color: #f9f9f9;
     }
+}
+
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NanumSquareNeo-Variable2';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}
+
+.animation {
+    width: 400px;
+    height: 80px;
+    background-color: brown;
+    margin: 10px auto;
+}
+
+@font-face {
+    font-family: 'SUITE-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
 }

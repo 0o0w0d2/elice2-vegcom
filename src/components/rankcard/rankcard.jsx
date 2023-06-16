@@ -20,7 +20,9 @@ const RankCard = ({ user, index }) => {
                 <img className="mr-5 w-20 h-20 object-cover rounded-full" src={getImageSrc()} alt={user.id} />
                 <div className="w-full">
                     <div className="text-left ">
-                        <p className="text-lg font-bold">{user.nickname}</p>
+                        <p style={{ fontFamily: 'SUITE-Regular' }} className="text-lg font-bold">
+                            {user.nickname}
+                        </p>
                         <p className="text-sm">누적 포인트: {user.accuPoint}</p>
                         <p className="text-sm">총 게시물 수: {user.storyCount}</p>
                     </div>

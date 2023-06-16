@@ -77,7 +77,7 @@ const SecondGraph = () => {
             yScale={{
                 type: 'linear',
                 min: 26500,
-                max: 'auto',
+                max: 32500,
                 stacked: true,
                 reverse: false,
             }}
@@ -116,7 +116,7 @@ const SecondGraph = () => {
                     itemsSpacing: 0,
                     itemDirection: 'left-to-right',
                     itemWidth: 80,
-                    itemHeight: 20,
+                    itemHeight: 50,
                     itemOpacity: 0.75,
                     symbolSize: 12,
                     symbolShape: 'circle',
@@ -147,8 +147,8 @@ function LineGraph() {
                         xScale={{ type: 'point' }}
                         yScale={{
                             type: 'linear',
-                            min: 3500,
-                            max: 'auto',
+                            min: 3600,
+                            max: 6000,
                             stacked: true,
                             reverse: false,
                         }}
