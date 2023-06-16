@@ -98,11 +98,18 @@ function PostCard({ post }) {
                     postId,
                     userId,
                 });
-                setLiked(true);
-                setLikeCount(likeCount + 1);
+
+                const res = await getApi(`like/${postId}`);
+                const likesData = res.data;
+                setLikeCount(likesData.likecount);
+                setLiked(likesData.likeuser);
             } else {
-                setLiked(false);
-                setLikeCount(likeCount - 1);
+                await delApi(`/like/${postId}`);
+
+                const res = await getApi(`like/${postId}`);
+                const likesData = res.data;
+                setLikeCount(likesData.likecount);
+                setLiked(likesData.likeuser);
             }
         } catch (err) {
             if (err.response.data.message) {
