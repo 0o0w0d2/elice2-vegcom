@@ -22,6 +22,7 @@ function PostDetail() {
     const [user, setUser] = useState();
     const postId = location.pathname.match(/\/post\/(\d+)/)[1];
     const [content, setContent] = useState('');
+    const [editContent, setEditContent] = useState('');
     const [reContent, setReContent] = useState('');
     const [isReplying, setIsReplying] = useState(false);
     const [commentsZero, setCommentsZero] = useState([]);
@@ -40,6 +41,7 @@ function PostDetail() {
     const [isReEditing, setIsReEditing] = useState(false);
     const [target, setTarget] = useState('');
     const [reTarget, setReTarget] = useState('');
+    const [editTarget, setEditTarget] = useState('');
     const [isFetchCommentCompleted, setIsFetchCommentCompleted] = useState(false);
     const [isFetchPostCompleted, setIsFetchPostCompleted] = useState(false);
 
@@ -156,13 +158,13 @@ function PostDetail() {
         await putApi(`/comment/${commentId}`, {
             commentId,
             postId,
-            content,
+            content: editContent,
         });
 
         fetchComments(postId, 0);
 
         setIsEditing(false);
-        setContent('');
+        setEditContent('');
         setIsSave(true);
     };
 
@@ -376,7 +378,9 @@ function PostDetail() {
                         <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.nickname}</span>
                         <span style={{ color: '#737373' }}> {GetTime(post.createAt)} </span>
                     </div>
-                    <div className="text-left">{post.content}</div>
+                    <div className="text-left" style={{ whiteSpace: 'pre-line' }}>
+                        {post.content}
+                    </div>
                 </div>
                 <div className="pt-4 commentSection w-full mt-1 mb-3">
                     {!isReplying && !isEditing && (
@@ -386,6 +390,7 @@ function PostDetail() {
                                     style={{ width: '35vw' }}
                                     className="postInput block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                                     placeholder="댓글을 입력하세요."
+                                    value={content}
                                     onChange={e => setContent(e.target.value)}></textarea>
                                 <div className="flex items-center ml-2">
                                     <button
@@ -429,8 +434,8 @@ function PostDetail() {
                                                 onClick={() => {
                                                     !isEditing ? setIsEditing(true) : setIsEditing(false);
                                                     setIsReplying(false);
-                                                    setContent(item.content);
-                                                    setTarget(item.id);
+                                                    setEditContent(item.content);
+                                                    setEditTarget(item.id);
                                                 }}>
                                                 수정
                                             </span>
@@ -449,7 +454,9 @@ function PostDetail() {
                                         )}
                                     </div>
                                 </div>
-                                <p className="pl-2 text-gray-500 dark:text-gray-400 text-left">{item.content}</p>
+                                <p className="pl-2 text-gray-500 dark:text-gray-400 text-left" style={{ whiteSpace: 'pre-line' }}>
+                                    {item.content}
+                                </p>
                             </div>
                             {isReplying && target === item.id && (
                                 <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
@@ -462,7 +469,7 @@ function PostDetail() {
                                         <div className="flex items-center ml-2">
                                             <button
                                                 type="submit"
-                                                className="postButton flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                                className="postButton flex-grow w-auto bg-blue-500 text-white text-sm rounded-md"
                                                 onClick={() => handleReSubmit(item.id)}>
                                                 등록
                                             </button>
@@ -470,18 +477,18 @@ function PostDetail() {
                                     </div>
                                 </div>
                             )}
-                            {isEditing && target === item.id && (
+                            {isEditing && editTarget === item.id && (
                                 <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
                                     <div className="flex mt-4">
                                         <textarea
                                             style={{ width: '33.1vw' }}
                                             className="postEditInput block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                                            value={content}
-                                            onChange={e => setContent(e.target.value)}></textarea>
+                                            value={editContent}
+                                            onChange={e => setEditContent(e.target.value)}></textarea>
                                         <div className="flex items-center ml-2">
                                             <button
                                                 type="submit"
-                                                className="postButton flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                                className="postButton flex-grow w-auto bg-blue-500 text-white text-sm rounded-md"
                                                 onClick={() => handleEdit(item.id)}>
                                                 수정
                                             </button>
@@ -533,7 +540,11 @@ function PostDetail() {
                                                 )}
                                             </div>
                                         </div>
-                                        <p className="pl-2 text-gray-500 dark:text-gray-400 text-left">{comment.content}</p>
+                                        <p
+                                            className="pl-2 text-gray-500 dark:text-gray-400 text-left"
+                                            style={{ whiteSpace: 'pre-line' }}>
+                                            {comment.content}
+                                        </p>
 
                                         {isReEditing && target === item.id && reTarget === comment.id && (
                                             <div className="ml-6 pb-3 bg-white" style={{ width: '40vw' }}>
@@ -546,7 +557,7 @@ function PostDetail() {
                                                     <div className="flex items-center ml-2">
                                                         <button
                                                             type="submit"
-                                                            className="postButton flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                                            className="postButton flex-grow w-auto bg-blue-500 text-white text-sm rounded-md"
                                                             onClick={() => handleReEdit(comment.id, comment.parentId)}>
                                                             수정
                                                         </button>

@@ -118,7 +118,7 @@ function UserDetail() {
                             />
                             <div className=" text-left mr-7">
                                 <div style={{ fontFamily: 'SUITE-Regular', fontSize: '1.5rem' }}>{userInfo.nickname}</div>
-                                <div style={{ fontSize: '1rem' }} className="mt-1">
+                                <div style={{ fontSize: '1rem', whiteSpace: 'pre-line' }} className="mt-1">
                                     {userInfo.description}
                                 </div>
                                 <div style={{ fontSize: '0.9rem' }} className="mt-2">

@@ -14,16 +14,16 @@ function SearchPost() {
 
     const handleChange = e => {
         setKeyword(e.target.value);
+        setNextCursor(0);
     };
 
-    const handleSearch = useCallback(
+    const fetchSearch = useCallback(
         async (keyword, cursor) => {
             try {
                 if (cursor === -1) {
                     setIsLoading(false);
                     return;
                 }
-                console.log(cursor);
                 setIsLoading(true);
                 setIsSave(true);
                 const res = await getApi(`/search?keyword=${keyword}&cursor=${cursor}`);
@@ -55,8 +55,6 @@ function SearchPost() {
                     setIsReached(false);
                     setIsSave(false);
                 }
-
-                console.log(searchList);
             } catch (err) {
                 if (err.response.data.message) {
                     alert(err.response.data.message);
@@ -70,9 +68,9 @@ function SearchPost() {
         [isSave, isReached],
     );
 
-    const handleSearchButtonClick = useCallback(() => {
-        handleSearch(keyword, nextCursor);
-    }, [handleSearch, keyword, nextCursor]);
+    const handleSearchButtonClick = () => {
+        fetchSearch(keyword, nextCursor);
+    };
 
     const handleScroll = useCallback(() => {
         const scrollHeight = document.documentElement.scrollHeight;
@@ -86,15 +84,14 @@ function SearchPost() {
 
     useEffect(() => {
         if (searchList.length > 0) {
-            handleSearch(keyword, nextCursor);
+            fetchSearch(keyword, nextCursor);
         }
-        // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
         // 스크롤 이벤트 핸들러 등록 및 해제
         window.addEventListener('scroll', handleScroll);
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [handleSearch]);
+    }, [fetchSearch]);
 
     return (
         <>
@@ -130,10 +127,7 @@ function SearchPost() {
                             placeholder="궁금한 식단의 키워드를 검색해 보세요 ex) 샐러드, 당근 ..."
                         />
                         <button
-                            onClick={() => {
-                                setNextCursor(0);
-                                handleSearchButtonClick(keyword, nextCursor);
-                            }}
+                            onClick={() => handleSearchButtonClick(keyword, 0)}
                             type="submit"
                             className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             검색

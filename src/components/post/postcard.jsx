@@ -233,7 +233,7 @@ function PostCard({ post }) {
 
                     <div className="mt-2 text-md text-left">
                         <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{post.nickname}</span>
-                        <span>{post.content}</span>
+                        <span style={{ whiteSpace: 'pre-line' }}>{post.content}</span>
                     </div>
                 </div>
                 <div className="commentSection mt-1">
