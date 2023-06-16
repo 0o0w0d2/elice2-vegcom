@@ -90,10 +90,13 @@ function UserDetail() {
     );
 
     useEffect(() => {
-        window.scrollTo(0, 0);
         fetchArchive(userId);
         fetchLikes(userId);
     }, [fetchArchive, fetchLikes]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     if (!isFetchArchiveCompleted && !isFetchLikesCompleted) {
         return <Loading />;

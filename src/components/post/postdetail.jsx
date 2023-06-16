@@ -269,7 +269,6 @@ function PostDetail() {
     );
 
     useEffect(() => {
-        window.scrollTo(0, 0);
         // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
         fetchUser();
         fetchComments(postId, nextCursor);
@@ -282,6 +281,10 @@ function PostDetail() {
             window.removeEventListener('scroll', handleScroll);
         };
     }, [fetchUser, fetchComments, fetchLike]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     if (!isFetchCommentCompleted && !isFetchPostCompleted) {
         return <Loading />;
@@ -550,8 +553,6 @@ function PostDetail() {
                             </div>
                         </div>
                     )}
-
-                    {isLoading && <Loading />}
                 </div>
             </article>
         </div>
