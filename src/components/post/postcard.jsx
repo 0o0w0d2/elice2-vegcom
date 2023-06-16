@@ -196,7 +196,11 @@ function PostCard({ post }) {
                     )}
                 </div>
                 <div className="postSection w-full">
-                    <img src={getImageSrc(post.imageUrl)} alt="Post Image" className="postImage w-full h-auto mt-5" />
+                    {post.imageUrl ? (
+                        <img src={getImageSrc(post.imageUrl)} alt="Post Image" className="postImage w-full h-auto mt-5" />
+                    ) : (
+                        <img src={'http://placekitten.com/200/200'} alt="Post Image" className="postImage w-full h-auto mt-5" />
+                    )}
                     <div className="flex mt-3">
                         {/* 눌렀을 때 좋아요 상태 변경하는 코드 추가하기 */}
                         {/* <StarIcon className="h-7 w-7" onClick={() => handleLike(post)} /> */}
