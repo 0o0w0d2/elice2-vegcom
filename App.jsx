@@ -37,7 +37,6 @@ function App() {
     const isLogin = localStorage.getItem('userToken');
 
     const path = location.pathname;
-    console.log(path);
     // useReducer 훅을 통해 userState 상태와 dispatch함수를 생성함.
     const [userState, dispatch] = useReducer(loginReducer, {
         user: null,
