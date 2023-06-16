@@ -3,9 +3,9 @@ import { useNavigate, BrowserRouter as Router, Routes, Route, useLocation } from
 
 import { get as getApi } from './api';
 import { loginReducer } from './reducer';
-
 import Header from './src/sections/header';
 // import Footer from './src/sections/footer';
+import Loading from './src/pages/loading';
 
 import LoginForm from './src/pages/login/loginform.jsx';
 import RegisterForm from './src/pages/register/registerform';
@@ -16,6 +16,8 @@ import AddPost from './src/components/post/addpost';
 import PostDetail from './src/components/post/postdetail';
 import UserEdit from './src/components/user/useredit';
 import UserDetail from './src/components/user/userdetail';
+import PostEdit from './src/components/post/postedit';
+import SearchPost from './src/pages/story/searchpost';
 import NotFound from './src/pages/notfound';
 
 export const UserStateContext = createContext(null);
@@ -69,7 +71,7 @@ function App() {
     useEffect(() => {
         fetchCurrentUser();
 
-        if (isLogin && (path === '/login' || path === 'register')) {
+        if (isLogin && (path === '/login' || path === 'register' || path === '/')) {
             navigate('/rank');
         }
         if (!isLogin && path != '/login' && path != '/register' && path != '/') {
@@ -79,7 +81,7 @@ function App() {
     }, []);
 
     if (!isFetchCompleted) {
-        return 'loading...';
+        return <Loading />;
     }
 
     return (
@@ -101,6 +103,8 @@ function App() {
                     <Route path="/useredit" element={<UserEdit />} />
                     <Route path="/post/:postId" element={<PostDetail />} />
                     <Route path="/mypage/:userId" element={<UserDetail />} />
+                    <Route path="/postedit/:postId" element={<PostEdit />} />
+                    <Route path="/searchpost" element={<SearchPost />} />
 
                     <Route path="*" element={<NotFound />} />
                 </Routes>

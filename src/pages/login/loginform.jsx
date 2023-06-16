@@ -50,7 +50,11 @@ function LoginForm() {
 
             navigate('/rank', { replace: true });
         } catch (err) {
-            alert(err.response.data.message);
+            if (err.response.data.message) {
+                alert(err.response.data.message);
+            } else {
+                alert('라우팅 경로가 잘못되었습니다.');
+            }
         }
     };
 

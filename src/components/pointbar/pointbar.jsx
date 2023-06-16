@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 const PointBar = ({ point }) => {
     const pointMax = 14000;
