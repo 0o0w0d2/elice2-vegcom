@@ -141,7 +141,7 @@ function SearchPost() {
                         <PostCard post={post} />
                     </div>
                 ))}
-                {isLoading && <Loading />}
+                {isLoading && <p>Loading...</p>}
             </div>
         </>
     );
