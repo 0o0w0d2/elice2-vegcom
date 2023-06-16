@@ -109,10 +109,10 @@ function UserDetail() {
                             <img className="w-20 h-20 object-cover rounded-full mb-2 mr-5" src={userImage} alt={userInfo.id} />
                             <div className=" text-left mr-7">
                                 <div style={{ fontFamily: 'SUITE-Regular' }}>{userInfo.nickname}</div>
-                                <div style={{ fontSize: '0.3em' }} className="mt-1">
+                                <div style={{ fontSize: '0.8rem' }} className="mt-1">
                                     {userInfo.description}
                                 </div>
-                                <div style={{ fontSize: '0.3em' }} className="mt-2">
+                                <div style={{ fontSize: '0.8rem' }} className="mt-2">
                                     가입한 지 {GetDays(userInfo.createAt)}일 총 게시물 수 {userInfo.storyCount}
                                 </div>
                             </div>

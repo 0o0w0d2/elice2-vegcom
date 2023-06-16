@@ -4,13 +4,13 @@ import './linegraph.css';
 
 const data1 = [
     {
-        id: 'livestockemission',
+        id: '축산업 탄소배출량',
         data: [],
     },
 ];
 const data2 = [
     {
-        id: 'totalemission',
+        id: '총 탄소배출량',
         data: [],
     },
 ];
@@ -108,15 +108,15 @@ const SecondGraph = () => {
             useMesh={true}
             legends={[
                 {
-                    anchor: 'bottom-right',
+                    anchor: 'top-left',
                     direction: 'column',
                     justify: false,
-                    translateX: 100,
+                    translateX: 130,
                     translateY: 0,
                     itemsSpacing: 0,
                     itemDirection: 'left-to-right',
                     itemWidth: 80,
-                    itemHeight: 50,
+                    itemHeight: 20,
                     itemOpacity: 0.75,
                     symbolSize: 12,
                     symbolShape: 'circle',
@@ -139,7 +139,7 @@ const SecondGraph = () => {
 function LineGraph() {
     return (
         <div className="App">
-            <div className="wrapper">
+            <div className="wrapper flex">
                 <div className="graphContainer">
                     <ResponsiveLine
                         data={data1}
@@ -159,7 +159,7 @@ function LineGraph() {
                             tickSize: 5,
                             tickPadding: 5,
                             tickRotation: 0,
-                            legend: 'emissions',
+                            legend: '배출량',
                             legendOffset: -40,
                             legendPosition: 'middle',
                         }}
@@ -172,10 +172,10 @@ function LineGraph() {
                         colors={{ scheme: 'set1' }}
                         legends={[
                             {
-                                anchor: 'bottom-left',
+                                anchor: 'top-left',
                                 direction: 'column',
                                 justify: false,
-                                translateX: -30,
+                                translateX: 5,
                                 translateY: 0,
                                 itemsSpacing: 0,
                                 itemDirection: 'left-to-right',

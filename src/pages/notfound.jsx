@@ -1,6 +1,7 @@
 import React from 'react';
+import MainPage from './mainpage/mainpage';
 function NotFound() {
-    return <div>404 Error</div>;
+    return <MainPage />;
 }
 
 export default NotFound;
