@@ -70,24 +70,26 @@ function Rank() {
     }
 
     return (
-        <div className=" flex justify-center w-full items-center">
-            <div>
+        <div className="flex justify-center items-center" style={{ width: '60vw' }}>
+            <div className="w-full">
                 <div>
                     <RankPageSentence />
                 </div>
                 <div>
                     <PointBar point={point} />
                 </div>
-                <div>
+                <div className="flex justify-center">
                     <UserCard user={user} point={point} />
                 </div>
                 <p style={{ fontSize: '1.5rem', color: '#008762', fontWeight: 'bold', marginTop: '3rem' }}>전체 랭킹</p>
-                <div>
-                    {rankList.map((owner, index) => (
-                        <div key={owner.userId} onClick={() => navigate(`/mypage/${owner.userId}`)}>
-                            <RankCard user={owner} index={index + 1} />
-                        </div>
-                    ))}
+                <div className="flex justify-center">
+                    <div>
+                        {rankList.map((owner, index) => (
+                            <div key={owner.userId} onClick={() => navigate(`/mypage/${owner.userId}`)}>
+                                <RankCard user={owner} index={index + 1} />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
