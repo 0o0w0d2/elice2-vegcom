@@ -9,18 +9,18 @@ import HeaderLogout from './src/sections/headerlogout';
 import Footer from './src/sections/footer';
 import Loading from './src/pages/loading';
 
-const LoginForm = lazy(() => import('./src/pages/login/loginform.jsx'));
-const RegisterForm = lazy(() => import('./src/pages/register/registerform.jsx'));
-const MainPage = lazy(() => import('./src/pages/mainpage/mainpage.jsx'));
-const Rank = lazy(() => import('./src/pages/rank/rank.jsx'));
-const Story = lazy(() => import('./src/pages/story/story.jsx'));
-const AddPost = lazy(() => import('./src/components/post/addpost.jsx'));
-const PostDetail = lazy(() => import('./src/components/post/postdetail.jsx'));
-const UserEdit = lazy(() => import('./src/components/user/useredit.jsx'));
-const UserDetail = lazy(() => import('./src/components/user/userdetail.jsx'));
-const PostEdit = lazy(() => import('./src/components/post/postedit.jsx'));
-const SearchPost = lazy(() => import('./src/pages/story/searchpost.jsx'));
-const NotFound = lazy(() => import('./src/pages/notfound.jsx'));
+const LoginForm = lazy(() => import('/src/pages/login/loginform.jsx'));
+const RegisterForm = lazy(() => import('/src/pages/register/registerform.jsx'));
+const MainPage = lazy(() => import('/src/pages/mainpage/mainpage.jsx'));
+const Rank = lazy(() => import('/src/pages/rank/rank.jsx'));
+const Story = lazy(() => import('/src/pages/story/story.jsx'));
+const AddPost = lazy(() => import('/src/components/post/addpost.jsx'));
+const PostDetail = lazy(() => import('/src/components/post/postdetail.jsx'));
+const UserEdit = lazy(() => import('/src/components/user/useredit.jsx'));
+const UserDetail = lazy(() => import('/src/components/user/userdetail.jsx'));
+const PostEdit = lazy(() => import('/src/components/post/postedit.jsx'));
+const SearchPost = lazy(() => import('/src/pages/story/searchpost.jsx'));
+const NotFound = lazy(() => import('/src/pages/notfound.jsx'));
 
 export const UserStateContext = createContext(null);
 export const useUserStateContext = () => {
