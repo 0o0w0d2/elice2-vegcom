@@ -2,8 +2,8 @@ import React from 'react';
 
 const Loading = () => {
     return (
-        <div
-            className="inset-0 bg-gray-800 fixed flex w-full h-full items-center justify-center duration-300 transition-opacity"
+        <div 
+            className="font-['NanumSquareNeo-Variable'] inset-0 bg-gray-800 fixed flex w-full h-full items-center justify-center duration-300 transition-opacity"
             style={{ zIndex: 6000 }}>
             <div className="flex-col">
                 <div className="w-24 h-24">

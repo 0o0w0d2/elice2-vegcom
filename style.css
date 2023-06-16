@@ -3,6 +3,28 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+
+/* @font-face {
+    font-family: 'TTWanjudaedunsancheB';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/TTWanjudaedunsancheB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+} */
+
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NanumSquareNeo-Variable2';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}
+
 :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
@@ -29,7 +51,7 @@ a:hover {
 }
 
 body {
-    margin: 130px 0;
+    margin: 0;
     display: flex;
     place-items: center;
     min-width: 320px;
@@ -45,7 +67,6 @@ h1 {
     max-width: 1600px;
     margin: 0 auto;
     padding: 2rem;
-    min-width: 900px;
     text-align: center;
 }
 
@@ -94,89 +115,16 @@ button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
 }
 
-.searchButton {
-    background-color: #78bdaa;
-    padding: 10px 12px 10px 12px;
-    font-weight: bold;
-    color: white;
-    border-radius: 45px;
-}
-
-.addPostButton {
-    background-color: #008762;
-    padding: 10px 12px 10px 12px;
-    color: white;
-    font-weight: bold;
-
-    border-radius: 45px;
-}
-
-.searchButton:hover {
-    color: white;
-    background-color: #689d8e;
-}
-
-.addPostButton:hover {
-    color: white;
-    background-color: #155745;
-}
-
-.goAdd {
-    border-radius: 20px;
-    background-color: #78bdaa;
-    color: white;
-    width: auto;
-    padding: 1em;
-    font-size: 2em;
-    font-weight: bold;
-    cursor: pointer;
-}
-
 @media (prefers-color-scheme: light) {
     :root {
         color: #213547;
         background-color: #ffffff;
     }
     a:hover {
-        color: #ffffff;
+        color: #747bff;
     }
     button {
         background-color: #f9f9f9;
     }
 }
 
-@font-face {
-    font-family: 'NanumSquareNeo-Variable';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'NanumSquareNeo-Variable2';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
-    font-weight: bold;
-    font-style: normal;
-}
-
-.animation {
-    width: 400px;
-    height: 80px;
-    background-color: brown;
-    margin: 10px auto;
-}
-
-@font-face {
-    font-family: 'SUITE-Regular';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
-    font-weight: 700;
-    font-style: normal;
-}
-/* 
-.mainbox1 {
-    border: gray solid;
-    border-radius: 10px;
-    filter: drop-shadow(0 0 2em #646464aa);
-    padding: 10px;
-    background-color: white;
-} */

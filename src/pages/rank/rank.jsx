@@ -73,7 +73,7 @@ function Rank() {
     }
 
     return (
-        <div className=" flex justify-center w-full items-center">
+        <div className=" flex justify-center w-full items-center font-['NanumSquareNeo-Variable']">
             <div>
                 <div>
                     <RankPageSentence />
