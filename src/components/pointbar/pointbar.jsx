@@ -18,8 +18,10 @@ const PointBar = ({ point }) => {
     const percentage = (point / pointMax) * 100;
 
     return (
-        <div className="w-full h-4 bg-gray-200 rounded-full">
-            <div className="h-full text-xs text-white bg-green-700 rounded-full" style={{ width: `${percentage}%` }}></div>
+        <div className="flex items-center justify-center">
+            <div className="h-4 bg-gray-200 rounded-full" style={{ width: '65vh' }}>
+                <div className="h-full text-xs text-white bg-green-700 rounded-full" style={{ width: `${percentage}%` }}></div>
+            </div>
         </div>
     );
 };
