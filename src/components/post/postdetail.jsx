@@ -356,13 +356,17 @@ function PostDetail() {
                             <SolidHeartIcon
                                 disabled={disabled}
                                 onClick={() => handleLike(postId, userId)}
-                                className="h-7 w-7"
+                                className="cursor-pointer h-7 w-7"
                                 fill="#ff3040"
                             />
                         ) : (
-                            <HeartIcon disabled={disabled} onClick={() => handleLike(postId, userId)} className="h-7 w-7" />
+                            <HeartIcon
+                                disabled={disabled}
+                                onClick={() => handleLike(postId, userId)}
+                                className="heartIcon h-7 w-7"
+                            />
                         )}
-                        <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7" />
+                        <ChatBubbleOvalLeftEllipsisIcon className="cursor-pointer h-7 w-7" />
                     </div>
 
                     <div className="text-left mt-3">

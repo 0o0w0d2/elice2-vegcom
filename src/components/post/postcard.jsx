@@ -215,13 +215,17 @@ function PostCard({ post }) {
                             <SolidHeartIcon
                                 disabled={disabled}
                                 onClick={() => handleLike(post.postId, userId)}
-                                className="h-7 w-7"
+                                className="h-7 w-7 cursor-pointer"
                                 fill="#ff3040"
                             />
                         ) : (
-                            <HeartIcon disabled={disabled} onClick={() => handleLike(post.postId, userId)} className="h-7 w-7" />
+                            <HeartIcon
+                                disabled={disabled}
+                                onClick={() => handleLike(post.postId, userId)}
+                                className="heartIcon h-7 w-7"
+                            />
                         )}
-                        <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7" onClick={() => handleClick(post)} />
+                        <ChatBubbleOvalLeftEllipsisIcon className="cursor-pointer h-7 w-7" onClick={() => handleClick(post)} />
                     </div>
                     <div className="text-left mt-3">
                         <span style={{ fontWeight: 'bold' }}>{likeCount.toLocaleString()} 명</span>이 좋아합니다.
@@ -238,14 +242,16 @@ function PostCard({ post }) {
                             <span style={{ fontWeight: 'bold', marginRight: '0.4rem' }}>{item.nickname}</span> {item.content}
                             <div className="flex flex-grow justify-end items-center">
                                 {(isEditable || userId === item.userId) && (
-                                    <TrashIcon
-                                        className="w-5 h-5"
+                                    <span
+                                        className="ml-1 mr-1 text-sm text-gray-600 dark:text-gray-400"
+                                        style={{ cursor: 'pointer' }}
                                         onClick={() => {
                                             if (window.confirm('정말로 삭제하시겠습니까?')) {
                                                 handleCommentDelete(item.id);
                                             }
-                                        }}
-                                    />
+                                        }}>
+                                        삭제
+                                    </span>
                                 )}
                             </div>
                         </div>
