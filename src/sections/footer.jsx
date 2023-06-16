@@ -15,7 +15,7 @@ function Footer() {
     ];
 
     return (
-        <footer className="mt-7" style={{ backgroundColor: '#D6E8D8', height: '8rem' }}>
+        <footer className="mt-20" style={{ backgroundColor: '#D6E8D8', height: '8rem' }}>
             <div className="flex items-center justify-center">
                 <nav className="mx-auto flex max-w-7xl items-top justify-center p-2 lg:px-8" aria-label="Global">
                     <div>
