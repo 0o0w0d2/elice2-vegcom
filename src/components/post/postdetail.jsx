@@ -556,6 +556,7 @@ function PostDetail() {
                             </div>
                         </div>
                     )}
+                    {isLoading && <p>Loading...</p>}
                 </div>
             </article>
         </div>
