@@ -172,3 +172,11 @@ button:focus-visible {
     font-weight: 700;
     font-style: normal;
 }
+/* 
+.mainbox1 {
+    border: gray solid;
+    border-radius: 10px;
+    filter: drop-shadow(0 0 2em #646464aa);
+    padding: 10px;
+    background-color: white;
+} */
