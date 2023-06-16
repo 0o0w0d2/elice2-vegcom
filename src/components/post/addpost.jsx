@@ -45,7 +45,11 @@ function AddPost() {
     return (
         <div className="addPostContainer">
             <div>
-                <h1 className="h-auto mb-7 text-bold">식단 기록하기</h1>
+                <h1
+                    style={{ fontSize: '2.5rem', color: '#008762', fontWeight: 'bold', marginTop: '-9rem' }}
+                    className="h-auto mb-7">
+                    식단 기록하기
+                </h1>
             </div>
             {imageUrl && (
                 <div style={{ width: '200px' }}>

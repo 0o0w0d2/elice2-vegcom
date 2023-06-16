@@ -1,17 +1,15 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserStateContext, DispatchContext } from '../../../App';
 import { UserCircleIcon } from '@heroicons/react/24/solid';
-import { put as putApi } from '../../../api';
+import { put as putApi, get as getApi } from '../../../api';
 
 function UserEdit() {
-    const userState = useContext(UserStateContext);
     const navigate = useNavigate();
-    const userId = userState.user.userId;
-    const [nickname, setNickname] = useState(userState.user.nickname);
-    const [userImage, setUserImage] = useState(userState.user.imageUrl);
-
+    const userId = Number(localStorage.getItem('userId'));
+    const [nickname, setNickname] = useState('');
     const [description, setDescription] = useState('');
+    const [userImage, setUserImage] = useState('');
 
     const handleSubmit = async userId => {
         try {
@@ -23,13 +21,29 @@ function UserEdit() {
             const res = await putApi(`/user/${userId}`, formData);
             navigate(-1);
         } catch (err) {
-            if (err.response.data.message) {
-                alert(err.response.data.message);
-            } else {
-                alert('라우팅 경로가 잘못되었습니다.');
-            }
+            alert(err.message);
         }
     };
+
+    const fetchUser = useCallback(
+        async userId => {
+            try {
+                const res = await getApi(`user/${userId}`);
+                const userData = res.data.userInfo;
+                setDescription(userData.description);
+                setNickname(userData.nickname);
+                setUserImage(userData.userImage);
+                console.log('user', userData);
+            } catch (err) {
+                alert(err.message);
+            }
+        },
+        [userId],
+    );
+
+    useEffect(() => {
+        fetchUser(userId);
+    }, []);
     return (
         <div className="userEditForm relative flex justify-center">
             <div>
@@ -84,7 +98,7 @@ function UserEdit() {
                             onClick={() => handleSubmit(userId)}
                             type="submit"
                             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                            올리기
+                            수정하기
                         </button>
                     </div>
                 </div>
