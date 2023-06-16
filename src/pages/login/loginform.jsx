@@ -59,7 +59,7 @@ function LoginForm() {
     };
 
     return (
-        <div className="login-page">
+        <div className="login-pag">
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <img
                     onClick={() => navigate('/')}
@@ -68,7 +68,7 @@ function LoginForm() {
                     className="logo"
                     style={{ width: '500px', height: 'auto', maxWidht: '40vh' }}></img>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col  ml-10 mr-20 font-['NanumSquareNeo-Variable']">
                 <div className="flex items-center my-2">
                     <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900 mr-2 w-24">
                         Email
@@ -99,23 +99,24 @@ function LoginForm() {
                     />
                 </div>
 
-                <div className="mt-8 flex justify-center text-lg text-black">
-                    <button
-                        type="button"
-                        className="rounded-3xl px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-30 mr-3"
-                        onClick={() => navigate('/register')}
-                        style={{ color: 'black' }}>
-                        회원가입하기
-                    </button>
+                <div className="mt-8 flex justify-center text-lg text-black space-x-10">
                     <button
                         type="submit"
                         onClick={handleSubmit}
                         disabled={!isFormValid}
-                        className={`rounded-3xl px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 ${
-                            isFormValid ? 'bg-yellow-400 hover:bg-yellow-600' : 'bg-gray-400 cursor-not-allowed'
+                        className={`rounded-2xl px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 ${
+                            isFormValid ? 'bg-green-600 hover:bg-green-800' : 'bg-gray-400 cursor-not-allowed'
                         }`}>
-                        Login
+                        로그인
                     </button>
+                    <button
+                        type="button"
+                        className="rounded-2xl px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-30 mr-3"
+                        onClick={() => navigate('/register')}
+                        style={{ color: 'black' }}>
+                        회원가입
+                    </button>
+                    
                 </div>
             </div>
         </div>

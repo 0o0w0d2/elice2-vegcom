@@ -1,5 +1,6 @@
 import React from 'react';
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
+import TierDecision from '../../utils/tierdecision';
 
 const RankCard = ({ user, index }) => {
     const getImageSrc = () => {
@@ -25,6 +26,12 @@ const RankCard = ({ user, index }) => {
                         </p>
                         <p className="text-sm">누적 포인트: {user.accuPoint}</p>
                         <p className="text-sm">총 게시물 수: {user.storyCount}</p>
+                        <p className="text-sm flex items-center">
+                            등급 :
+                            <img className='w-5 h-5 ml-2' src={TierDecision(user.accuPoint)[2]} alt={TierDecision(user.accuPoint)[0]} />
+                            {TierDecision(user.accuPoint)[1]}
+                        </p>
+
                     </div>
                 </div>
             </div>
