@@ -535,7 +535,7 @@ function PostDetail() {
                     ))}
 
                     {!isReplying && !isEditing && (
-                        <div className="pl-2 pb-3 fixed bottom-0 w-full bg-white" style={{ width: '40vw' }}>
+                        <div className="pl-2 pb-3 fixed bottom-[130px] w-full bg-white" style={{ width: '40vw' }}>
                             <div className="flex mt-4">
                                 <textarea
                                     style={{ width: '35vw' }}
