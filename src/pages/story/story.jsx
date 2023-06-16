@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { get as getApi } from '../../../api';
-import PostCard from '../../components/post/postcard';
 import { useNavigate } from 'react-router-dom';
-import { PlusCircleIcon, MagnifyingGlassCircleIcon } from '@heroicons/react/24/outline';
+
 import Loading from '../loading';
+
+import { get as getApi } from '../../../api';
+
+import PostCard from '../../components/post/postcard';
 
 function Story() {
     const navigate = useNavigate();
@@ -72,7 +74,6 @@ function Story() {
         fetchPost(nextCursor);
         // 스크롤 이벤트 핸들러 등록 및 해제
         window.addEventListener('scroll', handleScroll);
-        // console.log('nextCursor', nextCursor);
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };

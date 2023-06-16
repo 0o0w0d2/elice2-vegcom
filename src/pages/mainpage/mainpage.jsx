@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import BarGraph from '../../components/datagraph/bargraph';
+
 import LineGraph from '../../components/datagraph/linegraph';
 import CO2BarGraph from '../../components/datagraph/co2bargraph';
 import PieGraph from '../../components/datagraph/piegraph';
-// import { Animator, ScrollContainer, ScrollPage, batch, Fade, FadeIn, FadeOut, Move, MoveIn, MoveOut, Sticky, StickyIn, StickyOut, Zoom, ZoomIn, ZoomOut } from "react-scroll-motion";
+
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 

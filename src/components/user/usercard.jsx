@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 import GetDays from '../../utils/getdays';
 import TierDecision from '../../utils/tierdecision';
@@ -12,13 +13,12 @@ const UserCard = ({ user, point }) => {
         }
     }, [user]);
 
-    console.log(TierDecision(point)[2])
     return (
         <>
             <div
                 className="flex items-center justify-center p-4 m-2 bg-white shadow-lg rounded-xl"
                 style={{ width: '60vh', height: '20vh' }}>
-                 <div className="flex flex-row justify-center items-center text-center">
+                <div className="flex flex-row justify-center items-center text-center">
                     <img className="w-20 h-20object-cover rounded-full mb-2 mr-5" src={getImageSrc()} alt={user.id} />
                     <div>
                         <div>
@@ -29,11 +29,9 @@ const UserCard = ({ user, point }) => {
                         <p className="text-sm">현재 누적 포인트: {point}</p>
                         <p className="text-sm flex items-center">
                             오늘 순위: {user.TodayRanking}위 전체 누적 순위: {user.AccuRanking}위 등급 :
-                            <img className='w-5 h-5 ml-2' src={TierDecision(point)[2]} alt={TierDecision(point)[0]} />
+                            <img className="w-5 h-5 ml-2" src={TierDecision(point)[2]} alt={TierDecision(point)[0]} />
                             {TierDecision(point)[1]}
                         </p>
-
-                        
                     </div>
                 </div>
             </div>

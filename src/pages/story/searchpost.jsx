@@ -1,8 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { get as getApi } from '../../../api';
-import PostCard from '../../components/post/postcard';
-import { useNavigate } from 'react-router-dom';
+
 import Loading from '../loading';
+
+import { get as getApi } from '../../../api';
+
+import PostCard from '../../components/post/postcard';
 
 function SearchPost() {
     const [keyword, setKeyword] = useState('');
@@ -14,7 +16,6 @@ function SearchPost() {
 
     const handleChange = e => {
         setKeyword(e.target.value);
-        console.log(keyword);
     };
 
     const handleSearch = useCallback(
@@ -26,9 +27,7 @@ function SearchPost() {
                 }
                 setIsLoading(true);
                 setIsSave(true);
-                console.log('keyword', keyword);
                 const res = await getApi(`/search?keyword=${keyword}&cursor=${cursor}`);
-                console.log('res.data', res.data);
                 const searchData = res.data.searchPost;
 
                 if (searchData.length < 5) {
@@ -88,7 +87,6 @@ function SearchPost() {
         // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
         // 스크롤 이벤트 핸들러 등록 및 해제
         window.addEventListener('scroll', handleScroll);
-        // console.log('nextCursor', nextCursor);
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };

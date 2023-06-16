@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { HeartIcon } from '@heroicons/react/24/solid';
+
+import Loading from '../../pages/loading';
+
 import { get as getApi } from '../../../api';
+
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 import GetDays from '../../utils/getdays';
 import { chunkArray } from '../../utils/chunkArray';
-import { HeartIcon } from '@heroicons/react/24/solid';
-import Loading from '../../pages/loading';
 
 function UserDetail() {
     // post/:postId 로 받아와서 구현
@@ -85,8 +88,6 @@ function UserDetail() {
         },
         [userId],
     );
-
-    console.log(userInfo);
 
     useEffect(() => {
         window.scrollTo(0, 0);

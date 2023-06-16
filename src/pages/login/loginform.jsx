@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { post as postApi } from '../../../api';
+
 import { DispatchContext } from '../../../App';
 
 function LoginForm() {
@@ -38,8 +40,7 @@ function LoginForm() {
 
             const user = res.data;
             const jwtToken = user.token;
-            // console.log('토큰: ', jwtToken);
-            console.log(user.userId);
+
             localStorage.setItem('userToken', jwtToken);
             localStorage.setItem('userId', user.userId);
 
@@ -50,12 +51,11 @@ function LoginForm() {
 
             navigate('/rank', { replace: true });
         } catch (err) {
-            // if (err.response && err.response.status === 400) {
-            //     alert('비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.');
-            // } else {
-            //     alert('로그인에 실패하였습니다.');
-            // }
-            alert(err.message);
+            if (err.response.data.message) {
+                alert(err.response.data.message);
+            } else {
+                alert('라우팅 경로가 잘못되었습니다.');
+            }
         }
     };
 
@@ -117,7 +117,6 @@ function LoginForm() {
                         style={{ color: 'black' }}>
                         회원가입
                     </button>
-                    
                 </div>
             </div>
         </div>

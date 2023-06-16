@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 
 function BarGraph() {

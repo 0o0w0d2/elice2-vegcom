@@ -1,8 +1,11 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { put as putApi, get as getApi } from '../../../api';
-import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
+
 import Loading from '../../pages/loading';
+
+import { put as putApi, get as getApi } from '../../../api';
+
+import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 
 function PostEdit() {
     const [imageUrl, setImageUrl] = useState('');
@@ -48,12 +51,10 @@ function PostEdit() {
     const handleSubmit = async postId => {
         try {
             const formData = new FormData();
-            console.log('formData 전송 전', formData);
             formData.append('image', imageUrl);
             formData.append('content', content);
 
             await putApi(`/post/${postId}`, formData);
-            console.log('formData 요청 후', formData);
             navigate(-1);
         } catch (err) {
             if (err.response.data.message) {

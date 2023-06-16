@@ -1,15 +1,15 @@
 import React, { Fragment, useMemo, useState, useEffect, useCallback } from 'react';
-import { UserStateContext } from '../../../App';
 import { useNavigate } from 'react-router-dom';
+
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
-import { HeartIcon as SolidHeartIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { HeartIcon as SolidHeartIcon, EllipsisVerticalIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
+
 import { get as getApi, post as postApi, del as delApi } from '../../../api';
+
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 import GetHours from '../../utils/gethours';
-// import { comment } from 'postcss';
-// import { formatPostcssSourceMap } from 'vite';
 
 function PostCard({ post }) {
     const [commentsZero, setCommentsZero] = useState([]);
@@ -19,7 +19,6 @@ function PostCard({ post }) {
     const navigate = useNavigate();
     const userId = Number(localStorage.getItem('userId'));
     const [disabled, setDisabled] = useState(false);
-    // console.log(post);
 
     const isEditable = useMemo(() => userId === post.userId, [userId, post.userId]);
 
@@ -53,7 +52,6 @@ function PostCard({ post }) {
         async post => {
             try {
                 const res = await getApi(`like/${post.postId}`);
-                // console.log('like: ', res.data);
                 const likesData = res.data;
                 setLikeCount(likesData.likecount);
                 setLiked(likesData.likeuser);
@@ -106,8 +104,6 @@ function PostCard({ post }) {
                 setLiked(false);
                 setLikeCount(likeCount - 1);
             }
-
-            console.log('like 누르기 이후', !liked);
         } catch (err) {
             if (err.response.data.message) {
                 alert(err.response.data.message);

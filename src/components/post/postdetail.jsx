@@ -1,16 +1,18 @@
-import React, { Fragment, useMemo, useState, useEffect, useCallback, useContext } from 'react';
-import { UserStateContext } from '../../../App';
+import React, { Fragment, useMemo, useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ChatBubbleBottomCenterTextIcon as CommentIcon, ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
-import { HeartIcon as SolidHeartIcon, EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
+
+import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
+import { HeartIcon as SolidHeartIcon, EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
+
+import Loading from '../../pages/loading';
+
 import { get as getApi, post as postApi, del as delApi, put as putApi } from '../../../api';
+
 import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
 import GetTime from '../../utils/gettime';
-import Loading from '../../pages/loading';
 import GetHours from '../../utils/gethours';
-// import { comment } from 'postcss';
 
 function PostDetail() {
     // post/:postId 로 받아와서 구현
@@ -163,7 +165,6 @@ function PostDetail() {
     };
 
     const handleReSubmit = async commentId => {
-        console.log('postId', postId, 'content', reContent, 'parentId', commentId);
         if (commentId === undefined) {
             commentId = count;
         }
@@ -227,7 +228,6 @@ function PostDetail() {
                 });
 
                 const res = await getApi(`like/${postId}`);
-                console.log(liked, '좋아요 데이터:', res.data);
                 const likesData = res.data;
                 setLikeCount(likesData.likecount);
                 setLiked(likesData.likeuser);
@@ -235,7 +235,6 @@ function PostDetail() {
                 await delApi(`/like/${postId}`);
 
                 const res = await getApi(`like/${postId}`);
-                console.log(liked, '좋아요 데이터:', res.data);
                 const likesData = res.data;
                 setLikeCount(likesData.likecount);
                 setLiked(likesData.likeuser);

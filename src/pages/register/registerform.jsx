@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { post as postApi } from '../../../api';
 
 function RegisterForm() {
@@ -35,14 +36,12 @@ function RegisterForm() {
 
     const handleSubmit = async e => {
         try {
-            console.log(imageUrl);
             const res = await postApi('user/register', {
                 email,
                 password,
                 nickname,
                 imageUrl,
             });
-            console.log(res);
             alert(res.data);
 
             // 로그인 페이지로 이동함.

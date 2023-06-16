@@ -1,7 +1,8 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserStateContext, DispatchContext } from '../../../App';
+
 import { UserCircleIcon } from '@heroicons/react/24/solid';
+
 import { put as putApi, get as getApi } from '../../../api';
 
 function UserEdit() {
@@ -18,10 +19,14 @@ function UserEdit() {
             formData.append('nickname', nickname);
             formData.append('description', description);
 
-            const res = await putApi(`/user/${userId}`, formData);
+            await putApi(`/user/${userId}`, formData);
             navigate(-1);
         } catch (err) {
-            alert(err.message);
+            if (err.response.data.message) {
+                alert(err.response.data.message);
+            } else {
+                alert('라우팅 경로가 잘못되었습니다.');
+            }
         }
     };
 
@@ -33,9 +38,12 @@ function UserEdit() {
                 setDescription(userData.description);
                 setNickname(userData.nickname);
                 setUserImage(userData.userImage);
-                console.log('user', userData);
             } catch (err) {
-                alert(err.message);
+                if (err.response.data.message) {
+                    alert(err.response.data.message);
+                } else {
+                    alert('라우팅 경로가 잘못되었습니다.');
+                }
             }
         },
         [userId],

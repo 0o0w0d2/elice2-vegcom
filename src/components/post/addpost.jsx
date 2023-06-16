@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { post as postApi } from '../../../api';
 
 function AddPost() {
@@ -10,12 +11,10 @@ function AddPost() {
     const handleSubmit = async e => {
         try {
             const formData = new FormData();
-            console.log('formData 전송 전:', formData);
             formData.append('image', imageUrl);
             formData.append('content', content);
 
             await postApi('/post', formData);
-            console.log('formData 전송 후:', formData);
             navigate('/story');
         } catch (err) {
             if (err.response.data.message) {

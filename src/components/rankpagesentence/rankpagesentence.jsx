@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+
 import { get as getApi } from '../../../api';
 
 const RankPageSentence = () => {
