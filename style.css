@@ -179,6 +179,11 @@ button:focus-visible {
     font-weight: 700;
     font-style: normal;
 }
+
+.heartIcon:hover {
+    stroke: #ff3040;
+    cursor: pointer;
+}
 /* 
 .mainbox1 {
     border: gray solid;
