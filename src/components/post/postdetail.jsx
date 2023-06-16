@@ -251,31 +251,11 @@ function PostDetail() {
         }
     };
 
-    const fetchLikes = useCallback(
-        async postId => {
-            try {
-                const res = await getApi(`like/${postId}`);
-                console.log('좋아요 데이터:', res.data);
-                const likesData = res.data;
-                setLikeCount(likesData.likecount);
-                setLiked(likesData.likeuser);
-            } catch (err) {
-                if (err.response.data.message) {
-                    alert(err.response.data.message);
-                } else {
-                    alert('라우팅 경로가 잘못되었습니다.');
-                }
-            }
-        },
-        [liked],
-    );
-
     useEffect(() => {
         // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
         fetchUser();
         fetchComments(postId, nextCursor);
         fetchPostDetail(postId);
-        fetchLikes(postId);
         // 스크롤 이벤트 핸들러 등록 및 해제
         window.addEventListener('scroll', handleScroll);
 
