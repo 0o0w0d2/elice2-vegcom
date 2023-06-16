@@ -4,6 +4,7 @@ import { useNavigate, BrowserRouter as Router, Routes, Route, useLocation } from
 import { get as getApi } from './api';
 import { loginReducer } from './reducer';
 import Header from './src/sections/header';
+import HeaderLogout from './src/sections/headerlogout';
 // import Footer from './src/sections/footer';
 import Loading from './src/pages/loading';
 
@@ -91,6 +92,11 @@ function App() {
                 {isLogin && (
                     <>
                         <Header />
+                    </>
+                )}
+                {location.pathname === '/' && (
+                    <>
+                        <HeaderLogout />
                     </>
                 )}
                 {/* <MainPage /> */}

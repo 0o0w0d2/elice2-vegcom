@@ -59,9 +59,15 @@ function Header() {
     return (
         <header className="fixed top-0 left-0 right-0 z-50" style={{ backgroundColor: 'white' }}>
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
-                <div className="flex lg:flex-1">
+                <div className="justify-center flex lg:flex-1">
                     <a href="/" className="-m-1.5 p-1.5">
-                        <img className="logo h-8 w-auto" src="/logoshort.png" alt="" />
+                        <img
+                            onMouseEnter={handleLogoMouseEnter}
+                            onMouseLeave={handleLogoMouseLeave}
+                            className="logo h-8 w-auto"
+                            src={getLogoSrc('/logoshort.png')}
+                            alt=""
+                        />
                     </a>
                 </div>
                 <div className="flex lg:hidden">
@@ -123,7 +129,7 @@ function Header() {
                         </Transition>
                     </Popover>
                 </Popover.Group>
-                <div onClick={() => logout()} className="hidden lg:flex lg:flex-1 lg:justify-end">
+                <div onClick={() => logout()} className="hidden lg:flex lg:flex-1 lg:justify-center">
                     <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
                         Logout <span aria-hidden="true">&rarr;</span>
                     </a>
