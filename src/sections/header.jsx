@@ -5,27 +5,13 @@ import { DispatchContext } from '../../App';
 
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import {
-    UserCircleIcon,
-    ChatBubbleLeftRightIcon,
-    UserIcon,
-    TrophyIcon,
-    ArrowLeftOnRectangleIcon,
-    ArrowPathIcon,
-    Bars3Icon,
-    ChartPieIcon,
-    CursorArrowRaysIcon,
-    FingerPrintIcon,
-    SquaresPlusIcon,
-    XMarkIcon,
-} from '@heroicons/react/24/outline';
+import { UserCircleIcon, UserIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 function Header() {
     const userId = localStorage.getItem('userId');
     const mymenu = [
         { name: '마이페이지', description: '마이페이지', href: `/mypage/${userId}`, icon: UserCircleIcon },
         { name: '정보 수정', description: '유저 정보 수정', href: `/useredit`, icon: UserIcon },
-        // {name: '쇼핑'},
     ];
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
