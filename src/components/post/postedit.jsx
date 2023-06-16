@@ -146,18 +146,18 @@ function PostEdit() {
                         onChange={e => setContent(e.target.value)}
                         className="block w-full rounded-md border-0 mt-3 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         placeholder="설명을 입력해 주세요."></textarea>
-                    <div className="buttonSection flex mt-5" style={{ justifyContent: 'flex-end' }}>
+                    <div className="buttonSection flex mt-12" style={{ justifyContent: 'center' }}>
                         <button
                             onClick={() => navigate('/story')}
                             type="button"
-                            className="text-sm font-semibold leading-6 text-gray-900">
+                            className="rounded-2xl mr-2 px-10 py-2 text-black shadow-xl backdrop-blur-md transition-colors duration-300">
                             취소
                         </button>
                         <button
                             onClick={() => handleSubmit(postId)}
                             type="submit"
-                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                            올리기
+                            className="rounded-2xl ml-2 text-white bg-[#008762] px-10 py-2 shadow-xl backdrop-blur-md transition-colors duration-30 mr-3">
+                            수정
                         </button>
                     </div>
                 </div>

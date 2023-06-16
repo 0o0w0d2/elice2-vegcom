@@ -113,7 +113,7 @@ function LoginForm() {
                         </button>
                         <button
                             type="button"
-                            className="rounded-2xl px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-30 mr-3"
+                            className="rounded-2xl px-10 py-2 shadow-xl backdrop-blur-md transition-colors duration-30 mr-3"
                             onClick={() => navigate('/register')}
                             style={{ color: 'black' }}>
                             회원가입

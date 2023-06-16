@@ -95,7 +95,7 @@ function SearchPost() {
 
     return (
         <>
-            <div className="flex justify-center items-center" style={{ maxWidth: '960px', height: 'auto' }}>
+            <div className="flex justify-center items-center" style={{ maxWidth: '960px', height: 'auto', marginTop: '-rem' }}>
                 <div className="search" style={{ width: '80vw' }}>
                     <div className="mb-8" style={{ fontSize: '2rem', fontWeight: 'bold' }}>
                         검색으로 궁금한 식단을 찾아보세요!
@@ -129,7 +129,7 @@ function SearchPost() {
                         <button
                             onClick={() => handleSearchButtonClick(keyword, 0)}
                             type="submit"
-                            className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            className="text-white absolute right-2.5 bottom-2.5 bg-[#008762] hover:bg-[#155745] font-medium rounded-lg text-sm px-4 py-2">
                             검색
                         </button>
                     </div>

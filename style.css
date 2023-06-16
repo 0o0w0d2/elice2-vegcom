@@ -192,3 +192,41 @@ button:focus-visible {
     padding: 10px;
     background-color: white;
 } */
+
+.searchButton {
+    background-color: #78bdaa;
+    padding: 10px 12px 10px 12px;
+    font-weight: bold;
+    color: white;
+    border-radius: 45px;
+}
+
+.addPostButton {
+    background-color: #008762;
+    padding: 10px 12px 10px 12px;
+    color: white;
+    font-weight: bold;
+
+    border-radius: 45px;
+}
+
+.searchButton:hover {
+    color: white;
+    background-color: #689d8e;
+}
+
+.addPostButton:hover {
+    color: white;
+    background-color: #155745;
+}
+
+.goAdd {
+    border-radius: 20px;
+    background-color: #78bdaa;
+    color: white;
+    width: auto;
+    padding: 1em;
+    font-size: 2em;
+    font-weight: bold;
+    cursor: pointer;
+}
