@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useState, useEffect, useCallback } from 'react';
+import React, { Fragment, useMemo, useState, useEffect, useCallback, useContext } from 'react';
 import { UserStateContext } from '../../../App';
 import { useLocation } from 'react-router-dom';
 import { ChatBubbleBottomCenterTextIcon as CommentIcon, ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
@@ -17,11 +17,11 @@ function PostDetail() {
     const location = useLocation();
     const [post, setPost] = useState([]);
     const userId = Number(localStorage.getItem('userId'));
+    const [user, setUser] = useState();
     const postId = location.pathname.match(/\/post\/(\d+)/)[1];
     const [content, setContent] = useState('');
     const [reContent, setReContent] = useState('');
     const [isReplying, setIsReplying] = useState(false);
-    const [parentId, setParentId] = useState(0);
     const [commentsZero, setCommentsZero] = useState([]);
     const [commentsOther, setCommentsOther] = useState([]);
     const [postImage, setPostImage] = useState('');
@@ -36,85 +36,30 @@ function PostDetail() {
     const [nextCursor, setNextCursor] = useState(0);
     const [isEditing, setIsEditing] = useState(false);
     const [isReEditing, setIsReEditing] = useState(false);
+    const [target, setTarget] = useState('');
+    const [reTarget, setReTarget] = useState('');
     const [isFetchCommentCompleted, setIsFetchCommentCompleted] = useState(false);
     const [isFetchPostCompleted, setIsFetchPostCompleted] = useState(false);
 
-    const handleSubmit = async commentId => {
-        if (!isEditing) {
-            await postApi('/comment', {
-                parentId: 0,
-                content,
-                postId,
-            });
-        } else if (isEditing) {
-            await putApi(`/comment/${commentId}`, {
-                commentId,
-                postId,
-                content,
-            });
+    const fetchUser = useCallback(async () => {
+        try {
+            const user = await getApi(`/user/${userId}`);
+            const userInfo = user.data.userInfo;
+            setUser(userInfo);
 
-            setCommentsZero(prevComments => {
-                return prevComments.map(comment => {
-                    if (comment.id === commentId) {
-                        return {
-                            ...comment,
-                            content: content,
-                        };
-                    } else {
-                        return comment;
-                    }
-                });
-            });
-            setIsEditing(false);
+            if (userInfo.userImage.startsWith('http')) {
+                setPostImage(userInfo.userImage);
+            } else {
+                setPostImage(`${BUCKET_BASE_URL}${userInfo.userImage}`);
+            }
+        } catch (err) {
+            if (err.response.data.message) {
+                alert(err.response.data.message);
+            } else {
+                alert('라우팅 경로가 잘못되었습니다.');
+            }
         }
-        setContent('');
-        setIsSave(true);
-    };
-
-    const handleReSubmit = async commentId => {
-        if (!isReEditing) {
-            await postApi('/comment', {
-                parentId: parentId,
-                content: reContent,
-                postId,
-            });
-            setReContent('');
-            setIsReplying(false);
-        } else if (isReEditing) {
-            await putApi(`/comment/${commentId}`, {
-                commentId,
-                postId,
-                content: reContent,
-            });
-
-            setCommentsOther(prevComments => {
-                return prevComments.map(comment => {
-                    if (comment.id === commentId) {
-                        return {
-                            ...comment,
-                            content: reContent,
-                        };
-                    } else {
-                        return comment;
-                    }
-                });
-            });
-            setIsReEditing(false);
-        }
-        setIsSave(true);
-    };
-
-    const handlePostDelete = useCallback(async postId => {
-        await delApi(`/post/${postId}`);
-        navigate(-1);
-    });
-
-    const handleCommentDelete = useCallback(async commentId => {
-        await delApi(`/comment/${commentId}`);
-        window.location.replace(`/post/${postId}`);
-    });
-
-    const isEditable = useMemo(() => userId === post.userId, [userId, post.userId]);
+    }, [userId]);
 
     const fetchPostDetail = useCallback(async () => {
         try {
@@ -193,6 +138,96 @@ function PostDetail() {
         },
         [isSave, isReached],
     );
+    const handleSubmit = async commentId => {
+        if (!isEditing) {
+            await postApi('/comment', {
+                parentId: 0,
+                content,
+                postId,
+            });
+            setCommentsZero(current => {
+                const commentList = [
+                    { userId: userId, nickname: user.nickname, content: content, createAt: new Date() },
+                    ...current,
+                ];
+                return commentList;
+            });
+        } else if (isEditing) {
+            await putApi(`/comment/${commentId}`, {
+                commentId,
+                postId,
+                content,
+            });
+
+            setCommentsZero(prevComments => {
+                return prevComments.map(comment => {
+                    if (comment.id === commentId) {
+                        return {
+                            ...comment,
+                            content: content,
+                        };
+                    } else {
+                        return comment;
+                    }
+                });
+            });
+            setIsEditing(false);
+        }
+        setContent('');
+        setIsSave(true);
+    };
+
+    const handleReSubmit = async commentId => {
+        if (!isReEditing) {
+            await postApi('/comment', {
+                parentId: commentId,
+                content: reContent,
+                postId,
+            });
+            setCommentsOther(current => {
+                const commentList = [
+                    { userId: userId, nickname: user.nickname, content: reContent, parentId: commentId, createAt: new Date() },
+                    ...current,
+                ];
+                return commentList;
+            });
+            setReContent('');
+            setIsReplying(false);
+        } else if (isReEditing) {
+            await putApi(`/comment/${commentId}`, {
+                commentId,
+                postId,
+                content: reContent,
+            });
+
+            setCommentsOther(prevComments => {
+                return prevComments.map(comment => {
+                    if (comment.id === commentId) {
+                        return {
+                            ...comment,
+                            content: reContent,
+                        };
+                    } else {
+                        return comment;
+                    }
+                });
+            });
+            setIsReEditing(false);
+        }
+        setIsSave(true);
+    };
+
+    const handlePostDelete = useCallback(async postId => {
+        await delApi(`/post/${postId}`);
+        navigate(-1);
+    });
+
+    const handleCommentDelete = useCallback(async commentId => {
+        await delApi(`/comment/${commentId}`);
+        window.location.replace(`/post/${postId}`);
+    });
+
+    const isEditable = useMemo(() => userId === post.userId, [userId, post.userId]);
 
     const handleScroll = useCallback(() => {
         const scrollHeight = document.documentElement.scrollHeight;
@@ -255,6 +290,7 @@ function PostDetail() {
 
     useEffect(() => {
         // 페이지 초기 렌더링 시에 postList를 불러오기 위해 fetchPost 호출
+        fetchUser();
         fetchComments(postId, nextCursor);
         fetchPostDetail(postId);
         fetchLikes(postId);
@@ -264,7 +300,7 @@ function PostDetail() {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [fetchComments, fetchPostDetail]);
+    }, [fetchUser, fetchComments]);
 
     if (!isFetchCommentCompleted && !isFetchPostCompleted) {
         return <Loading />;
@@ -363,7 +399,7 @@ function PostDetail() {
                                     <CommentIcon
                                         onClick={() => {
                                             setIsReplying(!isReplying);
-                                            parentId == 0 ? setParentId(item.id) : setParentId(0);
+                                            setTarget(item.id);
                                         }}
                                         className="h-5 w-5"
                                     />
@@ -372,6 +408,7 @@ function PostDetail() {
                                             onClick={() => {
                                                 !isEditing ? setIsEditing(true) : setIsEditing(false);
                                                 setContent(item.content);
+                                                setTarget(item.id);
                                             }}
                                             className="w-5 h-5"
                                         />
@@ -389,7 +426,7 @@ function PostDetail() {
                                 </div>
                             </div>
                             <div className="text-left">{item.content}</div>
-                            {isEditing && (
+                            {isEditing && target === item.id && (
                                 <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
                                     <div className="flex mt-4">
                                         <textarea
@@ -423,6 +460,8 @@ function PostDetail() {
                                                         onClick={() => {
                                                             isReEditing ? setIsReEditing(false) : setIsReEditing(true);
                                                             setReContent(comment.content);
+                                                            setTarget(item.id);
+                                                            setReTarget(comment.id);
                                                         }}
                                                     />
                                                 )}
@@ -439,7 +478,7 @@ function PostDetail() {
                                             </div>
                                         </div>
                                         <div className="text-left">{comment.content}</div>
-                                        {isReEditing && (
+                                        {isReEditing && target === item.id && reTarget === comment.id && (
                                             <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
                                                 <div className="flex mt-4">
                                                     <textarea
@@ -451,8 +490,28 @@ function PostDetail() {
                                                         <button
                                                             type="submit"
                                                             className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
-                                                            onClick={() => handleReSubmit(comment.id)}>
+                                                            onClick={() => handleReSubmit(comment.id, comment.parentId)}>
                                                             수정
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {!isEditing && target === item.id && (
+                                            <div className="pl-2 pb-3 fixed bottom-0 w-full bg-white" style={{ width: '40vw' }}>
+                                                <div className="flex mt-4">
+                                                    <textarea
+                                                        style={{ width: '35vw' }}
+                                                        className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                                        placeholder="댓글을 입력하세요."
+                                                        onChange={e => setContent(e.target.value)}></textarea>
+                                                    <div className="flex items-center ml-2">
+                                                        <button
+                                                            type="submit"
+                                                            className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                                            onClick={() => handleSubmit()}>
+                                                            등록
                                                         </button>
                                                     </div>
                                                 </div>
@@ -461,20 +520,19 @@ function PostDetail() {
                                     </div>
                                 ))}
 
-                            {isReplying && parentId === item.id && (
+                            {isReplying && target === item.id && (
                                 <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
                                     <div className="flex mt-4">
                                         <textarea
                                             style={{ width: '35vw' }}
                                             className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                                             placeholder="답글을 입력하세요."
-                                            value={reContent}
                                             onChange={e => setReContent(e.target.value)}></textarea>
                                         <div className="flex items-center ml-2">
                                             <button
                                                 type="submit"
                                                 className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
-                                                onClick={() => handleReSubmit()}>
+                                                onClick={() => handleReSubmit(item.id)}>
                                                 등록
                                             </button>
                                         </div>
@@ -484,27 +542,6 @@ function PostDetail() {
                         </div>
                     ))}
                     {isLoading && <Loading />}
-
-                    {!isEditing && (
-                        <div className="pl-2 pb-3 fixed bottom-0 w-full bg-white" style={{ width: '40vw' }}>
-                            <div className="flex mt-4">
-                                <textarea
-                                    style={{ width: '35vw' }}
-                                    className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                                    placeholder="댓글을 입력하세요."
-                                    value={content}
-                                    onChange={e => setContent(e.target.value)}></textarea>
-                                <div className="flex items-center ml-2">
-                                    <button
-                                        type="submit"
-                                        className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
-                                        onClick={() => handleSubmit()}>
-                                        등록
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </article>
         </div>
