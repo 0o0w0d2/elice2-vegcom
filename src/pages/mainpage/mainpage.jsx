@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import LineGraph from '../../components/datagraph/linegraph';
-import CO2BarGraph from '../../components/datagraph/co2bargraph';
-import PieGraph from '../../components/datagraph/piegraph';
+import LineGraph from '../../components/datagraph/graph/linegraph';
+import CO2BarGraph from '../../components/datagraph/graph/co2bargraph';
+import PieGraph from '../../components/datagraph/graph/piegraph';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
