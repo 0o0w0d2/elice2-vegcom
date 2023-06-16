@@ -99,7 +99,7 @@ function UserEdit() {
                         <button
                             onClick={() => navigate(-1)}
                             type="button"
-                            className=" shadow-sm text-sm font-semibold leading-6 text-gray-900">
+                            className="shadow-sm text-sm font-semibold leading-6 text-gray-900 mr-5">
                             취소
                         </button>
                         <button
