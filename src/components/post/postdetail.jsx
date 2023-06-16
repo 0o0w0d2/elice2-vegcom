@@ -375,6 +375,25 @@ function PostDetail() {
                     <div className="text-left">{post.content}</div>
                 </div>
                 <div className="pt-4 commentSection w-full mt-1 mb-3">
+                    {!isReplying && !isEditing && (
+                        <div className="pb-3 w-full bg-white" style={{ width: '40vw' }}>
+                            <div className="flex mb-4">
+                                <textarea
+                                    style={{ width: '35vw' }}
+                                    className="postInput block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                    placeholder="댓글을 입력하세요."
+                                    onChange={e => setContent(e.target.value)}></textarea>
+                                <div className="flex items-center ml-2">
+                                    <button
+                                        type="submit"
+                                        className="postButton flex-grow w-auto bg-blue-500 text-white text-sm rounded-md "
+                                        onClick={() => handleSubmit()}>
+                                        등록
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     {/* .. parentId === item.id  */}
                     {commentsZero?.map((item, index) => (
                         <div key={item.id}>
@@ -432,14 +451,14 @@ function PostDetail() {
                                 <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
                                     <div className="flex mt-4">
                                         <textarea
-                                            style={{ width: '35vw' }}
-                                            className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                            style={{ width: '33.1vw' }}
+                                            className="postInput block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                                             placeholder="답글을 입력하세요."
                                             onChange={e => setReContent(e.target.value)}></textarea>
                                         <div className="flex items-center ml-2">
                                             <button
                                                 type="submit"
-                                                className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                                className="postButton flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
                                                 onClick={() => handleReSubmit(item.id)}>
                                                 등록
                                             </button>
@@ -451,14 +470,14 @@ function PostDetail() {
                                 <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
                                     <div className="flex mt-4">
                                         <textarea
-                                            style={{ width: '35vw' }}
-                                            className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                            style={{ width: '33.1vw' }}
+                                            className="postEditInput block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                                             value={content}
                                             onChange={e => setContent(e.target.value)}></textarea>
                                         <div className="flex items-center ml-2">
                                             <button
                                                 type="submit"
-                                                className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                                className="postButton flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
                                                 onClick={() => handleEdit(item.id)}>
                                                 수정
                                             </button>
@@ -513,17 +532,17 @@ function PostDetail() {
                                         <p className="pl-2 text-gray-500 dark:text-gray-400 text-left">{comment.content}</p>
 
                                         {isReEditing && target === item.id && reTarget === comment.id && (
-                                            <div className="ml-6 pl-2 pb-3 w-full bg-white" style={{ width: '40vw' }}>
+                                            <div className="ml-6 pb-3 bg-white" style={{ width: '40vw' }}>
                                                 <div className="flex mt-4">
                                                     <textarea
-                                                        style={{ width: '35vw' }}
-                                                        className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                                                        style={{ width: '32vw' }}
+                                                        className="postEditInput block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                                                         value={reContent}
                                                         onChange={e => setReContent(e.target.value)}></textarea>
                                                     <div className="flex items-center ml-2">
                                                         <button
                                                             type="submit"
-                                                            className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
+                                                            className="postButton flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
                                                             onClick={() => handleReEdit(comment.id, comment.parentId)}>
                                                             수정
                                                         </button>
@@ -536,26 +555,6 @@ function PostDetail() {
                         </div>
                     ))}
 
-                    {!isReplying && !isEditing && (
-                        <div className="pl-2 pb-3 fixed bottom-[130px] w-full bg-white" style={{ width: '40vw' }}>
-                            <div className="flex mt-4">
-                                <textarea
-                                    style={{ width: '35vw' }}
-                                    className="block rounded-lg border-0 py-1 pl-3 pr-3 pt-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                                    placeholder="댓글을 입력하세요."
-                                    value={content}
-                                    onChange={e => setContent(e.target.value)}></textarea>
-                                <div className="flex items-center ml-2">
-                                    <button
-                                        type="submit"
-                                        className="flex-grow w-auto bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600"
-                                        onClick={() => handleSubmit()}>
-                                        등록
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
                     {isLoading && <p>Loading...</p>}
                 </div>
             </article>

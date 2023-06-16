@@ -49,6 +49,25 @@ h1 {
     text-align: center;
 }
 
+.postButton {
+    background-color: #78bdaa;
+    color: white;
+    height: 40px;
+    width: 70px;
+}
+
+.postButton:hover {
+    background-color: #689d8e;
+}
+
+.postInput {
+    height: 40px;
+}
+
+.postEditInput {
+    height: 40px;
+}
+
 .logo {
     height: 6em;
     padding: 1.5em;
