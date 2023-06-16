@@ -244,7 +244,7 @@ function UserDetail() {
                             </div>
                         ) : (
                             <div className="flex justify-center">
-                                <div className="bg-white shadow-lg rounded-xl pt-5 pb-5 pl-5">
+                                <div className="w-full bg-white shadow-md rounded-xl pt-5 pb-5 pl-5">
                                     {chunkArray(likePostList, 3).map((row, rowIndex) => (
                                         <div key={rowIndex} className="flex justify-left">
                                             {row.map((item, index) => (
