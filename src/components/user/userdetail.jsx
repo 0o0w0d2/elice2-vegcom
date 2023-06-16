@@ -89,6 +89,7 @@ function UserDetail() {
     console.log(userInfo);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         fetchArchive(userId);
         fetchLikes(userId);
     }, [fetchArchive, fetchLikes]);

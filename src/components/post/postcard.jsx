@@ -128,7 +128,12 @@ function PostCard({ post }) {
         <div className="postCard shadow-lg rounded-lg mx-auto grid max-w-2xl grid-cols-1 border border-gray-300 pt-5 pl-5 pb-5 pr-5 mb-5">
             <article key={post.postId} className="flex max-w-xl flex-col justify-between text-bold">
                 <div className="profileSection relative flex w-full items-center gap-x-4">
-                    <div className="flex" onClick={() => navigate(`/mypage/${post.userId}`)}>
+                    <div
+                        className="flex"
+                        onClick={() => {
+                            navigate(`/mypage/${post.userId}`);
+                            window.scrollTo(0, 0);
+                        }}>
                         {post.userImage ? (
                             <img src={getImageSrc(post.userImage)} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
                         ) : (
