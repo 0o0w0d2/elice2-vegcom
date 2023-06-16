@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, createContext, useContext } from 'react';
+import React, { useState, useEffect, useReducer, createContext, useContext, lazy, Suspense } from 'react';
 import { useNavigate, BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 import { get as getApi } from './api.js';
@@ -9,18 +9,18 @@ import HeaderLogout from './src/sections/headerlogout.jsx';
 import Footer from './src/sections/footer.jsx';
 import Loading from './src/pages/loading.jsx';
 
-import LoginForm from './src/pages/login/loginform.jsx';
-import RegisterForm from './src/pages/register/registerform';
-import MainPage from './src/pages/mainpage/mainpage.jsx';
-import Rank from './src/pages/rank/rank';
-import Story from './src/pages/story/story';
-import AddPost from './src/components/post/addpost';
-import PostDetail from './src/components/post/postdetail';
-import UserEdit from './src/components/user/useredit';
-import UserDetail from './src/components/user/userdetail';
-import PostEdit from './src/components/post/postedit';
-import SearchPost from './src/pages/story/searchpost';
-import NotFound from './src/pages/notfound';
+const LoginForm = lazy(() => import('./src/pages/login/loginform'));
+const RegisterForm = lazy(() => import('./src/pages/register/registerform'));
+const MainPage = lazy(() => import('./src/pages/mainpage/mainpage'));
+const Rank = lazy(() => import('./src/pages/rank/rank'));
+const Story = lazy(() => import('./src/pages/story/story'));
+const AddPost = lazy(() => import('./src/components/post/addpost'));
+const PostDetail = lazy(() => import('./src/components/post/postdetail'));
+const UserEdit = lazy(() => import('./src/components/user/useredit'));
+const UserDetail = lazy(() => import('./src/components/user/userdetail'));
+const PostEdit = lazy(() => import('./src/components/post/postedit'));
+const SearchPost = lazy(() => import('./src/pages/story/searchpost'));
+const NotFound = lazy(() => import('./src/pages/notfound'));
 
 export const UserStateContext = createContext(null);
 export const useUserStateContext = () => {
@@ -87,37 +87,39 @@ function App() {
     return (
         <DispatchContext.Provider value={dispatch}>
             <UserStateContext.Provider value={userState}>
-                {isLogin && (
-                    <>
-                        <Header />
-                    </>
-                )}
-                {location.pathname === '/' && (
-                    <>
-                        <HeaderLogout />
-                    </>
-                )}
-                {/* <MainPage /> */}
-                <Routes>
-                    <Route path="/" exact element={<MainPage />} />
-                    <Route path="/login" element={<LoginForm />} />
-                    <Route path="/register" element={<RegisterForm />} />
-                    <Route path="/rank" element={<Rank />} />
-                    <Route path="/story" element={<Story />} />
-                    <Route path="/addpost" element={<AddPost />} />
-                    <Route path="/useredit" element={<UserEdit />} />
-                    <Route path="/post/:postId" element={<PostDetail />} />
-                    <Route path="/mypage/:userId" element={<UserDetail />} />
-                    <Route path="/postedit/:postId" element={<PostEdit />} />
-                    <Route path="/searchpost" element={<SearchPost />} />
+                <Suspense fallback={<Loading />}>
+                    {isLogin && (
+                        <>
+                            <Header />
+                        </>
+                    )}
+                    {location.pathname === '/' && (
+                        <>
+                            <HeaderLogout />
+                        </>
+                    )}
+                    {/* <MainPage /> */}
+                    <Routes>
+                        <Route path="/" exact element={<MainPage />} />
+                        <Route path="/login" element={<LoginForm />} />
+                        <Route path="/register" element={<RegisterForm />} />
+                        <Route path="/rank" element={<Rank />} />
+                        <Route path="/story" element={<Story />} />
+                        <Route path="/addpost" element={<AddPost />} />
+                        <Route path="/useredit" element={<UserEdit />} />
+                        <Route path="/post/:postId" element={<PostDetail />} />
+                        <Route path="/mypage/:userId" element={<UserDetail />} />
+                        <Route path="/postedit/:postId" element={<PostEdit />} />
+                        <Route path="/searchpost" element={<SearchPost />} />
 
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
-                {isLogin && (
-                    <>
-                        <Footer />
-                    </>
-                )}
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                    {isLogin && (
+                        <>
+                            <Footer />
+                        </>
+                    )}
+                </Suspense>
             </UserStateContext.Provider>
         </DispatchContext.Provider>
     );
