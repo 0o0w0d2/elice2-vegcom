@@ -150,7 +150,7 @@ function PostEdit() {
                         <button
                             onClick={() => navigate('/story')}
                             type="button"
-                            className="text-sm font-semibold leading-6 text-gray-900">
+                            className="text-sm font-semibold leading-6 text-gray-900 ">
                             취소
                         </button>
                         <button

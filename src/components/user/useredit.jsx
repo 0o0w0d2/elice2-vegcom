@@ -27,7 +27,7 @@ function UserEdit() {
             formData.append('description', description);
 
             await putApi(`/user/${userId}`, formData);
-            navigate(-1);
+            navigate(`/mypage/${userId}`);
         } catch (err) {
             if (err.response.data.message) {
                 alert(err.response.data.message);
