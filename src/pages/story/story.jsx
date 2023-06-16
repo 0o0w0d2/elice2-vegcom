@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Loading from '../loading';
-
 import { get as getApi } from '../../../api';
 
 import PostCard from '../../components/post/postcard';

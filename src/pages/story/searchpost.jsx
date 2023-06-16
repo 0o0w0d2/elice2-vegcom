@@ -1,7 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import Loading from '../loading';
-
 import { get as getApi } from '../../../api';
 
 import PostCard from '../../components/post/postcard';
