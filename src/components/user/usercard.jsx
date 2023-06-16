@@ -15,10 +15,8 @@ const UserCard = ({ user, point }) => {
 
     return (
         <>
-            <div
-                className="flex items-center justify-center p-4 m-2 bg-white shadow-lg rounded-xl"
-                style={{ width: '65vh', height: '25vh' }}>
-                <div className="flex w-full p-2 flex-row justify-center items-center text-center">
+            <div className="flex items-center justify-center p-10 m-2 bg-white shadow-lg rounded-xl">
+                <div className="usercard flex w-full p-2 flex-row justify-center items-center text-center">
                     <img
                         style={{ height: '15vh' }}
                         className="object-cover rounded-full mb-2 mr-5"
@@ -35,10 +33,13 @@ const UserCard = ({ user, point }) => {
                         <div>
                             <p className="text-md">현재 누적 포인트: {point}</p>
                             <p className="text-md flex items-center">
-                                오늘 순위: {user.TodayRanking}위 전체 누적 순위: {user.AccuRanking}위 등급 :
+                                오늘 순위: {user.TodayRanking}위 전체 누적 순위: {user.AccuRanking}위
+                            </p>
+                            <div className="flex justify-center">
+                                <div>등급: </div>
                                 <img className="w-5 h-5 ml-2" src={TierDecision(point)[2]} alt={TierDecision(point)[0]} />
                                 {TierDecision(point)[1]}
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>
