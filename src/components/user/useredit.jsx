@@ -5,6 +5,8 @@ import { UserCircleIcon } from '@heroicons/react/24/solid';
 
 import { put as putApi, get as getApi } from '../../../api';
 
+import { BUCKET_BASE_URL } from '../../utils/conts/bucket';
+
 function UserEdit() {
     const navigate = useNavigate();
     const userId = Number(localStorage.getItem('userId'));
@@ -37,7 +39,12 @@ function UserEdit() {
                 const userData = res.data.userInfo;
                 setDescription(userData.description);
                 setNickname(userData.nickname);
-                setUserImage(userData.userImage);
+
+                if (userData.userImage.startsWith('http')) {
+                    setUserImage(userData.userImage);
+                } else {
+                    setUserImage(`${BUCKET_BASE_URL}${userData.userImage}`);
+                }
             } catch (err) {
                 if (err.response.data.message) {
                     alert(err.response.data.message);
@@ -49,9 +56,25 @@ function UserEdit() {
         [userId],
     );
 
+    const handleImageUpload = e => {
+        const input = e.target;
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                const preview = document.getElementById('preview');
+                if (preview) {
+                    preview.src = e.target.result;
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
+
     useEffect(() => {
         fetchUser(userId);
     }, []);
+
     return (
         <div className="userEditForm relative flex justify-center">
             <div>
@@ -77,9 +100,17 @@ function UserEdit() {
                     </label>
                     <div className="imageSection grid-cols-2">
                         <div className="mt-2 flex items-center gap-x-3">
-                            <UserCircleIcon className="h-12 w-12 text-gray-300" aria-hidden="true" />
+                            {userImage && (
+                                <div>
+                                    <img className="h-12 w-12 text-gray-300" id="preview" src={userImage} alt="Preview" />
+                                </div>
+                            )}
+                            {/* <UserCircleIcon className="h-12 w-12 text-gray-300" aria-hidden="true" /> */}
                             <input
-                                onChange={e => setUserImage(e.target.files[0])}
+                                onChange={e => {
+                                    setUserImage(e.target.files[0]);
+                                    handleImageUpload(e);
+                                }}
                                 className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                 type="file"
                                 multiple></input>
