@@ -1,73 +1,175 @@
-# (서비스 명)
+# 🌱 하루 한끼의 채식! 지구의 내일을 바꿔요!
 
--   최종 서비스 명을 위 괄호 부분에 작성하세요.
--   최종 서비스의 한 줄 소개를 작성하세요.
+<br/>
 
-## 프로젝트 구성 안내
+<img src="./front/public/logoshort.png" alt="logo" width="10%" />
 
--   `bullet point 에 적힌 내용을 수정해 주시면 됩니다.`
+<br/>
 
--   `초기 기획은 언제든 수정될 수 있으니 웹서비스 결과를 내는데 초점을 두시기 바랍니다.`
+## 📄 개요
 
-## 1. 프로젝트 소개
+-   서비스명: 오채완
+-   기획 기간: 2023.05.26 ~ 2023.06.01
+-   개발 기간: 2023.06.01 ~ 2023.06.16
+-   주제: 환경 보호
+-   목표: 데이터 분석 수치를 활용해 **육류소비의 탄소배출량의 심각성 파악** 및 **유저 간 채식문화 장려 하는 서비스 제공**
+-   API 문서: [바로가기](https://docs.google.com/spreadsheets/d/1t-DNUbVY4GI5NZWTBwCLrzPFFoJMj4t_p9wfY_jemhA/edit?usp=sharing)
+-   테스트 페이지: [바로가기](http://kdt-ai7-team07.elicecoding.com/)
 
-**어떠한 데이터셋와 도구 및 기술을 사용했는지에 대한 설명과 엔드유저에게 보이는 웹서비스에 대한 소개**
+<br/>
 
--   사용하려는 데이터(제안된 데이터 중 하나 또는 선택한 다른 데이터 세트)를 명시, 이에 대한 설명
--   기술 스택 (python, d3, pandas, jupyter, javascript, MySQL 등)
--   사용된 라이브러리 (numpy, matplotlib, wordcloud 등)
--   웹서비스에 대한 자세한 개요
+## 🫶 팀원 소개
 
-## 2. 프로젝트 목표
+**민준영**
 
-**데이터 분석 결과로 도출되는 인사이트와 웹서비스의 해결과제에 대한 논의 (50자 이상)**
+-   Back-End
+-   znddiqjwjs@gmail.com
+-   Github: [@minluna](https://github.com/minluna)
 
--   프로젝트 아이디어 동기
--   문제를 해결하기 위한 특정 질문 명시
--   데이터를 통해 탐색하려는 문제를 구체적으로 작성
+    **정재훈**
 
-## 3. 프로젝트 기능 설명
+-   Back-End
+-   wjdwogns120523@gmail.com
+-   Github: [@J-A-Y2](https://github.com/J-A-Y2)
 
-**웹서비스의 유용성, 편의성 및 시각화의 실용성에 대한 설명**
+**김지원**
 
--   주요 기능 (주된 활용성) 및 서브 기능
--   프로젝트만의 차별점, 기대 효과
+-   Back-End
+-   0o0w0d2@gmail.com
+-   Github: [0o0w0d2](https://github.com/0o0w0d2)
 
-## 4. 프로젝트 구성도
+**이영현**
 
--   와이어프레임/스토리보드 추가
+-   Front-End
+-   pisouz7@gmail.com
+-   Github:[@yyoungl](https://github.com/yyoungl)
 
-## 5. 프로젝트 팀원 역할 분담
+    **최우현**
 
-| 이름  | 담당 업무               |
-| ----- | ----------------------- |
-| 멤버1 | 팀장/프론트엔드 개발    |
-| 멤버2 | 백엔드 개발/데이터 분석 |
+-   Front-End
+-   woohyun6549@gamil.com
+-   Github: [@choiwoohyun123](https://github.com/choiwoohyun123)
 
-**멤버별 responsibility**
+<br/>
 
-1. 팀장
+## 기술 스택
 
--   기획 단계: 구체적인 설계와 지표에 따른 프로젝트 제안서 작성
--   개발 단계: 팀원간의 일정 등 조율 + 프론트 or 백엔드 개발
--   수정 단계: 기획, 스크럼 진행, 코치님 피드백 반영해서 수정, 발표 준비
+### Front-End
 
-2. 프론트엔드
+<div>
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=HTML5&logoColor=white"/>
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=CSS3&logoColor=white"/>
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"/>
+<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>
+</div>
+<br />
 
--   기획 단계: 큰 주제에서 문제 해결 아이디어 도출, 데이터 수집, 와이어프레임 작성
--   개발 단계: 와이어프레임을 기반으로 구현, 데이터 처리 및 시각화 담당, UI 디자인 완성
--   수정 단계: 피드백 반영해서 프론트 디자인 수정
+### Server-Infra
 
-3.  백엔드 & 데이터 담당
+<div>
+<img src="https://img.shields.io/badge/Nginx-009639?style=flat-square&logo=nginx&logoColor=white"/>
+<img src="https://img.shields.io/badge/pm2-2B037A?style=flat-square&logo=pm2&logoColor=white"/>
+</div>
+<br />
 
--   기획 단계: 기획 데이터 분석을 통해 해결하고자 하는 문제를 정의
--   개발 단계: 웹 서버 사용자가 직접 백엔드에 저장할수 있는 기능 구현, 데이터 베이스 구축 및 API 활용, 데이터 분석 개념 총동원하기
--   수정 단계: 코치님 피드백 반영해서 분석/ 시각화 방식 수정
+## 🗂 프로젝트 구조
 
-## 6. 버전
+### [Front-End ](#)
 
--   프로젝트의 버전 기입
+```
+📦src
+ ┣ 📂components
+ ┃ ┣ 📂datagraph
+ ┃ ┃ ┣ 📂data
+ ┃ ┃ ┃ ┣ 📜co2bargarphdata.js
+ ┃ ┃ ┃ ┣ 📜linegraphdata.js
+ ┃ ┃ ┃ ┗ 📜piegraphdata.js
+ ┃ ┃ ┗ 📂graph
+ ┃ ┃ ┃ ┣ 📜bargraph.jsx
+ ┃ ┃ ┃ ┣ 📜co2bargraph.jsx
+ ┃ ┃ ┃ ┣ 📜linegraph.css
+ ┃ ┃ ┃ ┣ 📜linegraph.jsx
+ ┃ ┃ ┃ ┗ 📜piegraph.jsx
+ ┃ ┣ 📂pointbar
+ ┃ ┃ ┗ 📜pointbar.jsx
+ ┃ ┣ 📂post
+ ┃ ┃ ┣ 📜addpost.jsx
+ ┃ ┃ ┣ 📜postcard.jsx
+ ┃ ┃ ┣ 📜postdetail.jsx
+ ┃ ┃ ┗ 📜postedit.jsx
+ ┃ ┣ 📂rankcard
+ ┃ ┃ ┗ 📜rankcard.jsx
+ ┃ ┣ 📂rankpagesentence
+ ┃ ┃ ┗ 📜rankpagesentence.jsx
+ ┃ ┗ 📂user
+ ┃ ┃ ┣ 📜usercard.jsx
+ ┃ ┃ ┣ 📜userdetail.jsx
+ ┃ ┃ ┗ 📜useredit.jsx
+ ┣ 📂pages
+ ┃ ┣ 📂login
+ ┃ ┃ ┗ 📜loginform.jsx
+ ┃ ┣ 📂mainpage
+ ┃ ┃ ┗ 📜mainpage.jsx
+ ┃ ┣ 📂rank
+ ┃ ┃ ┗ 📜rank.jsx
+ ┃ ┣ 📂register
+ ┃ ┃ ┗ 📜registerform.jsx
+ ┃ ┣ 📂story
+ ┃ ┃ ┣ 📜searchpost.jsx
+ ┃ ┃ ┗ 📜story.jsx
+ ┃ ┣ 📜loading.jsx
+ ┃ ┗ 📜notfound.jsx
+ ┣ 📂sections
+ ┃ ┣ 📜header.jsx
+ ┃ ┗ 📜headerlogout.jsx
+ ┗ 📂utils
+ ┃ ┣ 📂conts
+ ┃ ┃ ┗ 📜bucket.js
+ ┃ ┣ 📜chunkArray.js
+ ┃ ┣ 📜getdays.js
+ ┃ ┣ 📜gethours.js
+ ┃ ┣ 📜gettime.js
+ ┃ ┗ 📜tierdecision.js> `
+```
 
-## 7. FAQ
+<br />
 
--   자주 받는 질문 정리
+## 🔎 주요기능
+
+-   **회원가입, 로그인 기능**: 사용자의 회원 가입 및 로그인 기능 제공
+-   **식단 업로드 기능**: 비건, 베지테리언 식단 업로드 가능능
+-   **피드 댓글, 대댓글 기능**: 식단 피드에서 댓글, 대댓글을 통해 유저들과 소통 가능
+-   **탄소 배출 감소량에 따른 포인트 부여**: 식단 피드 업로드하면 포인트 부여
+-   **마이페이지 기능**:
+    -   개인 정보, 포인트, 좋아요 등을 확인할 수 있는 마이페이지 기능 제공
+    -   개인 정보, 포인트, 좋아요 등
+    -   올린 식단 사진 archive
+    -   좋아요한 피드 archive
+-   **개인정보수정 기능**: 닉네임, 프로필사진, 자기소개 수정 가능
+-   **건강 배틀 sns**: 포인트 적립 순위 리스트(랭킹) 기능
+-   **Infinite Scroll**: 스크롤을 통해 오래된 피드도 볼 수 있게 하여 사용자의 몰입도를 높이기 위한 기능능
+-   **게시물 검색 기능**: 검색한 내용과 일치하는 모든 피드들을 볼 수 있는 기능
+
+## 🏁 테스트 방법
+
+---
+
+1. 해당 프로젝트를 clone 합니다.
+
+    ```
+    git clone https://kdt-gitlab.elice.io/ai_track/class_07/data_project/team07/vegcom_front.git
+    ```
+
+2. 프로젝트 실행에 필요한 패키지를 설치합니다.
+
+    ```
+    cd vegcom_front
+    yarn install
+    ```
+
+3. 프론트엔드와 백엔드를 실행합니다.
+
+    ```
+    cd vegcom_front
+    yarn dev
+    ```
